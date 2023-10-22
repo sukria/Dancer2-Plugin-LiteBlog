@@ -6,7 +6,8 @@ use warnings;
 
 =head1 NAME
 
-Dancer2::Plugin::LiteBlog - The great new Dancer2::Plugin::LiteBlog!
+Dancer2::Plugin::LiteBlog - A minimalist, file-based blog engine for Dancer2. 
+
 
 =head1 VERSION
 
@@ -19,35 +20,18 @@ our $VERSION = '0.01';
 
 =head1 SYNOPSIS
 
-Quick summary of what the module does.
+Effortlessly transform your Dancer2 app to db-free blog engine. 
+Articles are stored in local markdown files. and .yml files into a sleek and responsive blog without the need for a database.
 
-Perhaps a little code snippet.
+    # in your Dancer2 app
 
     use Dancer2::Plugin::LiteBlog;
 
-    my $foo = Dancer2::Plugin::LiteBlog->new();
-    ...
+    # default routes are created (/, /blog, /blog/:category/:slug, ...)
 
-=head1 EXPORT
+=head1 IMPORTED ROUTES
 
-A list of functions that can be exported.  You can delete this section
-if you don't export anything, such as for a purely object-oriented module.
-
-=head1 SUBROUTINES/METHODS
-
-=head2 function1
-
-=cut
-
-sub function1 {
-}
-
-=head2 function2
-
-=cut
-
-sub function2 {
-}
+TODO
 
 =head1 AUTHOR
 
