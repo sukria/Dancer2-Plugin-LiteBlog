@@ -1,8 +1,6 @@
 package Dancer2::Plugin::LiteBlog;
-
-use 5.006;
-use strict;
-use warnings;
+use Dancer2::Plugin;
+use Dancer2::Plugin::LiteBlog::Routes;
 
 =head1 NAME
 
@@ -31,7 +29,27 @@ Articles are stored in local markdown files. and .yml files into a sleek and res
 
 =head1 IMPORTED ROUTES
 
-TODO
+=head2 GET / 
+
+=head2 GET /:category/:slug
+
+=cut
+
+sub BUILD {
+    my $plugin = shift;
+    $plugin->app->add_route(
+        method  => 'get',
+        regexp  => '/',
+        code    => Dancer2::Plugin::LiteBlog::Routes->site_root($plugin),
+    );
+
+    $plugin->app->add_route(
+        method  => 'get',
+        regexp  => '/blog/:cat/:slug',
+        code    => Dancer2::Plugin::LiteBlog::Routes->post_permalink($plugin),
+    );
+    warn "BUILD called";
+}
 
 =head1 AUTHOR
 
