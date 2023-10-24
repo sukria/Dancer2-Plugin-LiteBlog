@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>[% title %]</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+
+    <link rel="stylesheet" href="/css/liteblog.css">
+    [% IF is_article_page %]
+    <link rel="stylesheet" href="/css/liteblog/article.css">
+    [% END %]
+</head>
+<body>
+
+    <header id="mobile-header">
+        <div id="avatar-icon">
+            <a href="/"><img src="/images/avatar.jpg" alt="Your Avatar"></a>
+        </div>
+        <a href="/"><button id="menu-toggle">[% site.name %]</button></a>
+    </header>
+
+    [% IF is_article_page %]
+    <section id="hero" class="page-header">
+    [% ELSE %]
+    <section id="hero">
+    [% END %]
+        <div class="header-wrapper">
+            <a href="/"><img src="/images/avatar.jpg" alt="Your Avatar" id="avatar"></a>
+            <a href="/"><h1>[% site.name %]</h1></a>
+            [% UNLESS is_article_page %]
+                <h3 class="site-baseline">[% site.baseline %]</h3>
+            [% END %]
+        </div>
+
+
+    [% IF is_article_page %]
+        <div class="article-title">
+            <h1 class="article-title-text">[% title %]</h1>
+        </div>
+    [% END %]
+    </section>
+
+[% content %]
+
+<script type="text/javascript">
+window.addEventListener('scroll', function () {
+    var heroSection = document.getElementById('hero');
+    var mobileHeader = document.getElementById('mobile-header');
+
+    if (window.scrollY > heroSection.clientHeight) {
+        mobileHeader.style.display = 'block';
+    } else {
+        mobileHeader.style.display = 'none';
+    }
+});
+</script>
+
+    </body>
+</html>

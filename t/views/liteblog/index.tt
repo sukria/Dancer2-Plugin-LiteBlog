@@ -1,0 +1,83 @@
+[% IF no_widgets %]
+<section id="activities">
+    <div class="activity-card" id="activity-welcome">
+        <h2>Great! Now it's time to enable some widgets</h2>
+        <p>
+            Welcome to your LiteBlog site! Everything is working just fine. You just have to enable some widgets in your Dancer2 config.
+
+            Try adding those lines in your <code>config.yml</code> file and restart your app.
+        </p>
+
+        <pre>
+liteblog:
+  blog:
+    title: "Read my Stories"
+    root: "articles"
+  activities:
+    content: "activities.yml"
+        </pre>
+    </div>
+</section>
+[% END %]
+
+[% IF has_activities %]
+<!-- Activity Cards -->
+<section id="activities">
+    [% FOREACH a IN activities %]
+    <div class="activity-card" id="activity-[% a.name %]">
+        <a href="[% a.link %]"><img width="300" height="300" 
+             src="/images/[% a.name %].jpg" 
+             alt="[% a.name %]"></a>
+        <h2>[% a.name %]</h2>
+        <p>[% a.desc %] </p>
+    </div> <!-- END activity-card -->
+
+    <script type="text/javascript">
+    // JavaScript code to make the blog-card clickable
+    document.getElementById('activity-[% a.name %]').addEventListener('click', function() {
+        window.location.href = '[% a.link %]';
+    });
+    </script>
+
+    [% END %]
+</section> <!-- END activities section -->
+[% END %]
+
+[% IF has_posts %]
+<!-- Blog Cards -->
+<section id="blog">
+    <div class="blog-header">
+        <h2>[% blog.title %]</h2>
+    </div>
+    <div class="blog-cards">
+
+        <!-- Individual blog post cards go here -->
+        [% FOREACH p IN posts %]
+    <div class="blog-card" id="blog-[% p.slug %]">
+        <a href="[% p.permalink %]"><img src="[% p.featured_image %]" alt="[% p.title %]"></a>
+        <h3>[% p.title %]</h3>
+
+	    <div class="category-container">
+            <div class="category-ribbon">[% p.category %]</div>
+        </div>
+    
+	    <p>[% p.excerpt %]</p>
+    </div>
+
+    <script type="text/javascript">
+    // JavaScript code to make the blog-card clickable
+    document.getElementById('blog-[% p.slug %]').addEventListener('click', function() {
+        window.location.href = '[% p.permalink %]';
+    });
+    </script>
+    [% END %]
+
+    </div> <!-- END blog-cards -->
+    
+    [% IF blog.readmore_button %]
+    <div class="blog-button">
+        <a href="/blog">[% blog.readmore_button %]</a>
+    </div>
+    [% END %]
+</section>
+[% END %]

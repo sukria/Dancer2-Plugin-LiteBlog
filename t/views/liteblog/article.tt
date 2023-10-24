@@ -1,0 +1,5 @@
+<section id="article">
+<div class="article-wrapper">
+<% content %>
+</div>
+</section>
