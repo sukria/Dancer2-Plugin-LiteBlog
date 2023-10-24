@@ -7,16 +7,22 @@ use File::Slurp 'read_file';
 use File::Temp 'tempfile';
 use File::Copy 'move';
 
+my @files_to_embed = qw(
+    public/css/liteblog.css
+    views/layouts/liteblog.tt
+    views/liteblog/index.tt
+    views/liteblog/article.tt
+);
+
 sub slurp_files {
     my ($base_dir) = @_;
 
     my $files = {};
-    $files->{'views/layouts/main.tt'} = {
-        path => File::Spec->catfile($base_dir, 'views', 'layouts', 'main.tt')
-    };
-    $files->{'views/index.tt'} = {
-        path => File::Spec->catfile($base_dir, 'views', 'index.tt')
-    };
+    foreach my $f (@files_to_embed) {
+        $files->{$f} = {
+            path => File::Spec->catfile($base_dir, split('/', $f))
+        };
+    }
 
     foreach my $file_name (keys %$files) {
         my $f = $files->{$file_name}->{path};
