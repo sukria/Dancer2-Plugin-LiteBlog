@@ -32,7 +32,6 @@ sub write_file {
     my ($fh, $filename) = tempfile();
 
     print $fh 'package Dancer2::Plugin::LiteBlog::Scaffolder::Data;
-sub get { <DATA> }
 1;
 __DATA__
 ';
