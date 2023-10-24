@@ -11,16 +11,15 @@ use File::Spec;
     set views => File::Spec->catfile( dirname(__FILE__), 'views');
     set appdir => File::Spec->catfile(dirname(__FILE__)),
 
-#    set logger => 'Console::Colored';
-#    set log => 'core';
+    set logger => 'Console::Colored';
+    set log => 'core';
     set liteblog => {
         blog => {
             title => 'Read my Stories',
             root  => File::Spec->catfile(dirname(__FILE__), 'articles'),
         },
         activities => {
-            title => "",
-            content => 'activities.yml',
+            source => 'activities.yml',
         },
     };
 

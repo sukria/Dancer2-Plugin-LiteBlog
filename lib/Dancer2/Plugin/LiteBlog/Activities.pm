@@ -5,7 +5,7 @@ use YAML::XS;
 use File::Spec;
 
 # TODO : make a parent class to inherit that (same as Blog)
-has rootdir => (
+has root => (
     is => 'ro',
     required => 1,
     isa => sub {
@@ -14,7 +14,7 @@ has rootdir => (
     },
 );
 
-has file => (
+has source => (
     is => 'ro',
     required => 1,
 );
@@ -26,7 +26,7 @@ has content => (
     lazy => 1,
     default => sub {
         my ($self) = @_;
-        my $activities = File::Spec->catfile($self->rootdir, $self->file);
+        my $activities = File::Spec->catfile($self->root, $self->source);
         if (! -e $activities) {
             croak "Missing file: $activities";
         }

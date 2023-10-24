@@ -79,6 +79,11 @@ h3.site-baseline {
     font-weight: normal;
 }
 
+#activity-welcome {
+    width: calc(66.66% - 20px); /* 2/3 of the width minus the margin */
+    margin: 0 auto; /* Center the card horizontally */
+}
+
 #activities {
     display: flex;
     flex-wrap: wrap;
@@ -110,6 +115,7 @@ h3.site-baseline {
     transform: scale(1.1); /* Apply a 10% zoom effect on hover */
     box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2); /* Add a shadow effect on hover */
 }
+
 
 .activity-card img {
    /*

@@ -15,9 +15,9 @@
 
     <header id="mobile-header">
         <div id="avatar-icon">
-            <a href="/"><img src="/images/avatar.jpg" alt="Your Avatar"></a>
+            <a href="/"><img src="/liteblog.jpg" alt="Your Avatar"></a>
         </div>
-        <a href="/"><button id="menu-toggle">[% site.name %]</button></a>
+        <a href="/"><button id="menu-toggle">[% title %]</button></a>
     </header>
 
     [% IF is_article_page %]
@@ -26,8 +26,8 @@
     <section id="hero">
     [% END %]
         <div class="header-wrapper">
-            <a href="/"><img src="/images/avatar.jpg" alt="Your Avatar" id="avatar"></a>
-            <a href="/"><h1>[% site.name %]</h1></a>
+            <a href="/"><img src="/liteblog.jpg" alt="Your Avatar" id="avatar"></a>
+            <a href="/"><h1>[% title %]</h1></a>
             [% UNLESS is_article_page %]
                 <h3 class="site-baseline">[% site.baseline %]</h3>
             [% END %]

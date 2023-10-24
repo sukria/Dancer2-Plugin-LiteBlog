@@ -21,43 +21,32 @@ use Dancer2::Plugin::LiteBlog::Activities;
 use Dancer2::Plugin::LiteBlog::Routes;
 use Dancer2::Plugin::LiteBlog::Blog;
 
-my $_BLOG;
-sub liteblog_blog {
-    my ($plugin) = @_;
-    return $_BLOG if defined $_BLOG;
-    
-    my $app_config = $plugin->dsl->config->{'liteblog'};
-    my $blogconfig = $app_config->{blog}; 
-    my $blogdir    = $blogconfig->{root}; 
-    if (! defined $blogdir) {
-        $plugin->dsl->info("No blog defined. Set <liteblog.blog.root> in the settings ".
-            "as a valid directory to define it.");
-        return;
-    }
+my %_widgets;
 
-    $_BLOG = Dancer2::Plugin::LiteBlog::Blog->new(rootdir => $blogdir);; 
-    return $_BLOG;
+sub _get_widget {
+    my ($plugin, $widget) = @_; 
+    return $_widgets{$widget} if defined $_widgets{$widget};
+    my $app_config = $plugin->dsl->config->{'liteblog'};
+    my $widget_config = $app_config->{$widget};
+    my $class = 'Dancer2::Plugin::LiteBlog::'.ucfirst($widget);
+   
+    eval {
+        $_widgets{$widget} = $class->new(
+            root => $plugin->dsl->config->{'appdir'}, 
+            %{$widget_config});
+    };
+    $plugin->dsl->error("Unable to initialized widget '$widget' : $@") if $@;
+    return $_widgets{$widget};
 }
 
-my $_ACTIVITIES;
+sub liteblog_blog {
+    my ($plugin) = @_;
+    return _get_widget($plugin, 'blog');
+}
+
 sub liteblog_activities {
     my ($plugin) = @_;
-    return $_ACTIVITIES if defined $_ACTIVITIES;
-
-    my $app_config    = $plugin->dsl->config->{'liteblog'};
-    my $widgetconfig  = $app_config->{activities}; 
-    my $activity_file = $widgetconfig->{content};
-    if (! defined $activity_file) {
-        $plugin->dsl->info("Widget 'Activities' is not enabled. ".
-            "Set <liteblog.activities.content> as a valid YAML file (local to your appdir) ".
-            "to enable it."); 
-        return;
-    }
-
-    $_ACTIVITIES = Dancer2::Plugin::LiteBlog::Activities->new(
-        rootdir => $plugin->dsl->config->{'appdir'},
-        file    => $activity_file,
-    );
+    return _get_widget($plugin, 'activities');
 }
 
 =head1 IMPORTED ROUTES
