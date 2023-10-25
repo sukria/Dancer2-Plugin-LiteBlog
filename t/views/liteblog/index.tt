@@ -14,7 +14,7 @@ liteblog:
     title: "Read my Stories"
     root: "articles"
   activities:
-    content: "activities.yml"
+    source: "activities.yml"
         </pre>
     </div>
 </section>
@@ -24,21 +24,25 @@ liteblog:
 <!-- Activity Cards -->
 <section id="activities">
     [% FOREACH a IN activities %]
-    <div class="activity-card" id="activity-[% a.name %]">
-        <a href="[% a.link %]"><img width="300" height="300" 
-             src="/images/[% a.name %].jpg" 
-             alt="[% a.name %]"></a>
-        <h2>[% a.name %]</h2>
-        <p>[% a.desc %] </p>
-    </div> <!-- END activity-card -->
+        [% IF a.link %]
+        <div class="activity-card clickable-div" id="activity-[% a.name %]">
+            <a href="[% a.link %]"><img width="300" height="300" src="/images/[% a.name %].jpg" alt="[% a.name %]"></a>
+        [% ELSE %]
+        <div class="activity-card" id="activity-[% a.name %]">
+            <img width="300" height="300" src="/images/[% a.name %].jpg" alt="[% a.name %]">
+        [% END %]
+            <h2>[% a.name %]</h2>
+            <p>[% a.desc %] </p>
+        </div> <!-- END activity-card -->
 
-    <script type="text/javascript">
-    // JavaScript code to make the blog-card clickable
-    document.getElementById('activity-[% a.name %]').addEventListener('click', function() {
-        window.location.href = '[% a.link %]';
-    });
-    </script>
-
+        [% IF a.link %]
+        <script type="text/javascript">
+        // JavaScript code to make the blog-card clickable
+        document.getElementById('activity-[% a.name %]').addEventListener('click', function() {
+            window.location.href = '[% a.link %]';
+        });
+        </script>
+        [% END %]
     [% END %]
 </section> <!-- END activities section -->
 [% END %]
@@ -54,7 +58,7 @@ liteblog:
         <!-- Individual blog post cards go here -->
         [% FOREACH p IN posts %]
     <div class="blog-card" id="blog-[% p.slug %]">
-        <a href="[% p.permalink %]"><img src="[% p.featured_image %]" alt="[% p.title %]"></a>
+        <a href="[% p.permalink %]"><img src="[% p.featured %]" alt="[% p.title %]"></a>
         <h3>[% p.title %]</h3>
 
 	    <div class="category-container">

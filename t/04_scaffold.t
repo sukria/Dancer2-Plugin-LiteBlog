@@ -11,4 +11,7 @@ like $d->{'views/layouts/liteblog.tt'}, qr{<title>\[% title %\]},
 like $d->{'public/images/liteblog.jpg'}, qr/4AAQSkZJRgABAQEASABIAAD/,
     "Image liteblog.jpg is encoded as base64 content";
 
+like $d->{'public/css/liteblog.css'}, qr/clickable-div/,
+    "Stylesheet liteblog.css looks good";
+
 done_testing;
