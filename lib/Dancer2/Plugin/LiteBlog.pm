@@ -76,9 +76,7 @@ sub BUILD {
             
             # Each app setting is fowarded to the tokens
             my $app_config = $plugin->dsl->config->{'liteblog'};
-            $plugin->dsl->info("LiteBlog Init: 'liteblog' config entries are populated ".
-                "to the template tokens", $app_config);
-
+            $plugin->dsl->info("LiteBlog Init: 'liteblog' loaded in the template tokens.");
             foreach my $k (keys %$app_config) {
                 $tokens->{$k} = $app_config->{$k};
             }
