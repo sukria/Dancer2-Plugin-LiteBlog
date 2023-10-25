@@ -4,15 +4,7 @@ use Carp 'croak';
 use YAML::XS;
 use File::Spec;
 
-# TODO : make a parent class to inherit that (same as Blog)
-has root => (
-    is => 'ro',
-    required => 1,
-    isa => sub {
-        my $val = shift;
-        croak "Not a valid directory ($val)" if ! -d $val;
-    },
-);
+extends 'Dancer2::Plugin::LiteBlog::Widget';
 
 has source => (
     is => 'ro',
@@ -21,7 +13,7 @@ has source => (
 
 # TODO: again, should be refactored with a common logic of loading a YML file
 # (same as 'meta') in Blog.pm
-has content => (
+has elements => (
     is => 'ro',
     lazy => 1,
     default => sub {

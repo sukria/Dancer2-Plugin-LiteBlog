@@ -79,28 +79,19 @@ sub BUILD {
             $plugin->dsl->info("LiteBlog Init: 'liteblog' loaded in the template tokens.");
             foreach my $k (keys %$app_config) {
                 $tokens->{$k} = $app_config->{$k};
+                $plugin->dsl->info("token '$k' => ",$app_config->{$k});
             }
 
-            # If the blog engine is enabled, try to fetch featured posts
-            my $posts = [];
-            if (defined $app_config->{blog}) {
-                eval { $posts = liteblog_blog($plugin)->featured_posts };
-                $plugin->dsl->error("Problem with the Blog widget: $@") if $@;
+            #TODO : should discover widgets from the config file
+            foreach my $widget (qw(blog activities)) {
+                my $elements = [];
+                if (defined $app_config->{$widget}) {
+                    eval { $elements = _get_widget($plugin, $widget)->elements };
+                    $plugin->dsl->error("Problem with widget '$widget': $@") if $@;
+                }
+                $tokens->{"${widget}_elements"} = $elements || [];
+                $tokens->{"has_${widget}"} = scalar(@$elements);
             }
-            $tokens->{posts} = $posts;
-            $tokens->{has_posts} = scalar(@{$posts});
-
-            # Activity widget
-            my $activities = [];
-            if (defined $app_config->{'activities'}) {
-                eval { 
-                    $activities = liteblog_activities($plugin);
-                    $activities = $activities->content || [];
-                };
-                $plugin->dsl->error("Problem with the Activities widget: $@") if $@;
-            }
-            $tokens->{activities} = $activities;
-            $tokens->{has_activities} = scalar(@{$activities});
 
             $tokens->{no_widgets} = !($tokens->{has_posts} || $tokens->{has_activities});
             # set a default title, if unset

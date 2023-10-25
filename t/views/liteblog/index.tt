@@ -23,7 +23,7 @@ liteblog:
 [% IF has_activities %]
 <!-- Activity Cards -->
 <section id="activities">
-    [% FOREACH a IN activities %]
+    [% FOREACH a IN activities_elements %]
         [% IF a.link %]
         <div class="activity-card clickable-div" id="activity-[% a.name %]">
             <a href="[% a.link %]"><img width="300" height="300" src="/images/[% a.name %].jpg" alt="[% a.name %]"></a>
@@ -47,7 +47,7 @@ liteblog:
 </section> <!-- END activities section -->
 [% END %]
 
-[% IF has_posts %]
+[% IF has_blog %]
 <!-- Blog Cards -->
 <section id="blog">
     <div class="blog-header">
@@ -56,7 +56,7 @@ liteblog:
     <div class="blog-cards">
 
         <!-- Individual blog post cards go here -->
-        [% FOREACH p IN posts %]
+        [% FOREACH p IN blog_elements %]
     <div class="blog-card" id="blog-[% p.slug %]">
         <a href="[% p.permalink %]"><img src="[% p.featured %]" alt="[% p.title %]"></a>
         <h3>[% p.title %]</h3>
