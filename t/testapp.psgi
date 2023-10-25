@@ -19,7 +19,7 @@ use lib "$FindBin::Bin/../lib";
            source => 'activities.yml',
         },
         blog => {
-            title => "My Stories",
+            title => "Stories of my Test App",
             root => 't/articles',
         },
     };

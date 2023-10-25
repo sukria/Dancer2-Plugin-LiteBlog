@@ -35,10 +35,9 @@ is( $res->code, 200, '[GET /] Request successful' );
 like( $res->content, qr/<title>A Great Liteblog Site/, 
     '[GET /] Default title is populated' );
 
-like( $res->content, qr/"activity-card" id="activity-GitHub"/, 
-    "activity section found with GitHub mentioned");
+like( $res->content, qr/"activity-card clickable-div" id="activity-GitHub"/, "activity section found with GitHub mentioned");
 
-like( $res->content, qr/<section id="blog">/, 
+like( $res->content, qr/"blog-card" id="blog-first-article"/, 
     '[GET /] Section blog is found');
 like( $res->content, qr/<h2>Read my Stories/, 
     '[GET /] Blog section title found');

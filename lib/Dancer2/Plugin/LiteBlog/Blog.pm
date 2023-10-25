@@ -5,14 +5,7 @@ use YAML::XS;
 use File::Spec;
 use Dancer2::Plugin::LiteBlog::Article;
 
-has root => (
-    is => 'ro',
-    required => 1,
-    isa => sub {
-        my $val = shift;
-        croak "Not a valid directory ($val)" if ! -d $val;
-    },
-);
+extends 'Dancer2::Plugin::LiteBlog::Widget';
 
 has meta => (
     is => 'ro',
@@ -27,7 +20,7 @@ has meta => (
     },
 );
 
-has featured_posts => (
+has elements => (
     is => 'ro',
     lazy => 1,
     default => sub {
