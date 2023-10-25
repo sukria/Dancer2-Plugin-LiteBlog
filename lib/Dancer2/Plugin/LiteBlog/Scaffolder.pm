@@ -24,6 +24,15 @@ sub load {
     my $data = {};
     my $file;
 
+    if (! defined Dancer2::Plugin::LiteBlog::Scaffolder::Data->build) {
+        print "You seem to be running the scaffolder from the sources.\n";
+        print "You have to build the scaffolder data first.\n";
+        print "In your Dancer2-Plugin-LiteBlog source, run the following command: \n";
+        print "\n";
+        print "perl -Ilib -Idist dist/build.pl\n";
+        exit 1;
+    }
+
 	while (my $line = <Dancer2::Plugin::LiteBlog::Scaffolder::Data::DATA>) {
         if ($line =~ /--- (.*)\n/) {
             $file = $1;

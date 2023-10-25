@@ -59,10 +59,12 @@ sub write_file {
     my ($basedir, $files) = @_;
     my ($fh, $filename) = tempfile();
 
-    print $fh 'package Dancer2::Plugin::LiteBlog::Scaffolder::Data;
+    require 'Dancer2/Plugin/LiteBlog.pm';
+    print $fh "package Dancer2::Plugin::LiteBlog::Scaffolder::Data;
+sub build { ${Dancer2::Plugin::LiteBlog::VERSION} }
 1;
 __DATA__
-';
+";
 
     my $libdir = File::Spec->catfile($basedir, qw(Dancer2 Plugin LiteBlog Scaffolder) );
     if (! -d $libdir) {
