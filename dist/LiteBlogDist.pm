@@ -14,6 +14,10 @@ my @files_to_embed = qw(
     views/layouts/liteblog.tt
     views/liteblog/index.tt
     views/liteblog/article.tt
+    articles/blog-meta.yml
+    articles/tech/first-article/content.md
+    articles/tech/first-article/meta.yml
+    activities.yml
 );
 
 sub image_to_base64 {
