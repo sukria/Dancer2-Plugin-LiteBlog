@@ -66,6 +66,15 @@ has title => (
     },
 );
 
+has featured => (
+    is => 'ro',
+    lazy => 1,
+    default => sub {
+        my ($self) = @_;
+        return $self->meta->{'featured'};
+    },
+);
+
 has tags => (
     is => 'ro',
     lazy => 1,
