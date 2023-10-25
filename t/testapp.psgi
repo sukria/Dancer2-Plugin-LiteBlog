@@ -14,9 +14,9 @@ use lib "$FindBin::Bin/../lib";
     set logger => 'Console::Colored';
     set template => 'template_toolkit';
 
-    set _liteblog => {
+    set liteblog => {
         activities => {
-            content => 'activities.yml',
+           source => 'activities.yml',
         },
         blog => {
             title => "My Stories",
