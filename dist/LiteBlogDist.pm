@@ -6,13 +6,25 @@ use Carp 'croak';
 use File::Slurp 'read_file';
 use File::Temp 'tempfile';
 use File::Copy 'move';
+use MIME::Base64;
 
 my @files_to_embed = qw(
+    public/images/liteblog.jpg
     public/css/liteblog.css
     views/layouts/liteblog.tt
     views/liteblog/index.tt
     views/liteblog/article.tt
 );
+
+sub image_to_base64 {
+    my ($image_path) = @_;
+	croak "Not a valid file : $image_path" if (! -e $image_path) ;
+
+    # Read the binary content of the file
+    my $binary_data = read_file($image_path, binmode => ':raw');
+    
+	return encode_base64($binary_data);
+}
 
 sub slurp_files {
     my ($base_dir) = @_;
@@ -27,7 +39,13 @@ sub slurp_files {
     foreach my $file_name (keys %$files) {
         my $f = $files->{$file_name}->{path};
         croak "not a readable file : $f" if ! -r $f;
-        $files->{$file_name}->{content}= read_file($f, { binmode => ':encoding(UTF-8)' });
+        if ($file_name =~ /\.(jpg|png)$/) {
+            $files->{$file_name}->{content} = image_to_base64($f);
+        }
+        else {
+            $files->{$file_name}->{content} = 
+                read_file($f, { binmode => ':encoding(UTF-8)' });
+        }
     }
 
     return $files;

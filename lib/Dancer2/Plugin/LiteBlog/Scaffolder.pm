@@ -4,6 +4,8 @@ use Dancer2::Plugin::LiteBlog::Scaffolder::Data;
 use Carp 'croak';
 use File::Spec;
 use File::Path qw(make_path);
+use File::Slurp 'write_file';
+use MIME::Base64;
 
 =head1 LiteBlog Scaffolder - bootstrap your views for your LiteBlog site
 
@@ -35,8 +37,19 @@ sub load {
 	return $data;
 }
 
+sub base64_to_image {
+    my ($base64_content, $output_path) = @_;
+
+    # Decode the base64 string
+    my $binary_data = decode_base64($base64_content);
+
+    # Write the decoded binary data to a file
+    write_file($output_path, {binmode => ':raw'}, $binary_data);
+}
+
 sub scaffold {
-    my ($basedir) = @_;
+    my ($basedir, $force) = @_;
+
 	my $data = load();
 	foreach my $file_k (keys %$data) {
         my @subs = split('/', $file_k);
@@ -47,14 +60,23 @@ sub scaffold {
 
         # Write the file to the appropriate path
 		my $target = File::Spec->catfile($basedir, @subs, $filename);
-		if (-e $target) {
+		if (-e $target && !$force) {
 			print "$target already exists, skipping\n";
 		}
 		else {
-			open my $fh, '>', $target or croak "Unable to create $target";
-			print $fh $data->{$file_k};
-			close $fh;
-			print "Created: $target\n";
+            my $create = 'Created';
+            if ($force && -e $target) {
+                unlink $target or croak "Unable to remove $target: $!";
+                $create = 'Replaced';
+            }
+
+            if ($target =~ /\.(jpg|png)$/) {
+                base64_to_image($data->{$file_k}, $target);
+            }
+            else {
+                write_file($target, { binmode => ':encoding(UTF-8)'}, $data->{$file_k});
+            }
+			print "$create: $target\n";
 		}
 	}
 }

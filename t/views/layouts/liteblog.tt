@@ -15,7 +15,7 @@
 
     <header id="mobile-header">
         <div id="avatar-icon">
-            <a href="/"><img src="/liteblog.jpg" alt="Your Avatar"></a>
+            <a href="/"><img src="/images/liteblog.jpg" alt="Your Avatar"></a>
         </div>
         <a href="/"><button id="menu-toggle">[% title %]</button></a>
     </header>
@@ -26,13 +26,14 @@
     <section id="hero">
     [% END %]
         <div class="header-wrapper">
-            <a href="/"><img src="/liteblog.jpg" alt="Your Avatar" id="avatar"></a>
+            <a href="/"><img src="/images/liteblog.jpg" alt="LiteBlog Logo" id="avatar"></a>
             <a href="/"><h1>[% title %]</h1></a>
             [% UNLESS is_article_page %]
-                <h3 class="site-baseline">[% site.baseline %]</h3>
+                [% IF baseline %]
+                <h3 class="site-baseline">[% baseline %]</h3>
+                [% END %]
             [% END %]
         </div>
-
 
     [% IF is_article_page %]
         <div class="article-title">
