@@ -100,9 +100,18 @@ h3.site-baseline {
     padding: 20px;
     border-radius: 5px;
     
+}
+
+/* make an element clickable with a zoom-in effect */
+.clickable-div {
     /* Effect on mouse over */
     cursor: pointer; /* Add pointer cursor for clickability */
     transition: transform 0.2s, box-shadow 0.2s; /* Add transition for hover effect */
+}
+
+.clickable-div:hover {
+    transform: scale(1.1); /* Apply a 10% zoom effect on hover */
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2); /* Add a shadow effect on hover */
 }
 
 .activity-card pre {
@@ -110,12 +119,6 @@ h3.site-baseline {
     padding: 0;
     text-align: left;
 }
-
-.activity-card:hover {
-    transform: scale(1.1); /* Apply a 10% zoom effect on hover */
-    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2); /* Add a shadow effect on hover */
-}
-
 
 .activity-card img {
    /*
