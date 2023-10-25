@@ -33,4 +33,3 @@ inc/
 /MANIFEST.bak
 /pm_to_blib
 /*.zip
-lib/Dancer2/Plugin/LiteBlog/Scaffolder/Data.pm
