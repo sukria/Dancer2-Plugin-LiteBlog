@@ -211,7 +211,7 @@ section#article {
 .blog-card {
     position: relative; /* Needed for absolute positioning of the ribbon */
     background-color: #ffffff;
-    width: calc(33.33% - 20px);
+    width: calc(40% - 20px);
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     text-align: center;
     padding: 20px;
@@ -314,8 +314,11 @@ section#article {
 /* For mobile responsiveness */
 
 @media screen and (max-width: 768px) {
-    .blog-card, .activity-card {
+    .activity-card {
         width: calc(50% - 20px);
+    }
+    .blog-card {
+        width: calc(70% - 20px);
     }
 }
 
