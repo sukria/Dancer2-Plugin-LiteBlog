@@ -21,44 +21,6 @@ use Dancer2::Plugin::LiteBlog::Activities;
 use Dancer2::Plugin::LiteBlog::Routes;
 use Dancer2::Plugin::LiteBlog::Blog;
 
-my %_widgets;
-
-sub _get_widget {
-    my ($plugin, $widget, $params) = @_; 
-    return $_widgets{$widget} if defined $_widgets{$widget};
-    my $class = 'Dancer2::Plugin::LiteBlog::'.ucfirst($widget);
-   
-    eval {
-        $_widgets{$widget} = $class->new(
-            root => $plugin->dsl->config->{'appdir'}, 
-            %{$params});
-    };
-    $plugin->dsl->error("Unable to initialized widget '$widget' : $@") if $@;
-    return $_widgets{$widget};
-}
-
-sub liteblog_blog {
-    my ($plugin) = @_;
-    return _get_widget($plugin, 'blog');
-}
-
-sub liteblog_activities {
-    my ($plugin) = @_;
-    return _get_widget($plugin, 'activities');
-}
-
-=head1 IMPORTED ROUTES
-
-=head2 GET / 
-
-This is a default base route for the site. 
-A Dancer2::Plugin::LiteBlog::Blog singleton is initialized and exposed via the
-liteblog_blog() keyword.
-
-
-=head2 GET /:category/:slug
-
-=cut
 
 sub BUILD {
     my $plugin = shift;
@@ -84,16 +46,28 @@ sub BUILD {
             my @widgets;
             my $id = 1;
             foreach my $w (@{ $liteblog->{widgets} }) {
-                my $widget = $w->{name};
                 my $elements = [];
-                eval { $elements = _get_widget($plugin, $widget, $w->{params})->elements };
-                $plugin->dsl->error("Problem with widget '$widget': $@") if $@;
+                my $widget;
+                
+                my $class = 'Dancer2::Plugin::LiteBlog::'.ucfirst($w->{name});
+                eval { $widget = $class->new( 
+                            root => $plugin->dsl->config->{'appdir'}, 
+                            %{$w->{params}}
+                        );
+                };
+                if ($@) {
+                $plugin->dsl->error("Unable to initialized widget '".
+                    $w->{name}."' : $@");
+                    next;
+                }
+                $elements = $widget->elements;
+
                 if (scalar(@$elements)) {
                     push @widgets, { 
                         id => $id++,
-                        name => $widget, 
+                        name => $w->{name}, 
                         %{$w->{params}},
-                        view => "${widget}.tt",
+                        view => $w->{name}.'.tt',
                         elements => $elements
                     };
                 }
