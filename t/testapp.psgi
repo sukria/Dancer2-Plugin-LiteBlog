@@ -15,13 +15,15 @@ use lib "$FindBin::Bin/../lib";
     set template => 'template_toolkit';
 
     set liteblog => {
-        activities => {
-           source => 'activities.yml',
-        },
-        blog => {
-            title => "Stories of my Test App",
-            root => 't/articles',
-        },
+        title => "My Testing Liteblog",
+        widgets => [
+            { name => 'activities',
+              params => { source => 'activities.yml' }},
+            { name => 'blog',
+              params => {
+                title => "Stories of my Test App",
+                root => 't/articles' }},
+        ],
     };
     require 'Dancer2/Plugin/LiteBlog.pm';
     Dancer2::Plugin::LiteBlog->import;

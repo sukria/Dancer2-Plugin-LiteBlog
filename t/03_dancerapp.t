@@ -12,15 +12,19 @@ use File::Spec;
     set appdir => File::Spec->catfile(dirname(__FILE__)),
 
     set logger => 'Console::Colored';
-    set log => 'core';
+    #set logger => 'Null';
+    set log => 'info';
     set liteblog => {
-        blog => {
-            title => 'Read my Stories',
-            root  => File::Spec->catfile(dirname(__FILE__), 'articles'),
-        },
-        activities => {
-            source => 'activities.yml',
-        },
+        title => "03_dancerapp.t",
+        widgets => [
+            { name => 'blog',
+              params => {
+                title => 'Read my Stories',
+                root  => File::Spec->catfile(dirname(__FILE__), 'articles'),}},
+            { name => 'activities',
+              params => {
+                source => 'activities.yml', }},
+        ],
     };
 
     1;
@@ -32,7 +36,7 @@ my $test = Plack::Test->create($app);
 # Testing the / route with default tokens/views
 my $res = $test->request( GET '/' );
 is( $res->code, 200, '[GET /] Request successful' );
-like( $res->content, qr/<title>A Great Liteblog Site/, 
+like( $res->content, qr/<title>03_dancerapp/, 
     '[GET /] Default title is populated' );
 
 like( $res->content, qr/"activity-card clickable-div" id="activity-GitHub"/, "activity section found with GitHub mentioned");
