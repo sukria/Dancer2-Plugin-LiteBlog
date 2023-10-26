@@ -24,16 +24,14 @@ use Dancer2::Plugin::LiteBlog::Blog;
 my %_widgets;
 
 sub _get_widget {
-    my ($plugin, $widget) = @_; 
+    my ($plugin, $widget, $params) = @_; 
     return $_widgets{$widget} if defined $_widgets{$widget};
-    my $app_config = $plugin->dsl->config->{'liteblog'};
-    my $widget_config = $app_config->{$widget};
     my $class = 'Dancer2::Plugin::LiteBlog::'.ucfirst($widget);
    
     eval {
         $_widgets{$widget} = $class->new(
             root => $plugin->dsl->config->{'appdir'}, 
-            %{$widget_config});
+            %{$params});
     };
     $plugin->dsl->error("Unable to initialized widget '$widget' : $@") if $@;
     return $_widgets{$widget};
@@ -75,27 +73,36 @@ sub BUILD {
             my $tokens = shift;
             
             # Each app setting is fowarded to the tokens
-            my $app_config = $plugin->dsl->config->{'liteblog'};
+            my $liteblog = $plugin->dsl->config->{'liteblog'};
             $plugin->dsl->info("LiteBlog Init: 'liteblog' loaded in the template tokens.");
-            foreach my $k (keys %$app_config) {
-                $tokens->{$k} = $app_config->{$k};
-                $plugin->dsl->info("token '$k' => ",$app_config->{$k});
+            foreach my $k (keys %$liteblog) {
+                $tokens->{$k} = $liteblog->{$k};
+                $plugin->dsl->info("token '$k' => ",$liteblog->{$k});
             }
 
-            #TODO : should discover widgets from the config file
-            foreach my $widget (qw(blog activities)) {
+            # Load all widgets enabled and configured in the tokens
+            my @widgets;
+            my $id = 1;
+            foreach my $w (@{ $liteblog->{widgets} }) {
+                my $widget = $w->{name};
                 my $elements = [];
-                if (defined $app_config->{$widget}) {
-                    eval { $elements = _get_widget($plugin, $widget)->elements };
-                    $plugin->dsl->error("Problem with widget '$widget': $@") if $@;
+                eval { $elements = _get_widget($plugin, $widget, $w->{params})->elements };
+                $plugin->dsl->error("Problem with widget '$widget': $@") if $@;
+                if (scalar(@$elements)) {
+                    push @widgets, { 
+                        id => $id++,
+                        name => $widget, 
+                        %{$w->{params}},
+                        view => "${widget}.tt",
+                        elements => $elements
+                    };
                 }
-                $tokens->{"${widget}_elements"} = $elements || [];
-                $tokens->{"has_${widget}"} = scalar(@$elements);
             }
+            $tokens->{widgets} = \@widgets;
+            $tokens->{no_widgets} = scalar(@widgets) == 0;
 
-            $tokens->{no_widgets} = !($tokens->{has_posts} || $tokens->{has_activities});
             # set a default title, if unset
-            $tokens->{title} = $app_config->{'title'} || "A Great Liteblog Site" 
+            $tokens->{title} = $liteblog->{'title'} || "A Great Liteblog Site" 
                 if !defined $tokens->{title};
 
             $plugin->dsl->info("LiteBlog: tokens: ", $tokens);
