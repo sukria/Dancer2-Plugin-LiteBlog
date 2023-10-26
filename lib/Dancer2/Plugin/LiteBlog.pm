@@ -22,58 +22,67 @@ use Dancer2::Plugin::LiteBlog::Routes;
 use Dancer2::Plugin::LiteBlog::Blog;
 
 
+sub load_widgets {
+    my ($plugin, $liteblog) = @_;
+
+    # Load all widgets and initialize them 
+    my @widgets;
+    my $id = 1;
+    foreach my $w (@{ $liteblog->{widgets} }) {
+        my $elements = [];
+        my $widget;
+        
+        my $class = 'Dancer2::Plugin::LiteBlog::'.ucfirst($w->{name});
+        eval { $widget = $class->new( 
+                    root => $plugin->dsl->config->{'appdir'}, 
+                    %{$w->{params}}
+                );
+        };
+        if ($@) {
+        $plugin->dsl->error("Unable to initialized widget '".
+            $w->{name}."' : $@");
+            next;
+        }
+        $elements = $widget->elements;
+
+        if (scalar(@$elements)) {
+            push @widgets, { 
+                id => $id++,
+                name => $w->{name}, 
+                %{$w->{params}},
+                view => $w->{name}.'.tt',
+                elements => $elements
+            };
+        }
+    }
+    return \@widgets;
+}
+
 sub BUILD {
     my $plugin = shift;
 
     $plugin->dsl->info("LiteBlog Init: forcing template_toolkit");
     $plugin->app->config->{template} = 'template_toolkit';
 
+
     # Prepare default template tokens with appropriate resources.
     $plugin->app->add_hook( Dancer2::Core::Hook->new(
         name => 'before_template',
         code => sub {
             my $tokens = shift;
+            my $liteblog = $plugin->dsl->config->{'liteblog'};
             
             # Each app setting is fowarded to the tokens
-            my $liteblog = $plugin->dsl->config->{'liteblog'};
             $plugin->dsl->info("LiteBlog Init: 'liteblog' loaded in the template tokens.");
             foreach my $k (keys %$liteblog) {
                 $tokens->{$k} = $liteblog->{$k};
                 $plugin->dsl->info("token '$k' => ",$liteblog->{$k});
             }
 
-            # Load all widgets enabled and configured in the tokens
-            my @widgets;
-            my $id = 1;
-            foreach my $w (@{ $liteblog->{widgets} }) {
-                my $elements = [];
-                my $widget;
-                
-                my $class = 'Dancer2::Plugin::LiteBlog::'.ucfirst($w->{name});
-                eval { $widget = $class->new( 
-                            root => $plugin->dsl->config->{'appdir'}, 
-                            %{$w->{params}}
-                        );
-                };
-                if ($@) {
-                $plugin->dsl->error("Unable to initialized widget '".
-                    $w->{name}."' : $@");
-                    next;
-                }
-                $elements = $widget->elements;
-
-                if (scalar(@$elements)) {
-                    push @widgets, { 
-                        id => $id++,
-                        name => $w->{name}, 
-                        %{$w->{params}},
-                        view => $w->{name}.'.tt',
-                        elements => $elements
-                    };
-                }
-            }
-            $tokens->{widgets} = \@widgets;
-            $tokens->{no_widgets} = scalar(@widgets) == 0;
+            # Populate the loaded widgets in the tokens 
+            my $widgets = load_widgets($plugin, $liteblog);
+            $tokens->{widgets} = $widgets;
+            $tokens->{no_widgets} = scalar(@$widgets) == 0;
 
             # set a default title, if unset
             $tokens->{title} = $liteblog->{'title'} || "A Great Liteblog Site" 
