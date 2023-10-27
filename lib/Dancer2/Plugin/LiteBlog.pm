@@ -50,7 +50,8 @@ sub load_widgets {
                 name => $w->{name}, 
                 %{$w->{params}},
                 view => $w->{name}.'.tt',
-                elements => $elements
+                instance => $widget,
+                elements => $elements,
             };
         }
     }
@@ -104,16 +105,14 @@ sub liteblog_init {
  
     my $liteblog = $plugin->dsl->config->{'liteblog'};
     my $widgets = load_widgets($plugin, $liteblog);
-    $plugin->dsl->info("liteblog INIT: widgets => ", $widgets);
+    $plugin->dsl->info("liteblog INIT...");
 
-    # TODO : implement the declared routes of all registered widgets 
-#    $plugin->dsl->info("LiteBlog Init: registering route GET /blog/:cat/:slug");
-#    $plugin->app->add_route(
-#        method  => 'get',
-#        regexp  => '/blog/:cat/:slug',
-#        code    => Dancer2::Plugin::LiteBlog::Routes->post_permalink($plugin),
-#    );
-
+    # implement the declared routes of all registered widgets 
+    foreach my $widget (@{ $widgets }) {
+        my $w = $widget->{instance};
+        next if ! $w->has_routes;
+        $w->declare_routes($plugin, $widget);
+    }
 }
 
 plugin_keywords 'liteblog_init';

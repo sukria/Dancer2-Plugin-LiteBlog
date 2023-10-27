@@ -45,6 +45,20 @@ sub has_routes { 1 }
 sub declare_routes {
     my ($self, $plugin, $config) = @_;
 
+    my $prefix = $config->{mount} || '/blog';
+    $plugin->dsl->info("LiteBlog::Blog - declaring route ${prefix}/:cat/:slug");
+
+    # /blog/:category/:permalink
+    $plugin->app->add_route(
+        method  => 'get',
+        regexp  => "${prefix}/:cat/:slug",
+        code    => sub {
+            my $cat  = $plugin->dsl->param('cat');
+            my $slug = $plugin->dsl->param('slug');
+            $plugin->dsl->info("in the permalink route");
+            return 'TODO: '.$plugin->dsl->request->path;
+        }
+    );
 }
 
 1;
