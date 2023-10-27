@@ -10,16 +10,4 @@ sub index {
     };
 }
 
-# /blog/:cat/:slug
-sub post_permalink {
-    my ($class, $plugin) = @_;
-
-    return sub {
-        my $cat  = $plugin->dsl->param('cat');
-        my $slug = $plugin->dsl->param('slug');
-        $plugin->dsl->info("in the permalink route");
-        return 'TODO: '.$plugin->dsl->request->path;
-    };
-}
-
 1;

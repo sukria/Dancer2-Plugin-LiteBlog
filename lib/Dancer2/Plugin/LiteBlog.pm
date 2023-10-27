@@ -21,44 +21,42 @@ use Dancer2::Plugin::LiteBlog::Activities;
 use Dancer2::Plugin::LiteBlog::Routes;
 use Dancer2::Plugin::LiteBlog::Blog;
 
-my %_widgets;
+sub load_widgets {
+    my ($plugin, $liteblog) = @_;
 
-sub _get_widget {
-    my ($plugin, $widget, $params) = @_; 
-    return $_widgets{$widget} if defined $_widgets{$widget};
-    my $class = 'Dancer2::Plugin::LiteBlog::'.ucfirst($widget);
-   
-    eval {
-        $_widgets{$widget} = $class->new(
-            root => $plugin->dsl->config->{'appdir'}, 
-            %{$params});
-    };
-    $plugin->dsl->error("Unable to initialized widget '$widget' : $@") if $@;
-    return $_widgets{$widget};
+    # Load all widgets and initialize them 
+    my @widgets;
+    my $id = 1;
+    foreach my $w (@{ $liteblog->{widgets} }) {
+        my $elements = [];
+        my $widget;
+        
+        my $class = 'Dancer2::Plugin::LiteBlog::'.ucfirst($w->{name});
+        eval { $widget = $class->new( 
+                    root => $plugin->dsl->config->{'appdir'}, 
+                    %{$w->{params}}
+                );
+        };
+        if ($@) {
+        $plugin->dsl->error("Unable to initialized widget '".
+            $w->{name}."' : $@");
+            next;
+        }
+        $elements = $widget->elements;
+
+        if (scalar(@$elements)) {
+            push @widgets, { 
+                id => $id++,
+                name => $w->{name}, 
+                %{$w->{params}},
+                view => $w->{name}.'.tt',
+                instance => $widget,
+                elements => $elements,
+            };
+        }
+    }
+    return \@widgets;
 }
-
-sub liteblog_blog {
-    my ($plugin) = @_;
-    return _get_widget($plugin, 'blog');
-}
-
-sub liteblog_activities {
-    my ($plugin) = @_;
-    return _get_widget($plugin, 'activities');
-}
-
-=head1 IMPORTED ROUTES
-
-=head2 GET / 
-
-This is a default base route for the site. 
-A Dancer2::Plugin::LiteBlog::Blog singleton is initialized and exposed via the
-liteblog_blog() keyword.
-
-
-=head2 GET /:category/:slug
-
-=cut
 
 sub BUILD {
     my $plugin = shift;
@@ -71,35 +69,19 @@ sub BUILD {
         name => 'before_template',
         code => sub {
             my $tokens = shift;
+            my $liteblog = $plugin->dsl->config->{'liteblog'};
             
             # Each app setting is fowarded to the tokens
-            my $liteblog = $plugin->dsl->config->{'liteblog'};
             $plugin->dsl->info("LiteBlog Init: 'liteblog' loaded in the template tokens.");
             foreach my $k (keys %$liteblog) {
                 $tokens->{$k} = $liteblog->{$k};
                 $plugin->dsl->info("token '$k' => ",$liteblog->{$k});
             }
 
-            # Load all widgets enabled and configured in the tokens
-            my @widgets;
-            my $id = 1;
-            foreach my $w (@{ $liteblog->{widgets} }) {
-                my $widget = $w->{name};
-                my $elements = [];
-                eval { $elements = _get_widget($plugin, $widget, $w->{params})->elements };
-                $plugin->dsl->error("Problem with widget '$widget': $@") if $@;
-                if (scalar(@$elements)) {
-                    push @widgets, { 
-                        id => $id++,
-                        name => $widget, 
-                        %{$w->{params}},
-                        view => "${widget}.tt",
-                        elements => $elements
-                    };
-                }
-            }
-            $tokens->{widgets} = \@widgets;
-            $tokens->{no_widgets} = scalar(@widgets) == 0;
+            # Populate the loaded widgets in the tokens 
+            my $widgets = load_widgets($plugin, $liteblog);
+            $tokens->{widgets} = $widgets;
+            $tokens->{no_widgets} = scalar(@$widgets) == 0;
 
             # set a default title, if unset
             $tokens->{title} = $liteblog->{'title'} || "A Great Liteblog Site" 
@@ -116,14 +98,24 @@ sub BUILD {
         regexp => '/',
         code   => Dancer2::Plugin::LiteBlog::Routes->index($plugin),
     );
-    
-    $plugin->dsl->info("LiteBlog Init: registering route GET /blog/:cat/:slug");
-    $plugin->app->add_route(
-        method  => 'get',
-        regexp  => '/blog/:cat/:slug',
-        code    => Dancer2::Plugin::LiteBlog::Routes->post_permalink($plugin),
-    );
 }
+
+sub liteblog_init {
+    my ($plugin) = @_;
+ 
+    my $liteblog = $plugin->dsl->config->{'liteblog'};
+    my $widgets = load_widgets($plugin, $liteblog);
+    $plugin->dsl->info("liteblog INIT...");
+
+    # implement the declared routes of all registered widgets 
+    foreach my $widget (@{ $widgets }) {
+        my $w = $widget->{instance};
+        next if ! $w->has_routes;
+        $w->declare_routes($plugin, $widget);
+    }
+}
+
+plugin_keywords 'liteblog_init';
 
 1; # End of Dancer2::Plugin::LiteBlog
 =head1 SYNOPSIS
