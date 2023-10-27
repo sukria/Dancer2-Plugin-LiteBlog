@@ -75,7 +75,7 @@ sub BUILD {
             $plugin->dsl->info("LiteBlog Init: 'liteblog' loaded in the template tokens.");
             foreach my $k (keys %$liteblog) {
                 $tokens->{$k} = $liteblog->{$k};
-                $plugin->dsl->info("token '$k' => ",$liteblog->{$k});
+                $plugin->dsl->info("setting token '$k'");
             }
 
             # Populate the loaded widgets in the tokens 
@@ -87,7 +87,6 @@ sub BUILD {
             $tokens->{title} = $liteblog->{'title'} || "A Great Liteblog Site" 
                 if !defined $tokens->{title};
 
-            $plugin->dsl->info("LiteBlog: tokens: ", $tokens);
             return $tokens;
         }
     ));
@@ -105,7 +104,6 @@ sub liteblog_init {
  
     my $liteblog = $plugin->dsl->config->{'liteblog'};
     my $widgets = load_widgets($plugin, $liteblog);
-    $plugin->dsl->info("liteblog INIT...");
 
     # implement the declared routes of all registered widgets 
     foreach my $widget (@{ $widgets }) {
