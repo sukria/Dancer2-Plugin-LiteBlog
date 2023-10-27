@@ -3,15 +3,20 @@ use strict;
 use warnings;
 
 use Dancer2::Plugin::LiteBlog::Scaffolder;
+use Dancer2::Plugin::LiteBlog::Scaffolder::Data;
 
-my $d = Dancer2::Plugin::LiteBlog::Scaffolder->load;
-like $d->{'views/layouts/liteblog.tt'}, qr{<title>\[% title %\]}, 
-    "Found views/layouts/liteblog.tt, looks good";
+SKIP: {
+    skip "because the scafolder has not been built"
+        if ! defined Dancer2::Plugin::LiteBlog::Scaffolder::Data->build;
 
-like $d->{'public/images/liteblog.jpg'}, qr/4AAQSkZJRgABAQEASABIAAD/,
-    "Image liteblog.jpg is encoded as base64 content";
+    my $d = Dancer2::Plugin::LiteBlog::Scaffolder->load;
+    like $d->{'views/layouts/liteblog.tt'}, qr{<title>\[% title %\]}, 
+        "Found views/layouts/liteblog.tt, looks good";
 
-like $d->{'public/css/liteblog.css'}, qr/clickable-div/,
-    "Stylesheet liteblog.css looks good";
+    like $d->{'public/images/liteblog.jpg'}, qr/4AAQSkZJRgABAQEASABIAAD/,
+        "Image liteblog.jpg is encoded as base64 content";
 
+    like $d->{'public/css/liteblog.css'}, qr/clickable-div/,
+        "Stylesheet liteblog.css looks good";
+};
 done_testing;
