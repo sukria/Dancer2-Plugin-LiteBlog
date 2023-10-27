@@ -11,9 +11,9 @@ use File::Spec;
     set views => File::Spec->catfile( dirname(__FILE__), 'views');
     set appdir => File::Spec->catfile(dirname(__FILE__)),
 
-    set logger => 'Console::Colored';
-    #set logger => 'Null';
-    set log => 'info';
+    # set logger => 'Console::Colored';
+    set logger => 'Null';
+    #set log => 'info';
     set liteblog => {
         title => "03_dancerapp.t",
         widgets => [
@@ -49,7 +49,7 @@ like( $res->content, qr/<h2>Read my Stories/,
     '[GET /] Blog section title found');
 
 # Activity cards
-like( $res->content, qr/blog-card.*<h3>A super lightweight Dancer-based blog engine/s, 
+like( $res->content, qr/blog-card.*<h3>A super Tech Blog Post/s, 
     '[GET /] First blog card found');
 
 # Testing the blog post permalink route
