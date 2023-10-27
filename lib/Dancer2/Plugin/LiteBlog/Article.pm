@@ -16,6 +16,11 @@ has basedir => (
     },
 );
 
+has base_path => (
+    is => 'ro',
+    default => sub { '/blog' },
+);
+
 has slug => (
     is => 'ro',
     lazy => 1,
@@ -101,7 +106,7 @@ has permalink => (
         if ($self->is_page) {
             return '/' . $self->slug;
         }
-        return join('/', ('/blog', $self->category, $self->slug ));
+        return join('/', ($self->base_path, $self->category, $self->slug ));
     },
 );
 
