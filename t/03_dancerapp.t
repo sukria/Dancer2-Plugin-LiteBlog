@@ -11,9 +11,9 @@ use File::Spec;
     set views => File::Spec->catfile( dirname(__FILE__), 'views');
     set appdir => File::Spec->catfile(dirname(__FILE__)),
 
-    # set logger => 'Console::Colored';
+    set log => 'info';
+    #set logger => 'Console::Colored';
     set logger => 'Null';
-    #set log => 'info';
     set liteblog => {
         title => "03_dancerapp.t",
         widgets => [
@@ -54,9 +54,12 @@ like( $res->content, qr/blog-card.*<h3>A super Tech Blog Post/s,
 
 # Testing the blog post permalink route
 $res = $test->request( GET '/someblog/tech/some-article' );
-is( $res->code, 200, '[GET /] Request successful' );
-like( $res->content, qr{TODO: /someblog/tech/some-article}, '[GET /blog/tech/article] Correct content' );
+is( $res->code, 404, 'invalid slug returns a 404' );
 
+$res = $test->request( GET '/someblog/tech/first-article' );
+is( $res->code, 200, 'Valid slug returns a 200' );
+like( $res->content, qr{class="article-wrapper">\n<h1>This is the first title.*<p>Here I have a paragraph}s, 
+    '[GET /someblog/tech/first-article] Correct content' );
 
 
 
