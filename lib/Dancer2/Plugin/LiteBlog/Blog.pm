@@ -20,6 +20,15 @@ has meta => (
     },
 );
 
+has mount => (
+    is => 'ro',
+    default => sub {
+        "/blog"
+    },
+);
+
+# The widget returns the featured posts.
+# TODO : option to return the last N posts instead.
 has elements => (
     is => 'ro',
     lazy => 1,
@@ -30,6 +39,7 @@ has elements => (
         foreach my $path (@{ $self->meta->{featured_posts} }) {
             my $post;
             eval { $post = Dancer2::Plugin::LiteBlog::Article->new(
+                    base_path => $self->mount,
                     basedir => File::Spec->catfile( $self->root, $path)
                 )
             };
@@ -39,6 +49,30 @@ has elements => (
         return \@posts;
     },
 );
+
+sub find_article {
+    my ($self, %params) = @_;
+    my $path = $params{path};
+    croak "Required param 'path' missing" if !defined $path;
+
+    # remove starting '/' and trailing '/'
+    $path =~ s/^\///;
+    $path =~ s/\/$//;
+    
+    my $category = $params{category};
+    if (defined $category) {
+        croak "Invalid category '$category'" if $category =~ /\//;
+        $path = "${category}/${path}";
+    };
+
+    my $article;
+    eval { 
+        $article = Dancer2::Plugin::LiteBlog::Article->new(
+            base_path => $self->mount,
+            basedir => File::Spec->catfile( $self->root, $path));
+    };
+    return $article;
+}
 
 sub has_routes { 1 }
 
@@ -55,8 +89,18 @@ sub declare_routes {
         code    => sub {
             my $cat  = $plugin->dsl->param('cat');
             my $slug = $plugin->dsl->param('slug');
-            $plugin->dsl->info("in the permalink route");
-            return 'TODO: '.$plugin->dsl->request->path;
+
+            $plugin->dsl->info("Looking for article: $cat/$slug");
+            my $article = $self->find_article(category => $cat, path => $slug );
+
+            if (! defined $article) {
+                $plugin->dsl->info("Article not found : $cat/$slug");
+                return $plugin->dsl->status('not_found');
+            }
+            
+            return $plugin->dsl->template(
+                'liteblog/article', {
+                article => $article});
         }
     );
 }

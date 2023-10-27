@@ -22,4 +22,17 @@ my $list;
 eval { $list = $blog->elements };
 like ($@, qr/No meta file/, "Exception triggered when no blog-meta is found");
 
+$blog = new Dancer2::Plugin::LiteBlog::Blog( root => $localdir );
+my $a;
+eval { $blog->find_article(); };
+like $@, qr/Required param 'path' missing/, "path must be passed to find_article";
+
+$a = $blog->find_article(path => 'some-test-article' );
+is $a->title, 'This is a Great Test Article', "find_article works for a page";
+
+$a = $blog->find_article(category => 'tech', path => 'first-article' );
+is $a->title, 'A super Tech Blog Post', "find_article works for a tech article";
+$a = $blog->find_article(category => 'tech', path => '/first-article' );
+is $a->title, 'A super Tech Blog Post', "find_article works with '/'";
+
 done_testing;
