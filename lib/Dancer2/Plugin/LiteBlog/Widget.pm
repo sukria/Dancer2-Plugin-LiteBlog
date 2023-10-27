@@ -15,4 +15,10 @@ sub elements {
     croak "Must be implemented by child class";
 }
 
+sub has_routes { 0 }
+
+sub declare_routes { 
+    croak "Must be implemented by chikld class";
+}
+
 1;

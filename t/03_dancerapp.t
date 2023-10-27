@@ -20,6 +20,7 @@ use File::Spec;
             { name => 'blog',
               params => {
                 title => 'Read my Stories',
+                mount => '/someblog',
                 root  => File::Spec->catfile(dirname(__FILE__), 'articles'),}},
             { name => 'activities',
               params => {
@@ -27,6 +28,7 @@ use File::Spec;
         ],
     };
 
+    liteblog_init;
     1;
 } 
 
@@ -51,9 +53,9 @@ like( $res->content, qr/blog-card.*<h3>A super lightweight Dancer-based blog eng
     '[GET /] First blog card found');
 
 # Testing the blog post permalink route
-$res = $test->request( GET '/blog/tech/some-article' );
+$res = $test->request( GET '/someblog/tech/some-article' );
 is( $res->code, 200, '[GET /] Request successful' );
-like( $res->content, qr{TODO: /blog/tech/some-article}, '[GET /blog/tech/article] Correct content' );
+like( $res->content, qr{TODO: /someblog/tech/some-article}, '[GET /blog/tech/article] Correct content' );
 
 
 
