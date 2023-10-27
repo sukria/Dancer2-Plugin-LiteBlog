@@ -40,4 +40,11 @@ has elements => (
     },
 );
 
+sub has_routes { 1 }
+
+sub declare_routes {
+    my ($self, $plugin, $config) = @_;
+
+}
+
 1;

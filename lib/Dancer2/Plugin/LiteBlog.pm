@@ -21,7 +21,6 @@ use Dancer2::Plugin::LiteBlog::Activities;
 use Dancer2::Plugin::LiteBlog::Routes;
 use Dancer2::Plugin::LiteBlog::Blog;
 
-
 sub load_widgets {
     my ($plugin, $liteblog) = @_;
 
@@ -64,7 +63,6 @@ sub BUILD {
     $plugin->dsl->info("LiteBlog Init: forcing template_toolkit");
     $plugin->app->config->{template} = 'template_toolkit';
 
-
     # Prepare default template tokens with appropriate resources.
     $plugin->app->add_hook( Dancer2::Core::Hook->new(
         name => 'before_template',
@@ -99,14 +97,26 @@ sub BUILD {
         regexp => '/',
         code   => Dancer2::Plugin::LiteBlog::Routes->index($plugin),
     );
-    
-    $plugin->dsl->info("LiteBlog Init: registering route GET /blog/:cat/:slug");
-    $plugin->app->add_route(
-        method  => 'get',
-        regexp  => '/blog/:cat/:slug',
-        code    => Dancer2::Plugin::LiteBlog::Routes->post_permalink($plugin),
-    );
 }
+
+sub liteblog_init {
+    my ($plugin) = @_;
+ 
+    my $liteblog = $plugin->dsl->config->{'liteblog'};
+    my $widgets = load_widgets($plugin, $liteblog);
+    $plugin->dsl->info("liteblog INIT: widgets => ", $widgets);
+
+    # TODO : implement the declared routes of all registered widgets 
+#    $plugin->dsl->info("LiteBlog Init: registering route GET /blog/:cat/:slug");
+#    $plugin->app->add_route(
+#        method  => 'get',
+#        regexp  => '/blog/:cat/:slug',
+#        code    => Dancer2::Plugin::LiteBlog::Routes->post_permalink($plugin),
+#    );
+
+}
+
+plugin_keywords 'liteblog_init';
 
 1; # End of Dancer2::Plugin::LiteBlog
 =head1 SYNOPSIS
