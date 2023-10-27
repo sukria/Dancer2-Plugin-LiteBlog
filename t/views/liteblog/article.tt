@@ -1,5 +1,5 @@
 <section id="article">
 <div class="article-wrapper">
-<% content %>
+[% article.content %]
 </div>
 </section>
