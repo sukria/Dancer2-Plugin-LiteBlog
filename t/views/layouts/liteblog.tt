@@ -3,41 +3,48 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    [% IF page_title %]
+    <title>[% page_title %] | [% title %]</title>
+    [% ELSE %]
     <title>[% title %]</title>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+    [% END %]
+
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,700|Lato:400,400i,700&display=swap" rel="stylesheet">
 
     <link rel="stylesheet" href="/css/liteblog.css">
-    [% IF is_article_page %]
-    <link rel="stylesheet" href="/css/liteblog/article.css">
+    [% IF page_title %]
+    <!-- a page_title is defined, let's load the single-page css -->
+    <link rel="stylesheet" href="/css/liteblog/single-page.css">
     [% END %]
 </head>
 <body>
 
     <header id="mobile-header">
         <div id="avatar-icon">
+            <!-- TODO : avatar should be a setting with these as defaults -->
             <a href="/"><img src="/images/liteblog.jpg" alt="Your Avatar"></a>
         </div>
         <a href="/"><button id="menu-toggle">[% title %]</button></a>
     </header>
 
-    [% IF is_article_page %]
-    <section id="hero" class="page-header">
+    [% IF page_title %]
+    <!-- single-page layout -->
+    <section id="hero" class="hero-single-page">
     [% ELSE %]
     <section id="hero">
     [% END %]
         <div class="header-wrapper">
+            <!-- TODO : avatar should be a setting with these as defaults -->
             <a href="/"><img src="/images/liteblog.jpg" alt="LiteBlog Logo" id="avatar"></a>
-            <a href="/"><h1>[% title %]</h1></a>
-            [% UNLESS is_article_page %]
-                [% IF baseline %]
-                <h3 class="site-baseline">[% baseline %]</h3>
-                [% END %]
+            <a href="/"><h1 class="site-title">[% title %]</h1></a>
+            [% IF baseline %]
+            <h3 class="site-baseline">[% baseline %]</h3>
             [% END %]
         </div>
 
-    [% IF is_article_page %]
-        <div class="article-title">
-            <h1 class="article-title-text">[% title %]</h1>
+    [% IF page_title %]
+        <div class="hero-title-single-page">
+            <h1 class="hero-title-text">[% page_title %]</h1>
         </div>
     [% END %]
     </section>

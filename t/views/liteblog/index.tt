@@ -25,7 +25,7 @@ liteblog:
 [% ELSE %]
 
 [% FOREACH widget IN widgets %]
-[% INCLUDE "liteblog/$widget.view" %]
+[% INCLUDE "liteblog/widgets/$widget.view" %]
 [% END %]
 
 [% END %]

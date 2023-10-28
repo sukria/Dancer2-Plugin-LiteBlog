@@ -12,6 +12,7 @@ use lib "$FindBin::Bin/../lib";
     set views => 't/views';
     set public_dir => 't/public';
     set logger => 'Console::Colored';
+    set log => 'info';
     set template => 'template_toolkit';
 
     set liteblog => {
@@ -28,6 +29,8 @@ use lib "$FindBin::Bin/../lib";
     };
     require 'Dancer2/Plugin/LiteBlog.pm';
     Dancer2::Plugin::LiteBlog->import;
+
+    liteblog_init();
 }
 
 app->to_app;

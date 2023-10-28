@@ -141,9 +141,9 @@ h3.site-baseline {
     text-align: left;
 }
 
-/* Article Page */
+/* Single Page Design */
 
-section#article {
+section#single-page {
     margin: auto;
     min-width: 450px;
     max-width: 700px;
@@ -154,30 +154,15 @@ section#article {
     border-bottom: 2px solid #DDD;
 }
 
-.article-wrapper {
+.single-page-wrapper {
     width: 100%;
     max-width: 600px;
     margin: auto;
 }
 
-section#article h1, h2, h3, h4 {
-    font-family: sohne, "Helvetica Neue", Helvetica, Arial, sans-serif;
-}
-
 #hero a {
     text-decoration: none;
 } 
-
-section#article h1 {
-    color: #444;
-    font-size: 42px;
-    margin-bottom: 1em;
-}
-
-section#article {
-    font-family: source-serif-pro, Georgia, Cambria, "Times New Roman", Times, serif;
-    font-size: 18px;
-}
 
 /* Blog Cards */
 
@@ -212,6 +197,7 @@ section#article {
     position: relative; /* Needed for absolute positioning of the ribbon */
     background-color: #ffffff;
     width: calc(40% - 20px);
+    max-width: 420px !important;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     text-align: center;
     padding: 20px;

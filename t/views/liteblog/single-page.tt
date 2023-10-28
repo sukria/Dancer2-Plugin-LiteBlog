@@ -1,0 +1,16 @@
+<div id="single-page-top">
+
+<section id="single-page">
+
+  <div class="single-page-wrapper">
+  [% content %]
+  </div>
+
+</section>
+
+  <section class="post-meta">
+    <span class="category">Category: Tech</span>
+    <span class="publication-date">Published on: October 28, 2023</span>
+  </section>
+
+</div>

@@ -97,10 +97,17 @@ sub declare_routes {
                 $plugin->dsl->info("Article not found : $cat/$slug");
                 return $plugin->dsl->status('not_found');
             }
-            
+            # TODO hanlde invalid/missing $article->content as a 404
+
             return $plugin->dsl->template(
-                'liteblog/article', {
-                article => $article});
+                'liteblog/single-page',
+                {
+                    page_title => $article->title,
+                    content    => $article->content, 
+                },
+                {
+                    layout => 'liteblog'
+                });
         }
     );
 }

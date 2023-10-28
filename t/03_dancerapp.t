@@ -12,8 +12,8 @@ use File::Spec;
     set appdir => File::Spec->catfile(dirname(__FILE__)),
 
     set log => 'info';
-    #set logger => 'Console::Colored';
-    set logger => 'Null';
+    set logger => 'Console::Colored';
+    #set logger => 'Null';
     set liteblog => {
         title => "03_dancerapp.t",
         widgets => [
@@ -58,7 +58,7 @@ is( $res->code, 404, 'invalid slug returns a 404' );
 
 $res = $test->request( GET '/someblog/tech/first-article' );
 is( $res->code, 200, 'Valid slug returns a 200' );
-like( $res->content, qr{class="article-wrapper">\n<h1>This is the first title.*<p>Here I have a paragraph}s, 
+like( $res->content, qr{class="single-page-wrapper">\n<h1>This is the first title.*<p>Here I have a paragraph}s, 
     '[GET /someblog/tech/first-article] Correct content' );
 
 
