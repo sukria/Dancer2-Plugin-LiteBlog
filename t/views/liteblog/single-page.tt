@@ -2,15 +2,22 @@
 
 <section id="single-page">
 
+  [% IF meta %]
+  <section class="single-page-meta">
+    [% FOREACH m IN meta %]
+      [% IF m.link %]
+      <span class="meta-box clickable"><a href="[% m.link %]/">[% m.label %]</a></span>
+      [% ELSE %]
+      <span class="meta-box">[% m.label %]</span>
+      [% END %]
+    [% END %]
+  </section>
+  [% END %]
+
   <div class="single-page-wrapper">
   [% content %]
   </div>
-
 </section>
 
-  <section class="post-meta">
-    <span class="category">Category: Tech</span>
-    <span class="publication-date">Published on: October 28, 2023</span>
-  </section>
-
 </div>
+

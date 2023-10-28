@@ -7,7 +7,7 @@
 	display: flex !important;
     justify-content: space-between !important;
     align-items: center !important;
-    padding: 10px 20px !important; /* Adjust padding as needed */
+    padding: 10px 40px !important; /* Adjust padding as needed */
 }
 
 .hero-single-page h1 {
@@ -38,6 +38,7 @@
 
 /* Styling of the single page content */
 section#single-page {
+    position: relative; /* this will be the anchor for the meta section */
     font-family: source-serif-pro, Georgia, Cambria, "Times New Roman", Times, serif;
     font-size: 18px;
     width: 70%;
@@ -62,7 +63,7 @@ section#single-page h4 {  font-size: 14px !important; }
 
 /* single-page meta */
 
-/* Style the post-meta section to fit naturally on the right of the centered main content section */
+/* Style the single-page-meta section to fit naturally on the right of the centered main content section */
 #single-page-top {
     display: flex;
     justify-content: center;
@@ -70,73 +71,56 @@ section#single-page h4 {  font-size: 14px !important; }
     margin-top: 0px; /* Add spacing between hero and content */
 }
 
-.post-meta {
-    flex-shrink: 0; /* Prevent it from shrinking */
-    width: 200px; /* Adjust width as needed */
-    padding: 10px;
-    background-color: #f9f9f9; /* Background color for the menu */
-    border: 1px solid #ddd; /* Border for the menu */
-    border-radius: 5px; /* Rounded corners for the menu */
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2); /* Box shadow for a subtle 3D effect */
-}
-
-.post-meta .category,
-.post-meta .publication-date {
-    display: block; /* Display elements vertically */
-    margin-bottom: 10px; /* Add spacing between elements */
-    font-size: 14px;
-    color: #333; /* Adjust text color as needed */
-}
-
-
 /* Styling for the post entry page */
-
-/* Style the meta elements as rectangular boxes with a ribbon-like left side */
-.post-meta .category,
-.post-meta .publication-date {
-    display: block; /* Display elements as blocks */
-    padding: 10px; /* Adjust padding as needed */
-    margin-bottom: 10px; /* Add vertical spacing between boxes */
-    background-color: #f9f2e7; /* Pale orange background color */
-    border-left: 5px solid #f16522; /* Left ribbon-like border */
-    border-radius: 0; /* No rounded corners for a flat design */
-    font-size: 14px;
-    color: #333; /* Text color */
-    text-decoration: none; /* Remove default link underline */
-    transition: background-color 0.3s, color 0.3s; /* Smooth transition */
+.single-page-meta {
+    position: absolute; /* position it absolutely */
+    bottom: 0px; /* distance from the bottom of the container */
+    right: 0px; /* distance from the right of the container */
+    background-color: rgba(255, 255, 255, 0.9); /* slightly translucent white background to ensure legibility */
+    padding: 5px 5px; /* some padding for aesthetics */
+    border-radius: 5px; /* rounded corners */
+    font-family: 'Roboto', sans-serif;
+    font-size: 0.8em;
+    color: #999;
+    box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1); /* subtle shadow for a lifted effect */
 }
 
-/* Add hover effect to the meta elements */
-.post-meta .category:hover,
-.post-meta .publication-date:hover {
-    background-color: #f16522; /* Background color on hover */
-    color: #ffffff; /* Text color on hover */
+.single-page-meta span {
+    margin-left: 5px; /* space between meta items */
+    padding-left: 5px;
+    border-left: 1px solid #ddd;
+}
+.single-page-meta span:first-child {
+    border-left: none;
+    margin-left: 0;
+    padding-left: 0;
 }
 
-/* Adjust the ribbon-like border's position and size */
-.post-meta .category::before,
-.post-meta .publication-date::before {
-    content: ""; /* Empty content for the pseudo-element */
-    display: block;
-    position: absolute;
-    top: 0;
-    left: -5px; /* Position the ribbon to the left */
-    width: 5px; /* Width of the ribbon */
-    height: 100%; /* Height of the ribbon */
-    background-color: #f16522; /* Ribbon color */
-    border-radius: 0; /* No rounded corners for a flat design */
+.single-page-meta span:last-child {
+    margin-right: 0; /* remove the margin for the last item */
 }
 
-/* Add spacing between the meta elements */
-.post-meta .publication-date {
-    margin-top: 10px; /* Add spacing between boxes */
+/* Links in the single-page-meta elements like buttons */
+.single-page-meta span a {
+    color: inherit; /* takes the color of the parent element, in this case, the .single-page-meta color */
+    text-decoration: none; /* removes the underline */
+    padding: 5px 10px;
 }
 
+.single-page-meta span.clickable:hover {
+    background-color: rgba(220, 220, 220, 0.7); /* slightly gray background on hover */
+    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1); /* subtle shadow for a lifted effect on hover */
+}
 
 
 /* Responsiveness for the single-page layout */
 
 @media screen and (max-width: 768px) {
+
+.hero-title-single-page h1.hero-title-text {
+    padding: 0;
+    margin: 0;
+  }
 
   div#single-page-top {
       width: 100%;
@@ -148,13 +132,12 @@ section#single-page h4 {  font-size: 14px !important; }
     margin: auto;
   }
 
-  .post-meta {
+  .single-page-meta {
     width: 100%; /* Make the meta section full-width on small screens */
     margin-top: 20px; /* Add spacing between the article and meta section */
   }
 
-  .post-meta .category,
-  .post-meta .publication-date {
+  .single-page-meta .meta-box {
     margin-bottom: 10px; /* Add spacing between menu items */
   }
 }

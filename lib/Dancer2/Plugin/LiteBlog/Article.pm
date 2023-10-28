@@ -40,6 +40,14 @@ has category => (
     },
 );
 
+has published_date => (
+    is => 'ro',
+    lazy => 1,
+    default => sub {
+        "TODO: published_date"
+    }
+);
+
 has is_page => (
     is => 'ro',
     lazy => 1,
