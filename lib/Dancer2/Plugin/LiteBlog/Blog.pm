@@ -99,8 +99,9 @@ sub declare_routes {
             }
             
             return $plugin->dsl->template(
-                'liteblog/article', {
-                article => $article});
+                'liteblog/blog/article',
+                {article => $article, widget_css => 'blog' },
+                {layout => 'liteblog'});
         }
     );
 }
