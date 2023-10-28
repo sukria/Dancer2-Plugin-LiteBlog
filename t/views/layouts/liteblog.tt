@@ -7,37 +7,38 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
 
     <link rel="stylesheet" href="/css/liteblog.css">
-    [% IF is_article_page %]
-    <link rel="stylesheet" href="/css/liteblog/article.css">
+    [% IF widget_css %]
+    <link rel="stylesheet" href="/css/liteblog/[% widget_css %].css">
     [% END %]
 </head>
 <body>
 
     <header id="mobile-header">
         <div id="avatar-icon">
+            <!-- TODO : avatar should be a setting with these as defaults -->
             <a href="/"><img src="/images/liteblog.jpg" alt="Your Avatar"></a>
         </div>
         <a href="/"><button id="menu-toggle">[% title %]</button></a>
     </header>
 
-    [% IF is_article_page %]
-    <section id="hero" class="page-header">
+    [% IF widget_page %]
+    <!-- the current page is handled by a widget -->
+    <section id="hero" class="hero-[% widget_page %]">
     [% ELSE %]
     <section id="hero">
     [% END %]
         <div class="header-wrapper">
+            <!-- TODO : avatar should be a setting with these as defaults -->
             <a href="/"><img src="/images/liteblog.jpg" alt="LiteBlog Logo" id="avatar"></a>
-            <a href="/"><h1>[% title %]</h1></a>
-            [% UNLESS is_article_page %]
-                [% IF baseline %]
-                <h3 class="site-baseline">[% baseline %]</h3>
-                [% END %]
+            <a href="/"><h1 class="site-title">[% title %]</h1></a>
+            [% IF baseline %]
+            <h3 class="site-baseline">[% baseline %]</h3>
             [% END %]
         </div>
 
-    [% IF is_article_page %]
-        <div class="article-title">
-            <h1 class="article-title-text">[% title %]</h1>
+    [% IF widget_title %]
+        <div class="hero-title hero-title-[% widget_page %]">
+            <h1 class="hero-title-text">[% widget_title %]</h1>
         </div>
     [% END %]
     </section>
