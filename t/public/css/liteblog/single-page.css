@@ -63,7 +63,7 @@ section#single-page h4 {  font-size: 14px !important; }
 
 /* single-page meta */
 
-/* Style the post-meta section to fit naturally on the right of the centered main content section */
+/* Style the single-page-meta section to fit naturally on the right of the centered main content section */
 #single-page-top {
     display: flex;
     justify-content: center;
@@ -72,12 +72,12 @@ section#single-page h4 {  font-size: 14px !important; }
 }
 
 /* Styling for the post entry page */
-.post-meta {
+.single-page-meta {
     position: absolute; /* position it absolutely */
     bottom: 0px; /* distance from the bottom of the container */
     right: 0px; /* distance from the right of the container */
     background-color: rgba(255, 255, 255, 0.9); /* slightly translucent white background to ensure legibility */
-    padding: 5px 10px; /* some padding for aesthetics */
+    padding: 5px 5px; /* some padding for aesthetics */
     border-radius: 5px; /* rounded corners */
     font-family: 'Roboto', sans-serif;
     font-size: 0.8em;
@@ -85,24 +85,29 @@ section#single-page h4 {  font-size: 14px !important; }
     box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1); /* subtle shadow for a lifted effect */
 }
 
-.post-meta span {
-    margin-right: 5px; /* space between meta items */
+.single-page-meta span {
+    margin-left: 5px; /* space between meta items */
     padding-left: 5px;
     border-left: 1px solid #ddd;
 }
+.single-page-meta span:first-child {
+    border-left: none;
+    margin-left: 0;
+    padding-left: 0;
+}
 
-.post-meta span:last-child {
+.single-page-meta span:last-child {
     margin-right: 0; /* remove the margin for the last item */
 }
 
-/* Links in the post-meta elements like buttons */
-.post-meta span a {
-    color: inherit; /* takes the color of the parent element, in this case, the .post-meta color */
+/* Links in the single-page-meta elements like buttons */
+.single-page-meta span a {
+    color: inherit; /* takes the color of the parent element, in this case, the .single-page-meta color */
     text-decoration: none; /* removes the underline */
     padding: 5px 10px;
 }
 
-.post-meta span.clickable:hover {
+.single-page-meta span.clickable:hover {
     background-color: rgba(220, 220, 220, 0.7); /* slightly gray background on hover */
     box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1); /* subtle shadow for a lifted effect on hover */
 }
@@ -127,13 +132,12 @@ section#single-page h4 {  font-size: 14px !important; }
     margin: auto;
   }
 
-  .post-meta {
+  .single-page-meta {
     width: 100%; /* Make the meta section full-width on small screens */
     margin-top: 20px; /* Add spacing between the article and meta section */
   }
 
-  .post-meta .category,
-  .post-meta .publication-date {
+  .single-page-meta .meta-box {
     margin-bottom: 10px; /* Add spacing between menu items */
   }
 }

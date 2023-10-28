@@ -1,9 +1,9 @@
 <div id="single-page-top">
 
 <section id="single-page">
-  <section class="post-meta">
-    <span class="category clickable"><a href="/blog/tech/">Tech</a></span>
-    <span class="publication-date">Published on: October 28, 2023</span>
+  <section class="single-page-meta">
+    <span class="meta-box clickable"><a href="/blog/tech/">Tech</a></span>
+    <span class="meta-box">Published on: October 28, 2023</span>
   </section>
 
   <div class="single-page-wrapper">
