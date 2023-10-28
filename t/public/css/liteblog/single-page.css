@@ -7,7 +7,7 @@
 	display: flex !important;
     justify-content: space-between !important;
     align-items: center !important;
-    padding: 10px 20px !important; /* Adjust padding as needed */
+    padding: 10px 40px !important; /* Adjust padding as needed */
 }
 
 .hero-single-page h1 {
@@ -137,6 +137,11 @@ section#single-page h4 {  font-size: 14px !important; }
 /* Responsiveness for the single-page layout */
 
 @media screen and (max-width: 768px) {
+
+.hero-title-single-page h1.hero-title-text {
+    padding: 0;
+    margin: 0;
+  }
 
   div#single-page-top {
       width: 100%;
