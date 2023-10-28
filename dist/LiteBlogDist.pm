@@ -14,7 +14,7 @@ my @files_to_embed = qw(
     public/css/liteblog/blog.css
     views/layouts/liteblog.tt
     views/liteblog/index.tt
-    views/liteblog/blog/article.tt
+    views/liteblog/single-page.tt
     views/liteblog/widgets/blog.tt
     views/liteblog/widgets/activities.tt
     articles/blog-meta.yml
