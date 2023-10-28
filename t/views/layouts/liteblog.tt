@@ -8,7 +8,8 @@
     [% ELSE %]
     <title>[% title %]</title>
     [% END %]
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,700|Lato:400,400i,700&display=swap" rel="stylesheet">
 
     <link rel="stylesheet" href="/css/liteblog.css">
     [% IF page_title %]

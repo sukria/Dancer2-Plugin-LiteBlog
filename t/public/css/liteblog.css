@@ -160,24 +160,9 @@ section#single-page {
     margin: auto;
 }
 
-section#single-page h1, h2, h3, h4 {
-    font-family: sohne, "Helvetica Neue", Helvetica, Arial, sans-serif;
-}
-
 #hero a {
     text-decoration: none;
 } 
-
-section#single-page h1 {
-    color: #444;
-    font-size: 42px;
-    margin-bottom: 1em;
-}
-
-section#single-page {
-    font-family: source-serif-pro, Georgia, Cambria, "Times New Roman", Times, serif;
-    font-size: 18px;
-}
 
 /* Blog Cards */
 

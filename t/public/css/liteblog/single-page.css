@@ -30,8 +30,131 @@
 }
 
 .hero-title-single-page h1.hero-title-text  {
-    font-family: 'Raleway', sans-serif; /* Use Raleway font */
+    font-family: 'Roboto', sans-serif; /* Use Raleway font */
     font-size: 36px; /* Adjust font size as needed */
     color: #eee; /* Light grey color */
     padding-left: 100px; /* to counter the space taken by the avatar on the right */
+}
+
+/* Styling of the single page content */
+section#single-page {
+    font-family: source-serif-pro, Georgia, Cambria, "Times New Roman", Times, serif;
+    font-size: 18px;
+    width: 70%;
+    margin-right: 5%;
+    max-width: 800px;
+}
+
+section#single-page h1, h2, h3, h4 {
+    font-family: 'Roboto', sohne, "Helvetica Neue", Helvetica, Arial, sans-serif;
+    color: #444;
+}
+
+section#single-page h1 {  font-size: 28px !important; }
+
+section#single-page div.single-page-wrapper h2 {  
+  font-size: 22px;
+}
+
+section#single-page h3 {  font-size: 18px !important; }
+section#single-page h4 {  font-size: 14px !important; }
+
+
+/* single-page meta */
+
+/* Style the post-meta section to fit naturally on the right of the centered main content section */
+#single-page-top {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    margin-top: 0px; /* Add spacing between hero and content */
+}
+
+.post-meta {
+    flex-shrink: 0; /* Prevent it from shrinking */
+    width: 200px; /* Adjust width as needed */
+    padding: 10px;
+    background-color: #f9f9f9; /* Background color for the menu */
+    border: 1px solid #ddd; /* Border for the menu */
+    border-radius: 5px; /* Rounded corners for the menu */
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2); /* Box shadow for a subtle 3D effect */
+}
+
+.post-meta .category,
+.post-meta .publication-date {
+    display: block; /* Display elements vertically */
+    margin-bottom: 10px; /* Add spacing between elements */
+    font-size: 14px;
+    color: #333; /* Adjust text color as needed */
+}
+
+
+/* Styling for the post entry page */
+
+/* Style the meta elements as rectangular boxes with a ribbon-like left side */
+.post-meta .category,
+.post-meta .publication-date {
+    display: block; /* Display elements as blocks */
+    padding: 10px; /* Adjust padding as needed */
+    margin-bottom: 10px; /* Add vertical spacing between boxes */
+    background-color: #f9f2e7; /* Pale orange background color */
+    border-left: 5px solid #f16522; /* Left ribbon-like border */
+    border-radius: 0; /* No rounded corners for a flat design */
+    font-size: 14px;
+    color: #333; /* Text color */
+    text-decoration: none; /* Remove default link underline */
+    transition: background-color 0.3s, color 0.3s; /* Smooth transition */
+}
+
+/* Add hover effect to the meta elements */
+.post-meta .category:hover,
+.post-meta .publication-date:hover {
+    background-color: #f16522; /* Background color on hover */
+    color: #ffffff; /* Text color on hover */
+}
+
+/* Adjust the ribbon-like border's position and size */
+.post-meta .category::before,
+.post-meta .publication-date::before {
+    content: ""; /* Empty content for the pseudo-element */
+    display: block;
+    position: absolute;
+    top: 0;
+    left: -5px; /* Position the ribbon to the left */
+    width: 5px; /* Width of the ribbon */
+    height: 100%; /* Height of the ribbon */
+    background-color: #f16522; /* Ribbon color */
+    border-radius: 0; /* No rounded corners for a flat design */
+}
+
+/* Add spacing between the meta elements */
+.post-meta .publication-date {
+    margin-top: 10px; /* Add spacing between boxes */
+}
+
+
+
+/* Responsiveness for the single-page layout */
+
+@media screen and (max-width: 768px) {
+
+  div#single-page-top {
+      width: 100%;
+    flex-direction: column;
+  }
+
+  section#single-page {
+    width: 100%; /* Make the article full-width on small screens */
+    margin: auto;
+  }
+
+  .post-meta {
+    width: 100%; /* Make the meta section full-width on small screens */
+    margin-top: 20px; /* Add spacing between the article and meta section */
+  }
+
+  .post-meta .category,
+  .post-meta .publication-date {
+    margin-bottom: 10px; /* Add spacing between menu items */
+  }
 }
