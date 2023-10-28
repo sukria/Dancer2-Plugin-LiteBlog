@@ -1,10 +1,18 @@
 <div id="single-page-top">
 
 <section id="single-page">
+
+  [% IF meta %]
   <section class="single-page-meta">
-    <span class="meta-box clickable"><a href="/blog/tech/">Tech</a></span>
-    <span class="meta-box">Published on: October 28, 2023</span>
+    [% FOREACH m IN meta %]
+      [% IF m.link %]
+      <span class="meta-box clickable"><a href="[% m.link %]/">[% m.label %]</a></span>
+      [% ELSE %]
+      <span class="meta-box">[% m.label %]</span>
+      [% END %]
+    [% END %]
   </section>
+  [% END %]
 
   <div class="single-page-wrapper">
   [% content %]

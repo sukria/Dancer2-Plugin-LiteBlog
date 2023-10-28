@@ -104,6 +104,10 @@ sub declare_routes {
                 {
                     page_title => $article->title,
                     content    => $article->content, 
+                    meta       => [
+                        { label => $article->category, link => "$prefix/$cat" },
+                        { label => $article->published_date }
+                    ],
                 },
                 {
                     layout => 'liteblog'
