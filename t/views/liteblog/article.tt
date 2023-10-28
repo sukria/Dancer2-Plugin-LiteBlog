@@ -1,5 +1,0 @@
-<section id="article">
-<div class="article-wrapper">
-[% article.content %]
-</div>
-</section>
