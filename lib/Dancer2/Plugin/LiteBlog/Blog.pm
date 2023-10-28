@@ -102,10 +102,8 @@ sub declare_routes {
             return $plugin->dsl->template(
                 'liteblog/single-page',
                 {
-                    content => $article->content, 
-                    widget_title => $article->title,
-                    widget_page => 'blog',
-                    widget_css => 'blog', 
+                    page_title => $article->title,
+                    content    => $article->content, 
                 },
                 {
                     layout => 'liteblog'
