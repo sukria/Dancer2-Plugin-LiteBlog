@@ -13,8 +13,8 @@ my $blog = new Dancer2::Plugin::LiteBlog::Blog( root => $localdir );
 is (scalar(@{$blog->elements}), 2, "only 2 posts successfully found");
 is ($blog->elements->[0]->slug, 'first-article', "first post is ok");
 is ($blog->elements->[0]->category, 'tech', "first post category is ok");
-is ($blog->elements->[1]->category, 'tech', "2nd post category is ok");
-is ($blog->elements->[1]->title, 'A title', "2nd post title is ok");
+is ($blog->elements->[1]->category, 'page', "2nd post category is ok");
+is ($blog->elements->[1]->title, 'Contact', "2nd post title is ok");
 
 eval { $blog = Dancer2::Plugin::LiteBlog::Blog->new( root => File::Spec->catfile($localdir, 'tech')) };
 
@@ -46,8 +46,8 @@ subtest 'select articles' => sub {
         category => 'tech',
     );
     is scalar(@$articles), 2, "Found 2 tech articles";
-    is $articles->[0]->title, 'A super Tech Blog Post', "article 1 is OK";
-    is $articles->[1]->title, 'A recent article', "First article 2 is OK";
+    is $articles->[0]->title, 'A recent article', "article 1 is OK";
+    is $articles->[1]->title, 'A super Tech Blog Post', "article 2 is OK";
 
     done_testing();
 };
