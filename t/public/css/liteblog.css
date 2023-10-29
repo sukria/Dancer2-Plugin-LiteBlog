@@ -21,6 +21,10 @@ h3 {
     font-size: 1.75em;
 }
 
+h1.site-title {
+    font-size: 1.5em;
+}
+
 a {
     color: #007BFF; /* Example blue color */
     text-decoration: none; /* Remove underline */
