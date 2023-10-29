@@ -2,14 +2,14 @@
         <!-- Individual blog post cards go here -->
         [% FOREACH p IN widget.elements %]
     <div class="blog-card" id="blog-[% p.slug %]">
-        <a href="[% p.permalink %]"><img src="[% p.featured %]" alt="[% p.title %]"></a>
-        <h3>[% p.title %]</h3>
+        <a href="[% p.permalink %]"><img class="post-image" src="[% p.featured %]" alt="[% p.title %]"></a>
+        <h3 class="post-title">[% p.title %]</h3>
 
 	    <div class="category-container">
             <div class="category-ribbon">[% p.category %]</div>
         </div>
     
-	    <p>[% p.excerpt %]</p>
+	    <p class="post-excerpt">[% p.excerpt %]</p>
     </div>
 
     <script type="text/javascript">
