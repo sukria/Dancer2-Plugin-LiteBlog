@@ -3,9 +3,11 @@ use Moo;
 use Carp 'croak';
 use File::Spec;
 use File::Basename;
+use Path::Tiny;
 use YAML::XS;
 use Text::Markdown 'markdown';
 use File::Slurp;
+use DateTime;
 
 has basedir => (
     is => 'ro',
@@ -40,14 +42,37 @@ has category => (
     },
 );
 
+has published_time => (
+    is => 'ro',
+    lazy => 1,
+    default => sub {
+        my ($self) = @_;
+        my $content_file = File::Spec->catfile($self->basedir, 'content.md');
+        my $path = path($content_file);
+
+        # Hopefully the underlying FS supports birthtime
+        my $time;
+        if ( $path->can('birthtime') ) {
+            $time = $path->birthtime;
+        }
+        else {
+            my @stat = stat($content_file);
+            $time = $stat[9]; # mtime
+        }
+        return $time;
+    }
+);
+
 has published_date => (
     is => 'ro',
     lazy => 1,
     default => sub {
-        "TODO: published_date"
-    }
+        my ($self) = @_;
+        my $time = $self->published_time;
+        my $dt = DateTime->from_epoch( epoch => $self->published_time );
+        return $dt->strftime('%d %B, %Y');  # e.g., "25 October, 2023"
+    },
 );
-
 has is_page => (
     is => 'ro',
     lazy => 1,
