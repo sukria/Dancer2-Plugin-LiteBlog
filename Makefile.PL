@@ -37,8 +37,13 @@ my %WriteMakefileArgs = (
 sub MY::postamble {
     return <<'EOM';
 
+build_scaffolder:
+	@perl -Ilib -Idist dist/build.pl
+
 listdeps:
 	@grep -r 'use' lib/ | sed -e 's/.*:\s*use //' | sed -e 's/;//' | grep -v 'LiteBlog' | sort -u
+
+distdir: build_scaffolder
 
 EOM
 }
