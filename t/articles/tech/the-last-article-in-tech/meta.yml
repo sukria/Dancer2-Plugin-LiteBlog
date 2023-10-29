@@ -5,5 +5,5 @@ tags:
   - perl
   - dancer
   - blog
-featured: /images/liteblog.jpg
-excerpt: Test Excerpt
+image: /images/liteblog.jpg
+excerpt: This is the last updated article with a nice excerpt and a featured image.
