@@ -214,12 +214,14 @@ sub declare_routes {
         method => 'get',
         regexp => "${prefix}/:category/?",
         code   => sub {
+            $plugin->dsl->info("in /$prefix/category route");
             my $category = $plugin->dsl->param('category');
             if (! -d File::Spec->catdir($self->root, $category)) {
                 $plugin->dsl->info("Invalid category requested: '$category'");
                 return $plugin->dsl->status('not_found');
             }
             my $articles = $self->select_articles(category => $category, limit => 6);
+            $plugin->dsl->info("retrieved ".scalar(@$articles)." articles");
             return $plugin->dsl->template(
                 'liteblog/single-page', {
                     page_title => ucfirst($category)." Stories",
@@ -228,7 +230,7 @@ sub declare_routes {
                         title =>  "Title",
                         elements  => $articles,
                         #TODO: readmore_button => 'Load more articles', 
-                        }})
+                        }},{layout => undef})
                 }, 
                 {layout => 'liteblog'}
             );
