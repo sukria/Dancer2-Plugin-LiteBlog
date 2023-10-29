@@ -14,7 +14,7 @@ eval { $activities = Dancer2::Plugin::LiteBlog::Activities->new(
     root => $localdir, source => 'activities.yml') };
 like ($@, qr/Not a valid dir/, "Unable to create without a valid root");
 
-$localdir = File::Spec->catfile(dirname(__FILE__), 'liteblog');
+$localdir = File::Spec->catfile(dirname(__FILE__), 'public');
 eval { $activities = Dancer2::Plugin::LiteBlog::Activities->new( 
     root => $localdir, source => 'doesnotexist.yml') };
 is ($@, '', "Activities created with a valid root");
