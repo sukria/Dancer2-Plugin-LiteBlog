@@ -24,6 +24,16 @@ my %WriteMakefileArgs = (
     clean => { FILES => 'Dancer2-Plugin-LiteBlog-*' },
 );
 
+
+sub MY::postamble {
+    return <<'EOM';
+
+listdeps:
+	@grep -r 'use' lib/ | sed -e 's/:.*//' | sort -u
+
+EOM
+}
+
 # Compatibility with old versions of ExtUtils::MakeMaker
 unless (eval { ExtUtils::MakeMaker->VERSION('6.64'); 1 }) {
     my $test_requires = delete $WriteMakefileArgs{TEST_REQUIRES} || {};
