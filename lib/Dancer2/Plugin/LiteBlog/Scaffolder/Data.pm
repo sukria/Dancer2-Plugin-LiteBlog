@@ -2,48 +2,6 @@ package Dancer2::Plugin::LiteBlog::Scaffolder::Data;
 sub build { 0.01 }
 1;
 __DATA__
---- views/liteblog/single-page.tt
-<div id="single-page-top">
-
-<section id="single-page">
-
-  [% IF meta %]
-  <section class="single-page-meta">
-    [% FOREACH m IN meta %]
-      [% IF m.link %]
-      <span class="meta-box clickable"><a href="[% m.link %]/">[% m.label %]</a></span>
-      [% ELSE %]
-      <span class="meta-box">[% m.label %]</span>
-      [% END %]
-    [% END %]
-  </section>
-  [% END %]
-
-  <div class="single-page-wrapper">
-  [% content %]
-  </div>
-</section>
-
-</div>
-
-
---- articles/tech/first-article/content.md
-# This is the first title of the article
-
-Here I have a paragraph. 
-
-And here a second
-
-## Here a subtitle
-
-And there a last paragraph with a bullet-point list
-
-  * One item
-  * A second one
-  * And a third
-
-Voilà.
-
 --- public/css/liteblog.css
 body {
     font-family: Arial, sans-serif;
@@ -207,14 +165,75 @@ section#main-page {
 }
 
 
---- views/liteblog/widgets/blog.tt
-<!-- Blog Cards -->
-<section id="blog">
-    <div class="blog-header">
-        <h2>[% widget.title %]</h2>
-    </div>
-[% INCLUDE 'liteblog/widgets/blog-cards.tt' %]
-</section>
+--- public/css/liteblog/activities.css
+
+/* Restore full width */
+section#activities {
+    width: 100%;
+    max-width: 2000px;
+    margin: auto;
+}
+
+#activity-welcome {
+    width: calc(66.66% - 20px); /* 2/3 of the width minus the margin */
+    margin: 0 auto; /* Center the card horizontally */
+}
+
+#activities {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+    padding: 40px 20px;
+}
+
+.activity-card {
+    background-color: #ffffff;
+    width: calc(25% - 20px); /* Basic 3-grid layout, you can adjust as needed */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    padding: 20px;
+    border-radius: 5px;
+}
+
+.activity-card pre {
+    margin:0;
+    padding: 0;
+    text-align: left;
+}
+
+.activity-card img {
+   /*
+    max-width: 100%;
+    height: auto;
+    margin-bottom: 15px;
+    */
+
+    width: 100%;
+    height: 160px; /* Fixed height of 60px */
+    object-fit: cover; /* Maintain aspect ratio */
+    object-position: center; /* Center the image horizontally and vertically */
+}
+
+.activity-card h2 {
+    margin-top: 0;
+}
+
+.activity-card p {
+    text-align: left;
+}
+
+@media screen and (max-width: 768px) {
+    .activity-card {
+        width: calc(50% - 20px);
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .activity-card {
+        width: 100%;
+    }
+}
 
 --- views/layouts/liteblog.tt
 <!DOCTYPE html>
@@ -288,515 +307,6 @@ window.addEventListener('scroll', function () {
 
     </body>
 </html>
-
---- public/css/liteblog/single-page.css
-/* Styling for the post entry page */
-
-/* The hero header is smaller in height */
-.hero-single-page {
-    flex-direction: row-reverse; /* Reverse the direction to align hero section to the right */
-    text-align: center;
-	display: flex !important;
-    justify-content: space-between !important;
-    align-items: center !important;
-    padding: 10px 40px !important; /* Adjust padding as needed */
-}
-
-.hero-single-page h1 {
-    font-size: 18px;
-}
-
-.hero-single-page #avatar {
-    width: 64px !important; /* Adjust the size as needed */
-    height: 64px !important;
-    border-radius: 50%;
-    margin: 0 !important; /* Remove margin */
-}
-
-
-/* Title of the article / page */
-
-.hero-title-single-page {
-    text-align: center;
-    width: 100%;
-}
-
-.hero-title-single-page h1.hero-title-text  {
-    font-family: 'Roboto', sans-serif; /* Use Raleway font */
-    font-size: 36px; /* Adjust font size as needed */
-    color: #eee; /* Light grey color */
-    padding-left: 100px; /* to counter the space taken by the avatar on the right */
-}
-
-section#single-page {
-    position: relative; /* this will be the anchor for the meta section */
-    margin: auto;
-    width: 70%;
-    min-width: 450px;
-    max-width: 800px;
-    background-color: #fff;
-    padding: 20px;
-    border-left: 2px solid #DDD;
-    border-right: 2px solid #DDD;
-    border-bottom: 2px solid #DDD;
-    font-size: 18px;
-}
-
-.single-page-wrapper {
-    width: 100%;
-    max-width: 800px;
-    margin: auto;
-}
-
-section#single-page p, ul, li {
-    font-family: source-serif-pro, Georgia, Cambria, "Times New Roman", Times, serif;
-}
-
-section#single-page h1, h2, h3, h4 {
-    font-family: 'Roboto', sohne, "Helvetica Neue", Helvetica, Arial, sans-serif;
-    color: #444;
-}
-
-section#single-page h1 {  font-size: 28px !important; }
-
-section#single-page div.single-page-wrapper h2 {  
-  font-size: 22px;
-}
-
-section#single-page h3 {  font-size: 18px !important; }
-section#single-page h4 {  font-size: 14px !important; }
-
-
-/* single-page meta */
-
-/* Style the single-page-meta section to fit naturally on the right of the centered main content section */
-#single-page-top {
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    margin-top: 0px; /* Add spacing between hero and content */
-}
-
-/* Styling for the post entry page */
-.single-page-meta {
-    position: absolute; /* position it absolutely */
-    bottom: 0px; /* distance from the bottom of the container */
-    right: 0px; /* distance from the right of the container */
-    background-color: rgba(255, 255, 255, 0.9); /* slightly translucent white background to ensure legibility */
-    padding: 5px 5px; /* some padding for aesthetics */
-    border-radius: 5px; /* rounded corners */
-    font-family: 'Roboto', sans-serif;
-    font-size: 0.8em;
-    color: #999;
-    box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1); /* subtle shadow for a lifted effect */
-}
-
-.single-page-meta span {
-    margin-left: 5px; /* space between meta items */
-    padding-left: 5px;
-    border-left: 1px solid #ddd;
-}
-.single-page-meta span:first-child {
-    border-left: none;
-    margin-left: 0;
-    padding-left: 0;
-}
-
-.single-page-meta span:last-child {
-    margin-right: 0; /* remove the margin for the last item */
-}
-
-/* Links in the single-page-meta elements like buttons */
-.single-page-meta span a {
-    color: inherit; /* takes the color of the parent element, in this case, the .single-page-meta color */
-    text-decoration: none; /* removes the underline */
-    padding: 5px 10px;
-}
-
-.single-page-meta span.clickable:hover {
-    background-color: rgba(220, 220, 220, 0.7); /* slightly gray background on hover */
-    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1); /* subtle shadow for a lifted effect on hover */
-}
-
-
-/* Responsiveness for the single-page layout */
-
-@media screen and (max-width: 768px) {
-
-.hero-title-single-page h1.hero-title-text {
-    padding: 0;
-    margin: 0;
-  }
-
-  div#single-page-top {
-      width: 100%;
-    flex-direction: column;
-  }
-
-  section#single-page {
-    width: 100%; /* Make the article full-width on small screens */
-    margin: auto;
-  }
-
-  .single-page-meta {
-    width: 100%; /* Make the meta section full-width on small screens */
-    margin-top: 20px; /* Add spacing between the article and meta section */
-  }
-
-  .single-page-meta .meta-box {
-    margin-bottom: 10px; /* Add spacing between menu items */
-  }
-}
-
---- views/liteblog/widgets/blog-cards.tt
-<div class="blog-cards">
-        <!-- Individual blog post cards go here -->
-        [% FOREACH p IN widget.elements %]
-    <div class="blog-card" id="blog-[% p.slug %]">
-        [% IF p.image %]
-        <a href="[% p.permalink %]"><img class="post-image" src="[% p.image %]" alt="[% p.title %]"></a>
-        [% END %]
-        <h3 class="post-title">[% p.title %]</h3>
-
-        [% UNLESS p.is_page %]
-	    <div class="category-container">
-            <div class="category-ribbon">[% p.category %]</div>
-        </div>
-        [% END %]
-    
-	    <p class="post-excerpt">[% p.excerpt %]</p>
-    </div>
-
-    <script type="text/javascript">
-    // JavaScript code to make the blog-card clickable
-    document.getElementById('blog-[% p.slug %]').addEventListener('click', function() {
-        window.location.href = '[% p.permalink %]';
-    });
-    </script>
-    [% END %]
-
-</div> <!-- END blog-cards -->
-    
-[% IF widget.readmore_button %]
-<div class="blog-button">
-    <a href="/blog">[% widget.readmore_button %]</a>
-</div>
-[% END %]
-
---- activities.yml
----
-- name: "LinkedIn"
-  link: '#'
-  image: '/images/LiteBlog.jpg'
-  desc: "Checkout my LinkedIn profile. This is an example. Feel free to change it in <code>liteblog/activities.yml</code>."
-- name: "GitHub"
-  link: "https://github.com/PerlDancer"
-  desc: "This is the Dancer GitHub Official account. It's a good time to Star the <a href=\"https://github.com/PerlDancer/Dancer2\">Dancer2</a> project!  This is an example. Feel free to change it in <code>liteblog/activities.yml</code>."
-
---- views/liteblog/index.tt
-[% IF no_widgets %]
-<section id="main-page">
-    <div class="main-page-content">
-        <h2>Great! Now it's time to enable some widgets</h2>
-        <p>
-            Welcome to your LiteBlog site! Everything is working just fine. You just have to enable some widgets in your Dancer2 config.
-
-            Try adding those lines in your <code>config.yml</code> file and restart your app.
-        </p>
-
-        <pre>
-liteblog:
-  title: "My Liteblog Site"
-  widgets:
-    - name: activities
-      params: 
-        source: "activities.yml"
-    - name: blog
-      params:
-        title: "Read my Stories"
-        root: "articles"
-        </pre>
-    </div>
-</section>
-[% ELSE %]
-
-[% FOREACH widget IN widgets %]
-[% INCLUDE "liteblog/widgets/$widget.view" %]
-[% END %]
-
-[% END %]
-
---- articles/blog-meta.yml
----
-categories:
-  - tech
-  - perl
-featured_posts:
-  - "tech/first-article"
-  - "contact"
-  - "tech/second-article-tech"
-  - "failed/does-not-exist"
- 
-
---- articles/tech/first-article/meta.yml
----
-title: "A super Tech Blog Post"
-author: sukria
-published: 2023-10-21
-tags:
-  - perl
-  - dancer
-  - blog
-featured: /images/liteblog.jpg
-
---- views/liteblog/widgets/activities.tt
-<!-- Activity Cards -->
-<section id="activities">
-    [% FOREACH a IN widget.elements %]
-        [% IF a.link %]
-        <div class="activity-card clickable-div" id="activity-[% a.name %]">
-            [% IF a.image %]
-            <a href="[% a.link %]"><img width="300" height="300" src="[% a.image %]" alt="[% a.name %]"></a>
-            [% END %]
-        [% ELSE %]
-        <div class="activity-card" id="activity-[% a.name %]">
-            <img width="300" height="300" src="/images/[% a.name %].jpg" alt="[% a.name %]">
-        [% END %]
-            <h2>[% a.name %]</h2>
-            <p>[% a.desc %] </p>
-        </div> <!-- END activity-card -->
-
-        [% IF a.link %]
-        <script type="text/javascript">
-        // JavaScript code to make the blog-card clickable
-        document.getElementById('activity-[% a.name %]').addEventListener('click', function() {
-            window.location.href = '[% a.link %]';
-        });
-        </script>
-        [% END %]
-    [% END %]
-</section> <!-- END activities section -->
-
---- public/css/liteblog/activities.css
-
-/* Restore full width */
-section#activities {
-    width: 100%;
-    max-width: 2000px;
-    margin: auto;
-}
-
-#activity-welcome {
-    width: calc(66.66% - 20px); /* 2/3 of the width minus the margin */
-    margin: 0 auto; /* Center the card horizontally */
-}
-
-#activities {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-    justify-content: center;
-    padding: 40px 20px;
-}
-
-.activity-card {
-    background-color: #ffffff;
-    width: calc(25% - 20px); /* Basic 3-grid layout, you can adjust as needed */
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    text-align: center;
-    padding: 20px;
-    border-radius: 5px;
-}
-
-.activity-card pre {
-    margin:0;
-    padding: 0;
-    text-align: left;
-}
-
-.activity-card img {
-   /*
-    max-width: 100%;
-    height: auto;
-    margin-bottom: 15px;
-    */
-
-    width: 100%;
-    height: 160px; /* Fixed height of 60px */
-    object-fit: cover; /* Maintain aspect ratio */
-    object-position: center; /* Center the image horizontally and vertically */
-}
-
-.activity-card h2 {
-    margin-top: 0;
-}
-
-.activity-card p {
-    text-align: left;
-}
-
-@media screen and (max-width: 768px) {
-    .activity-card {
-        width: calc(50% - 20px);
-    }
-}
-
-@media screen and (max-width: 480px) {
-    .activity-card {
-        width: 100%;
-    }
-}
-
---- public/css/liteblog/blog.css
-/* Blog Cards */
-
-#blog {
-    background-color: #2d2d2d;
-    color: #ffffff;
-    padding: 40px 0;
-}
-
-.blog-header {
-    text-align: center;
-    margin-bottom: 20px;
-}
-
-.blog-header h2 {
-    font-size: 24px;
-    margin: 0;
-}
-
-.blog-cards {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-    justify-content: center;
-    padding: 20px;
-}
-
-.blog-card {
-    position: relative; /* Needed for absolute positioning of the ribbon */
-    background-color: #ffffff;
-    width: calc(40% - 20px);
-    max-width: 420px !important;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    text-align: center;
-    padding: 20px;
-    border-radius: 5px;
-    margin-bottom: 20px;
-    color: #333;
-    overflow: hidden; /* Hide overflowing ribbon */
-    margin: 0;
-    padding: 0;
-
-    cursor: pointer; /* Add pointer cursor for clickability */
-    transition: transform 0.2s, box-shadow 0.2s; /* Add transition for hover effect */
-}
-
-.blog-card p.post-excerpt {
-    font-style: italic;
-    font-size: 0.9em;
-    text-align: left;
-}
-
-/* Add a hover effect for the blog card */
-.blog-card:hover {
-    transform: scale(1.1); /* Apply a 10% zoom effect on hover */
-    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2); /* Add a shadow effect on hover */
-}
-
-.blog-card img {
-    width: 100%;
-    height: 120px; /* Fixed height of 60px */
-    object-fit: cover; /* Maintain aspect ratio */
-    object-position: center; /* Center the image horizontally and vertically */
-}
-
-.blog-card p {
-    margin: 1em;
-    margin-bottom: 2em;
-}
-
-.blog-card h3 {
-    font-size: 20px;
-    margin: 1em;
-}
-
-.blog-card .category-ribbon {
-    background-color: #f16522; /* Adjust color as needed */
-    color: #ffffff;
-    padding: 5px 10px;
-    border-radius: 3px;
-    margin-bottom: 10px;
-    display: inline-block;
-}
-
-/* Add styles for the category container */
-.category-container {
-    position: absolute; /* Position within the .blog-card */
-    top: 0;
-    right: 0;
-    transform: translate(50%, -50%); /* Center the ribbon */
-}
-
-/* Add styles for the ribbon */
-.category-ribbon {
-    background-color: #f16522; /* Adjust color as needed */
-    color: #ffffff;
-    padding: 5px 20px; /* Adjust size as needed */
-    border-radius: 3px;
-    position: relative;
-    z-index: 1; /* Place the ribbon above content */
-    transform: translateX(40%) rotate(45deg); /* Adjust the translateX value as needed */
-    transform-origin: top right; /* Rotate around the top right corner */
-    top: 80px;
-    right: 85px;
-    width: 110px;
-
-    text-align: center;
-    font-size: 14px; /* Adjust font size as needed */
-    line-height: 1.2; /* Adjust line height as needed */
-}
-
-/* Ensure the ribbon text is readable */
-.category-ribbon::before {
-    content: "";
-    position: absolute;
-    top: -4px;
-    left: 0;
-    border-width: 5px 5px 0;
-    border-style: solid;
-    border-color: #f16522 transparent transparent transparent;
-}
-
-.blog-button {
-    text-align: center;
-    margin-top: 20px;
-}
-
-.blog-button a {
-    background-color: #f16522; /* Adjust color as needed */
-    color: #ffffff;
-    padding: 10px 20px;
-    border-radius: 5px;
-    text-decoration: none;
-    font-weight: bold;
-    font-size: 16px;
-}
-
-
-@media screen and (max-width: 768px) {
-    .blog-card {
-        width: calc(70% - 20px);
-    }
-}
-
-@media screen and (max-width: 480px) {
-    .blog-card {
-        width: 100%;
-    }
-}
-
 
 --- public/images/liteblog.jpg
 /9j/4AAQSkZJRgABAQEASABIAAD/2wBDAAMCAgMCAgMDAwMEAwMEBQgFBQQEBQoHBwYIDAoMDAsK
@@ -2127,4 +1637,494 @@ nh5L5dD09dVZG1QW8YuWj+6ZNo3ke2c1nfELT9b1LwZqlt4cukstZkixbzOcBTkZ5wcEjIB7E10m
 3PWlxUqTUuaxvOip0XRbeqtfrtbfuch8LtK8Q6P4MsLTxRei/wBXTd5kqtvwpY7VLYG4gcE4rpb6
 1N1ZTwLPJbGRComhIDpkdVyOoq0BigjNNycpOXcdKhGlSjRTbSVtXd/eVdNtWs7GCB7iW6MaBDNO
 QXfA6tgDmrQGKAMUtQbJKKsgpKWigoKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigD//Z
+
+--- views/liteblog/widgets/blog-cards.tt
+<div class="blog-cards">
+        <!-- Individual blog post cards go here -->
+        [% FOREACH p IN widget.elements %]
+    <div class="blog-card" id="blog-[% p.slug %]">
+        [% IF p.image %]
+        <a href="[% p.permalink %]"><img class="post-image" src="[% p.image %]" alt="[% p.title %]"></a>
+        [% END %]
+        <h3 class="post-title">[% p.title %]</h3>
+
+        [% UNLESS p.is_page %]
+	    <div class="category-container">
+            <div class="category-ribbon">[% p.category %]</div>
+        </div>
+        [% END %]
+    
+	    <p class="post-excerpt">[% p.excerpt %]</p>
+    </div>
+
+    <script type="text/javascript">
+    // JavaScript code to make the blog-card clickable
+    document.getElementById('blog-[% p.slug %]').addEventListener('click', function() {
+        window.location.href = '[% p.permalink %]';
+    });
+    </script>
+    [% END %]
+
+</div> <!-- END blog-cards -->
+    
+[% IF widget.readmore_button %]
+<div class="blog-button">
+    <a href="/blog">[% widget.readmore_button %]</a>
+</div>
+[% END %]
+
+--- views/liteblog/single-page.tt
+<div id="single-page-top">
+
+<section id="single-page">
+
+  [% IF meta %]
+  <section class="single-page-meta">
+    [% FOREACH m IN meta %]
+      [% IF m.link %]
+      <span class="meta-box clickable"><a href="[% m.link %]/">[% m.label %]</a></span>
+      [% ELSE %]
+      <span class="meta-box">[% m.label %]</span>
+      [% END %]
+    [% END %]
+  </section>
+  [% END %]
+
+  <div class="single-page-wrapper">
+  [% content %]
+  </div>
+</section>
+
+</div>
+
+
+--- public/css/liteblog/single-page.css
+/* Styling for the post entry page */
+
+/* The hero header is smaller in height */
+.hero-single-page {
+    flex-direction: row-reverse; /* Reverse the direction to align hero section to the right */
+    text-align: center;
+	display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    padding: 10px 40px !important; /* Adjust padding as needed */
+}
+
+.hero-single-page h1 {
+    font-size: 18px;
+}
+
+.hero-single-page #avatar {
+    width: 64px !important; /* Adjust the size as needed */
+    height: 64px !important;
+    border-radius: 50%;
+    margin: 0 !important; /* Remove margin */
+}
+
+
+/* Title of the article / page */
+
+.hero-title-single-page {
+    text-align: center;
+    width: 100%;
+}
+
+.hero-title-single-page h1.hero-title-text  {
+    font-family: 'Roboto', sans-serif; /* Use Raleway font */
+    font-size: 36px; /* Adjust font size as needed */
+    color: #eee; /* Light grey color */
+    padding-left: 100px; /* to counter the space taken by the avatar on the right */
+}
+
+section#single-page {
+    position: relative; /* this will be the anchor for the meta section */
+    margin: auto;
+    width: 70%;
+    min-width: 450px;
+    max-width: 800px;
+    background-color: #fff;
+    padding: 20px;
+    border-left: 2px solid #DDD;
+    border-right: 2px solid #DDD;
+    border-bottom: 2px solid #DDD;
+    font-size: 18px;
+}
+
+.single-page-wrapper {
+    width: 100%;
+    max-width: 800px;
+    margin: auto;
+}
+
+section#single-page p, ul, li {
+    font-family: source-serif-pro, Georgia, Cambria, "Times New Roman", Times, serif;
+}
+
+section#single-page h1, h2, h3, h4 {
+    font-family: 'Roboto', sohne, "Helvetica Neue", Helvetica, Arial, sans-serif;
+    color: #444;
+}
+
+section#single-page h1 {  font-size: 28px !important; }
+
+section#single-page div.single-page-wrapper h2 {  
+  font-size: 22px;
+}
+
+section#single-page h3 {  font-size: 18px !important; }
+section#single-page h4 {  font-size: 14px !important; }
+
+
+/* single-page meta */
+
+/* Style the single-page-meta section to fit naturally on the right of the centered main content section */
+#single-page-top {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    margin-top: 0px; /* Add spacing between hero and content */
+}
+
+/* Styling for the post entry page */
+.single-page-meta {
+    position: absolute; /* position it absolutely */
+    bottom: 0px; /* distance from the bottom of the container */
+    right: 0px; /* distance from the right of the container */
+    background-color: rgba(255, 255, 255, 0.9); /* slightly translucent white background to ensure legibility */
+    padding: 5px 5px; /* some padding for aesthetics */
+    border-radius: 5px; /* rounded corners */
+    font-family: 'Roboto', sans-serif;
+    font-size: 0.8em;
+    color: #999;
+    box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1); /* subtle shadow for a lifted effect */
+}
+
+.single-page-meta span {
+    margin-left: 5px; /* space between meta items */
+    padding-left: 5px;
+    border-left: 1px solid #ddd;
+}
+.single-page-meta span:first-child {
+    border-left: none;
+    margin-left: 0;
+    padding-left: 0;
+}
+
+.single-page-meta span:last-child {
+    margin-right: 0; /* remove the margin for the last item */
+}
+
+/* Links in the single-page-meta elements like buttons */
+.single-page-meta span a {
+    color: inherit; /* takes the color of the parent element, in this case, the .single-page-meta color */
+    text-decoration: none; /* removes the underline */
+    padding: 5px 10px;
+}
+
+.single-page-meta span.clickable:hover {
+    background-color: rgba(220, 220, 220, 0.7); /* slightly gray background on hover */
+    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1); /* subtle shadow for a lifted effect on hover */
+}
+
+
+/* Responsiveness for the single-page layout */
+
+@media screen and (max-width: 768px) {
+
+.hero-title-single-page h1.hero-title-text {
+    padding: 0;
+    margin: 0;
+  }
+
+  div#single-page-top {
+      width: 100%;
+    flex-direction: column;
+  }
+
+  section#single-page {
+    width: 100%; /* Make the article full-width on small screens */
+    margin: auto;
+  }
+
+  .single-page-meta {
+    width: 100%; /* Make the meta section full-width on small screens */
+    margin-top: 20px; /* Add spacing between the article and meta section */
+  }
+
+  .single-page-meta .meta-box {
+    margin-bottom: 10px; /* Add spacing between menu items */
+  }
+}
+
+--- articles/tech/first-article/meta.yml
+---
+title: "A super Tech Blog Post"
+author: sukria
+published: 2023-10-21
+tags:
+  - perl
+  - dancer
+  - blog
+featured: /images/liteblog.jpg
+
+--- articles/tech/first-article/content.md
+# This is the first title of the article
+
+Here I have a paragraph. 
+
+And here a second
+
+## Here a subtitle
+
+And there a last paragraph with a bullet-point list
+
+  * One item
+  * A second one
+  * And a third
+
+Voilà.
+
+--- articles/blog-meta.yml
+---
+categories:
+  - tech
+  - perl
+featured_posts:
+  - "tech/first-article"
+  - "contact"
+  - "tech/second-article-tech"
+  - "failed/does-not-exist"
+ 
+
+--- views/liteblog/index.tt
+[% IF no_widgets %]
+<section id="main-page">
+    <div class="main-page-content">
+        <h2>Great! Now it's time to enable some widgets</h2>
+        <p>
+            Welcome to your LiteBlog site! Everything is working just fine. You just have to enable some widgets in your Dancer2 config.
+
+            Try adding those lines in your <code>config.yml</code> file and restart your app.
+        </p>
+
+        <pre>
+liteblog:
+  title: "My Liteblog Site"
+  widgets:
+    - name: activities
+      params: 
+        source: "activities.yml"
+    - name: blog
+      params:
+        title: "Read my Stories"
+        root: "articles"
+        </pre>
+    </div>
+</section>
+[% ELSE %]
+
+[% FOREACH widget IN widgets %]
+[% INCLUDE "liteblog/widgets/$widget.view" %]
+[% END %]
+
+[% END %]
+
+--- public/css/liteblog/blog.css
+/* Blog Cards */
+
+#blog {
+    background-color: #2d2d2d;
+    color: #ffffff;
+    padding: 40px 0;
+}
+
+.blog-header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.blog-header h2 {
+    font-size: 24px;
+    margin: 0;
+}
+
+.blog-cards {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+    padding: 20px;
+}
+
+.blog-card {
+    position: relative; /* Needed for absolute positioning of the ribbon */
+    background-color: #ffffff;
+    width: calc(40% - 20px);
+    max-width: 420px !important;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    padding: 20px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    color: #333;
+    overflow: hidden; /* Hide overflowing ribbon */
+    margin: 0;
+    padding: 0;
+
+    cursor: pointer; /* Add pointer cursor for clickability */
+    transition: transform 0.2s, box-shadow 0.2s; /* Add transition for hover effect */
+}
+
+.blog-card p.post-excerpt {
+    font-style: italic;
+    font-size: 0.9em;
+    text-align: left;
+}
+
+/* Add a hover effect for the blog card */
+.blog-card:hover {
+    transform: scale(1.1); /* Apply a 10% zoom effect on hover */
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2); /* Add a shadow effect on hover */
+}
+
+.blog-card img {
+    width: 100%;
+    height: 120px; /* Fixed height of 60px */
+    object-fit: cover; /* Maintain aspect ratio */
+    object-position: center; /* Center the image horizontally and vertically */
+}
+
+.blog-card p {
+    margin: 1em;
+    margin-bottom: 2em;
+}
+
+.blog-card h3 {
+    font-size: 20px;
+    margin: 1em;
+}
+
+.blog-card .category-ribbon {
+    background-color: #f16522; /* Adjust color as needed */
+    color: #ffffff;
+    padding: 5px 10px;
+    border-radius: 3px;
+    margin-bottom: 10px;
+    display: inline-block;
+}
+
+/* Add styles for the category container */
+.category-container {
+    position: absolute; /* Position within the .blog-card */
+    top: 0;
+    right: 0;
+    transform: translate(50%, -50%); /* Center the ribbon */
+}
+
+/* Add styles for the ribbon */
+.category-ribbon {
+    background-color: #f16522; /* Adjust color as needed */
+    color: #ffffff;
+    padding: 5px 20px; /* Adjust size as needed */
+    border-radius: 3px;
+    position: relative;
+    z-index: 1; /* Place the ribbon above content */
+    transform: translateX(40%) rotate(45deg); /* Adjust the translateX value as needed */
+    transform-origin: top right; /* Rotate around the top right corner */
+    top: 80px;
+    right: 85px;
+    width: 110px;
+
+    text-align: center;
+    font-size: 14px; /* Adjust font size as needed */
+    line-height: 1.2; /* Adjust line height as needed */
+}
+
+/* Ensure the ribbon text is readable */
+.category-ribbon::before {
+    content: "";
+    position: absolute;
+    top: -4px;
+    left: 0;
+    border-width: 5px 5px 0;
+    border-style: solid;
+    border-color: #f16522 transparent transparent transparent;
+}
+
+.blog-button {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.blog-button a {
+    background-color: #f16522; /* Adjust color as needed */
+    color: #ffffff;
+    padding: 10px 20px;
+    border-radius: 5px;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 16px;
+}
+
+
+@media screen and (max-width: 768px) {
+    .blog-card {
+        width: calc(70% - 20px);
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .blog-card {
+        width: 100%;
+    }
+}
+
+
+--- views/liteblog/widgets/blog.tt
+<!-- Blog Cards -->
+<section id="blog">
+    <div class="blog-header">
+        <h2>[% widget.title %]</h2>
+    </div>
+[% INCLUDE 'liteblog/widgets/blog-cards.tt' %]
+</section>
+
+--- views/liteblog/widgets/activities.tt
+<!-- Activity Cards -->
+<section id="activities">
+    [% FOREACH a IN widget.elements %]
+        [% IF a.link %]
+        <div class="activity-card clickable-div" id="activity-[% a.name %]">
+            [% IF a.image %]
+            <a href="[% a.link %]"><img width="300" height="300" src="[% a.image %]" alt="[% a.name %]"></a>
+            [% END %]
+        [% ELSE %]
+        <div class="activity-card" id="activity-[% a.name %]">
+            <img width="300" height="300" src="/images/[% a.name %].jpg" alt="[% a.name %]">
+        [% END %]
+            <h2>[% a.name %]</h2>
+            <p>[% a.desc %] </p>
+        </div> <!-- END activity-card -->
+
+        [% IF a.link %]
+        <script type="text/javascript">
+        // JavaScript code to make the blog-card clickable
+        document.getElementById('activity-[% a.name %]').addEventListener('click', function() {
+            window.location.href = '[% a.link %]';
+        });
+        </script>
+        [% END %]
+    [% END %]
+</section> <!-- END activities section -->
+
+--- activities.yml
+---
+- name: "LinkedIn"
+  link: '#'
+  image: '/images/LiteBlog.jpg'
+  desc: "Checkout my LinkedIn profile. This is an example. Feel free to change it in <code>liteblog/activities.yml</code>."
+- name: "GitHub"
+  link: "https://github.com/PerlDancer"
+  desc: "This is the Dancer GitHub Official account. It's a good time to Star the <a href=\"https://github.com/PerlDancer/Dancer2\">Dancer2</a> project!  This is an example. Feel free to change it in <code>liteblog/activities.yml</code>."
 
