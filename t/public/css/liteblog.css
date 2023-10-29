@@ -139,9 +139,8 @@ h3.site-baseline {
     text-decoration: none;
 } 
 
-/* For the default content when the website is empty, do not move this to the
- * widget CSS file */
-section#activities {
+/* For the default content when the website is empty */
+section#main-page {
     width: 80%;
     max-width: 800px;
     margin: auto;
