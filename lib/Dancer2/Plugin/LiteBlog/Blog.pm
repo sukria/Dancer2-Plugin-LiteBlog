@@ -4,6 +4,7 @@ use Carp 'croak';
 use YAML::XS;
 use File::Spec;
 use File::Stat;
+use Path::Tiny;
 use Dancer2::Plugin::LiteBlog::Article;
 
 extends 'Dancer2::Plugin::LiteBlog::Widget';
@@ -90,9 +91,9 @@ sub select_articles {
 
     # Sort directories by creation date in descending order
     @dirs = sort {
-        my @a_stat = stat(File::Spec->catdir($root, $a));
-        my @b_stat = stat(File::Spec->catdir($root, $b));
-        $b_stat[10] <=> $a_stat[10]; # creation time 
+        my $time_a = $self->created_time(File::Spec->catdir($root, $a));
+        my $time_b = $self->created_time(File::Spec->catdir($root, $b));
+        $time_b <=> $time_a;
     } @dirs;
 
     my @records;
@@ -112,6 +113,23 @@ sub select_articles {
     }
     return \@records;
 }
+
+sub created_time {
+    my ($self, $file_path) = @_;
+    my $path = path($file_path);
+
+    # Hopefully the underlying FS supports birthtime
+    my $time;
+    if ( $path->can('birthtime') ) {
+        $time = $path->birthtime;
+    }
+    else {
+        my @stat = stat($file_path);
+        $time = $stat[9]; # mtime
+    }
+    return $time;
+}
+
 
 sub find_article {
     my ($self, %params) = @_;

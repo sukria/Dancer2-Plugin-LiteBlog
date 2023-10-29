@@ -46,8 +46,8 @@ subtest 'select articles' => sub {
         category => 'tech',
     );
     is scalar(@$articles), 2, "Found 2 tech articles";
-    is $articles->[0]->title, 'A recent article', "First article is OK";
-    is $articles->[1]->title, 'A super Tech Blog Post', "Second article is OK";
+    is $articles->[0]->title, 'A super Tech Blog Post', "article 1 is OK";
+    is $articles->[1]->title, 'A recent article', "First article 2 is OK";
 
     done_testing();
 };
