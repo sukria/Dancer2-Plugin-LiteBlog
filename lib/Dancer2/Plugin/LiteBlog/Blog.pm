@@ -45,7 +45,13 @@ has elements => (
                     basedir => File::Spec->catfile( $self->root, $path)
                 )
             };
-            push @posts, $post if ! $@;
+            next if $@; # invalid path for a LiteBlog::Article object
+            
+            eval { $post->content && $post->title };
+            next if $@; # invalid LiteBlog::Article object: no content & meta
+
+            # At this point, we're sure the post is OK to be rendered.
+            push @posts, $post;
         }
         
         return \@posts;
