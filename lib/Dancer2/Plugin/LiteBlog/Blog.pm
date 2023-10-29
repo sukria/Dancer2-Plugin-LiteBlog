@@ -227,7 +227,8 @@ sub declare_routes {
                     widget => {
                         title =>  "Title",
                         elements  => $articles,
-                        readmore_button => 'Load more articles', }})
+                        #TODO: readmore_button => 'Load more articles', 
+                        }})
                 }, 
                 {layout => 'liteblog'}
             );
