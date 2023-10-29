@@ -193,7 +193,7 @@ sub declare_routes {
             my $articles = $self->select_articles(category => $category, limit => 6);
             return $plugin->dsl->template(
                 'liteblog/single-page', {
-                    page_title => 'foo',
+                    page_title => ucfirst($category)." Stories",
                     content => $plugin->dsl->template('liteblog/widgets/blog-cards', {
                     widget => {
                         title =>  "Title",
