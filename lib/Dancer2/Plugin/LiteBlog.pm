@@ -106,11 +106,8 @@ sub BUILD {
 sub liteblog_init {
     my ($plugin) = @_;
  
-    warn "liteblog_init";
     my $liteblog = $plugin->dsl->config->{'liteblog'};
     my $widgets = load_widgets($plugin, $liteblog);
-
-    $plugin->dsl->info("widgets: ", $widgets);
 
     # implement the declared routes of all registered widgets 
     foreach my $widget (@{ $widgets }) {
