@@ -48,5 +48,9 @@ like ($article->content, qr/<h1>This is the first.*<\/h1>/, "content has been re
 
 like ($article->permalink, qr{/blog/tech/first-article}, "permalink looks good");
 
+
+like $article->published_time, qr/\d{10}/, "published_time is calculated";
+like $article->published_date, qr/\d+ \w+, \d{4}/, "published_date is correctly formatted";
+
 # End of tests
 done_testing;

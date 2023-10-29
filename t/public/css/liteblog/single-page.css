@@ -36,14 +36,28 @@
     padding-left: 100px; /* to counter the space taken by the avatar on the right */
 }
 
-/* Styling of the single page content */
 section#single-page {
     position: relative; /* this will be the anchor for the meta section */
-    font-family: source-serif-pro, Georgia, Cambria, "Times New Roman", Times, serif;
-    font-size: 18px;
+    margin: auto;
     width: 70%;
-    margin-right: 5%;
+    min-width: 450px;
     max-width: 800px;
+    background-color: #fff;
+    padding: 20px;
+    border-left: 2px solid #DDD;
+    border-right: 2px solid #DDD;
+    border-bottom: 2px solid #DDD;
+    font-size: 18px;
+}
+
+.single-page-wrapper {
+    width: 100%;
+    max-width: 800px;
+    margin: auto;
+}
+
+section#single-page p, ul, li {
+    font-family: source-serif-pro, Georgia, Cambria, "Times New Roman", Times, serif;
 }
 
 section#single-page h1, h2, h3, h4 {

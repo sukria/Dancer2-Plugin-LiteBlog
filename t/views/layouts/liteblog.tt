@@ -12,6 +12,9 @@
     <link href="https://fonts.googleapis.com/css?family=Roboto:400,700|Lato:400,400i,700&display=swap" rel="stylesheet">
 
     <link rel="stylesheet" href="/css/liteblog.css">
+    [% FOREACH w IN widgets %]
+    <link rel="stylesheet" href="/css/liteblog/[% w.name %].css">
+    [% END %]
     [% IF page_title %]
     <!-- a page_title is defined, let's load the single-page css -->
     <link rel="stylesheet" href="/css/liteblog/single-page.css">
