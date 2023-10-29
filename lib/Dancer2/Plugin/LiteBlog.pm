@@ -61,8 +61,12 @@ sub load_widgets {
 sub BUILD {
     my $plugin = shift;
 
-    $plugin->dsl->info("LiteBlog Init: forcing template_toolkit");
+    $plugin->dsl->info("LiteBlog Init: forcing template_toolkit with '[%', '%]'");
     $plugin->app->config->{template} = 'template_toolkit';
+    $plugin->app->config->{engines}->{template}->{template_toolkit} = {
+        start_tag => '[%',
+        end_tag   => '%]',
+    };
 
     # Prepare default template tokens with appropriate resources.
     $plugin->app->add_hook( Dancer2::Core::Hook->new(
@@ -102,13 +106,17 @@ sub BUILD {
 sub liteblog_init {
     my ($plugin) = @_;
  
+    warn "liteblog_init";
     my $liteblog = $plugin->dsl->config->{'liteblog'};
     my $widgets = load_widgets($plugin, $liteblog);
+
+    $plugin->dsl->info("widgets: ", $widgets);
 
     # implement the declared routes of all registered widgets 
     foreach my $widget (@{ $widgets }) {
         my $w = $widget->{instance};
         next if ! $w->has_routes;
+        $plugin->dsl->info("Widget '".$widget->{name}."' registered, declaring its routes…");
         $w->declare_routes($plugin, $widget);
     }
 }
