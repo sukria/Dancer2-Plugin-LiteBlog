@@ -236,6 +236,35 @@ sub declare_routes {
             );
         }
     );
+
+    $plugin->app->add_route(
+        method => 'get',
+        regexp => '/:page',
+        code => sub {
+            my $slug = $plugin->dsl->param('page');
+            my $article = $self->find_article(path => $slug );
+
+            if (! defined $article) {
+                $plugin->dsl->info("Page not found : $slug");
+                return $plugin->dsl->status('not_found');
+            }
+            
+            # TODO hanlde invalid/missing $article->content as a 404
+            return $plugin->dsl->template(
+                'liteblog/single-page',
+                {
+                    page_title => $article->title,
+                    content    => $article->content, 
+                    meta       => [
+                        { 
+                            label => "Last update: ".$article->published_date 
+                        }
+                    ],
+                },
+                { layout => 'liteblog'}
+            );
+        },
+    );
 }
 
 1;
