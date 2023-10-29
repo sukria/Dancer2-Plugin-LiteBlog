@@ -36,12 +36,24 @@
     padding-left: 100px; /* to counter the space taken by the avatar on the right */
 }
 
-/* Styling of the single page content */
 section#single-page {
     position: relative; /* this will be the anchor for the meta section */
-    font-size: 18px;
+    margin: auto;
     width: 70%;
+    min-width: 450px;
     max-width: 800px;
+    background-color: #fff;
+    padding: 20px;
+    border-left: 2px solid #DDD;
+    border-right: 2px solid #DDD;
+    border-bottom: 2px solid #DDD;
+    font-size: 18px;
+}
+
+.single-page-wrapper {
+    width: 100%;
+    max-width: 800px;
+    margin: auto;
 }
 
 section#single-page p, ul, li {
