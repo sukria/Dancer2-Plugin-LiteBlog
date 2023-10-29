@@ -17,8 +17,17 @@ my %WriteMakefileArgs = (
         'Test::More' => '0',
     },
     PREREQ_PM => {
-        #'ABC'              => '1.6',
-        #'Foo::Bar::Module' => '5.0401',
+        'DateTime' => 0,
+        'File::Basename' => 0,
+        'File::Path' => 0,
+        'File::Slurp' => 0,
+        'File::Spec' => 0,
+        'File::Stat' => 0,
+        'MIME::Base64' => 0,
+        'Moo' => 0,
+        'Path::Tiny' => 0,
+        'Text::Markdown' => 0,
+        'YAML::XS' => 0,
     },
     dist  => { COMPRESS => 'gzip -9f', SUFFIX => 'gz', },
     clean => { FILES => 'Dancer2-Plugin-LiteBlog-*' },
@@ -53,3 +62,4 @@ delete $WriteMakefileArgs{LICENSE}
     unless eval { ExtUtils::MakeMaker->VERSION('6.31'); 1 };
 
 WriteMakefile(%WriteMakefileArgs);
+
