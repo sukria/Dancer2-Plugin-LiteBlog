@@ -1,6 +1,7 @@
 ---
 - name: "LinkedIn"
   link: '#'
+  image: '/images/LiteBlog.jpg'
   desc: "Checkout my LinkedIn profile. This is an example. Feel free to change it in <code>liteblog/activities.yml</code>."
 - name: "GitHub"
   link: "https://github.com/PerlDancer"
