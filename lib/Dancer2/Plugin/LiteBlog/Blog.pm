@@ -3,6 +3,7 @@ use Moo;
 use Carp 'croak';
 use YAML::XS;
 use File::Spec;
+use File::Stat;
 use Dancer2::Plugin::LiteBlog::Article;
 
 extends 'Dancer2::Plugin::LiteBlog::Widget';
@@ -49,6 +50,68 @@ has elements => (
         return \@posts;
     },
 );
+
+=head2 select_articles (%params)
+
+Lookup the article repository of the object (C<root>) for articles that 
+match the criteria.
+
+Articles are always returned in descending chronological order (using their 
+published_date attibute).
+
+  params:
+    limit: (default: 1), number of article to retreive (max: 20).
+    category: if specified, limit the lookup to articles of that category
+
+=cut
+
+sub select_articles {
+    my ($self, %params) = @_;
+
+    my $limit = $params{limit} || 1;
+    $limit = 20 if $limit > 20;
+
+    # We'll look in the Blog's repository
+    my $root = $self->root;
+
+    # If a category is given, the root is the category's repo.
+    if (defined $params{category}) {
+        my $cat = $params{category};
+        $root = File::Spec->catdir($root, $cat);
+        croak "Not a valid category: '$cat'" if ! -d $root;
+    }
+
+    # Get the list of all directories in the root
+    opendir my $dh, $root or croak "Cannot open directory: $!";
+    my @dirs = grep { 
+        -d File::Spec->catdir($root, $_) && !/^\.{1,2}$/ 
+    } readdir $dh;
+    closedir $dh;
+
+    # Sort directories by creation date in descending order
+    @dirs = sort {
+        my @a_stat = stat(File::Spec->catdir($root, $a));
+        my @b_stat = stat(File::Spec->catdir($root, $b));
+        $b_stat[10] <=> $a_stat[10]; # creation time 
+    } @dirs;
+
+    my @records;
+    my $count = 0;
+    # Load Article objects up to the limit
+    foreach my $dir (@dirs) {
+        my $article;
+        $article = Dancer2::Plugin::LiteBlog::Article->new( 
+            basedir => File::Spec->catdir($root, $dir) );
+
+        # make sur this is a valid article 
+        eval { $article->content };
+        next if $@;
+
+        push @records, $article;
+        last if ++$count == $limit;
+    }
+    return \@records;
+}
 
 sub find_article {
     my ($self, %params) = @_;
