@@ -1,3 +1,11 @@
+
+/* Restore full width */
+section#activities {
+    width: 100%;
+    max-width: 2000px;
+    margin: auto;
+}
+
 #activity-welcome {
     width: calc(66.66% - 20px); /* 2/3 of the width minus the margin */
     margin: 0 auto; /* Center the card horizontally */
