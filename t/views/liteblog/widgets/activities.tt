@@ -3,7 +3,9 @@
     [% FOREACH a IN widget.elements %]
         [% IF a.link %]
         <div class="activity-card clickable-div" id="activity-[% a.name %]">
-            <a href="[% a.link %]"><img width="300" height="300" src="/images/[% a.name %].jpg" alt="[% a.name %]"></a>
+            [% IF a.image %]
+            <a href="[% a.link %]"><img width="300" height="300" src="[% a.image %]" alt="[% a.name %]"></a>
+            [% END %]
         [% ELSE %]
         <div class="activity-card" id="activity-[% a.name %]">
             <img width="300" height="300" src="/images/[% a.name %].jpg" alt="[% a.name %]">
