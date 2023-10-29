@@ -104,12 +104,12 @@ has title => (
     },
 );
 
-has featured => (
+has image => (
     is => 'ro',
     lazy => 1,
     default => sub {
         my ($self) = @_;
-        return $self->meta->{'featured'};
+        return $self->meta->{'image'};
     },
 );
 
