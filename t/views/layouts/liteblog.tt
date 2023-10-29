@@ -42,8 +42,12 @@
     <section id="hero">
     [% END %]
         <div class="header-wrapper">
-            <!-- TODO : avatar should be a setting with these as defaults -->
+            [% IF logo %]
+            <a href="/"><img src="[% logo %]" alt="[% title %] Logo" id="avatar"></a>
+            [% ELSE %]
+            <!-- Change the 'logo' setting (under the 'liteblog' config entry) to change this image -->
             <a href="/"><img src="/images/liteblog.jpg" alt="LiteBlog Logo" id="avatar"></a>
+            [% END %]
             <a href="/"><h1 class="site-title">[% title %]</h1></a>
             [% IF baseline %]
             <h3 class="site-baseline">[% baseline %]</h3>
