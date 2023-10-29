@@ -3,7 +3,46 @@ body {
     background-color: #f4f4f4;
     margin: 0;
     padding: 0;
+
+    font-size: 16px;
+    line-height: 1.3;
 }
+
+h1, h2, h3, h4, h5, h6 {
+    font-weight: 600; /* slightly bold but not too heavy */
+}
+h1 {
+    font-size: 2.5em;
+}
+h2 {
+    font-size: 2em;
+}
+h3 {
+    font-size: 1.75em;
+}
+
+a {
+    color: #007BFF; /* Example blue color */
+    text-decoration: none; /* Remove underline */
+    transition: color 0.3s ease; /* Smooth color transition */
+}
+a:hover {
+    color: #0056b3; /* Darker shade of blue for hover state */
+}
+
+button, .btn {
+    background-color: #007BFF;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+button:hover, .btn:hover {
+    background-color: #0056b3;
+}
+
 
 /* Header Menu */
 /* CSS for the mobile header */
@@ -300,6 +339,14 @@ section#single-page {
 /* For mobile responsiveness */
 
 @media screen and (max-width: 768px) {
+    
+    body {
+        font-size: 15px;
+    }
+    h1, h2, h3 {
+        line-height: 1.4;
+    }
+
     .activity-card {
         width: calc(50% - 20px);
     }
