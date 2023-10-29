@@ -137,6 +137,8 @@ sub find_article {
     return $article;
 }
 
+# Dancer Section - TODO: split this class in two?
+
 sub has_routes { 1 }
 
 sub declare_routes {
@@ -175,6 +177,31 @@ sub declare_routes {
                 {
                     layout => 'liteblog'
                 });
+        }
+    );
+
+    # the /category landing page
+    $plugin->app->add_route(
+        method => 'get',
+        regexp => "${prefix}/:category/?",
+        code   => sub {
+            my $category = $plugin->dsl->param('category');
+            if (! -d File::Spec->catdir($self->root, $category)) {
+                $plugin->dsl->info("Invalid category requested: '$category'");
+                return $plugin->dsl->status('not_found');
+            }
+            my $articles = $self->select_articles(category => $category, limit => 6);
+            return $plugin->dsl->template(
+                'liteblog/single-page', {
+                    page_title => 'foo',
+                    content => $plugin->dsl->template('liteblog/widgets/blog-cards', {
+                    widget => {
+                        title =>  "Title",
+                        elements  => $articles,
+                        readmore_button => 'Load more articles', }})
+                }, 
+                {layout => 'liteblog'}
+            );
         }
     );
 }
