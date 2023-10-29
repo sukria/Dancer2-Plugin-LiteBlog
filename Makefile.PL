@@ -29,7 +29,7 @@ sub MY::postamble {
     return <<'EOM';
 
 listdeps:
-	@grep -r 'use' lib/ | sed -e 's/:.*//' | sort -u
+	@grep -r 'use' lib/ | sed -e 's/.*:\s*use //' | sed -e 's/;//' | grep -v 'LiteBlog' | sort -u
 
 EOM
 }
