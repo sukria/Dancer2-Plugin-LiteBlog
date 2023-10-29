@@ -39,11 +39,13 @@
 /* Styling of the single page content */
 section#single-page {
     position: relative; /* this will be the anchor for the meta section */
-    font-family: source-serif-pro, Georgia, Cambria, "Times New Roman", Times, serif;
     font-size: 18px;
     width: 70%;
-    margin-right: 5%;
     max-width: 800px;
+}
+
+section#single-page p, ul, li {
+    font-family: source-serif-pro, Georgia, Cambria, "Times New Roman", Times, serif;
 }
 
 section#single-page h1, h2, h3, h4 {
