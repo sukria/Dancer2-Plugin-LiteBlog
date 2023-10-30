@@ -1,4 +1,25 @@
 package Dancer2::Plugin::LiteBlog::Blog;
+
+=head1 NAME
+
+Dancer2::Plugin::LiteBlog::Blog - Blog widget for Liteblog.
+
+=head1 DESCRIPTION
+
+This module is responsible for handling the core blog functionalities within the
+L<Dancer2::Plugin::LiteBlog> system. It extends from the 'Widget' class and
+provides features to retrieve and display blog articles or pages as well as 
+category pages and a landing page widget used to display blog post cards.
+
+=head1 SYNOPSIS
+
+A Blog object is based on a C<root> directory that must hold a blog-meta.yml 
+file, describing all specific details of the blog. In this directory, pages 
+and articles are located, represented by L<Dancer2::Plugin::LiteBlog::Article> 
+objects.
+
+=cut
+
 use Moo;
 use Carp 'croak';
 use YAML::XS;
@@ -8,6 +29,16 @@ use Path::Tiny;
 use Dancer2::Plugin::LiteBlog::Article;
 
 extends 'Dancer2::Plugin::LiteBlog::Widget';
+
+=head1 ATTRIBUTES
+
+=head2 meta
+
+Read-only attribute that retrieves and returns the meta information for the blog
+from the 'blog-meta.yml' file. If this file is not found, an exception will be
+thrown.
+
+=cut
 
 has meta => (
     is => 'ro',
@@ -22,12 +53,27 @@ has meta => (
     },
 );
 
+=head2 mount 
+
+Read-only attribute that set where the blog resources should be accessible from, 
+in the site's URL.
+
+=cut
+
 has mount => (
     is => 'ro',
     default => sub {
         "/blog"
     },
 );
+
+=head2 elements
+
+Read-only attribute that contains a list of featured posts from the blog meta
+information. Each post is represented as an instance of the
+L<Dancer2::Plugin::LiteBlog::Article> class.
+
+=cut
 
 # The widget returns the featured posts.
 # TODO : option to return the last N posts instead.
@@ -60,15 +106,20 @@ has elements => (
 
 =head2 select_articles (%params)
 
-Lookup the article repository of the object (C<root>) for articles that 
-match the criteria.
+Lookup the article repository (C<root>) for articles that match the criteria.
 
 Articles are always returned in descending chronological order (using their 
 published_date attibute).
 
-  params:
-    limit: (default: 1), number of article to retreive (max: 20).
-    category: if specified, limit the lookup to articles of that category
+=head3 params
+
+=over 4 
+
+=item * C<limit>: (default: 1), number of article to retreive (max: 20).
+
+=item * C<category>: if specified, limit the lookup to articles of that category
+
+=back
 
 =cut
 
@@ -97,8 +148,8 @@ sub select_articles {
 
     # Sort directories by creation date in descending order
     @dirs = sort {
-        my $time_a = $self->created_time(File::Spec->catdir($root, $a));
-        my $time_b = $self->created_time(File::Spec->catdir($root, $b));
+        my $time_a = $self->_created_time(File::Spec->catdir($root, $a));
+        my $time_b = $self->_created_time(File::Spec->catdir($root, $b));
         $time_b <=> $time_a;
     } @dirs;
 
@@ -120,22 +171,35 @@ sub select_articles {
     return \@records;
 }
 
-sub created_time {
-    my ($self, $file_path) = @_;
-    my $path = path($file_path);
+=head2 find_article (%params)
 
-    # Hopefully the underlying FS supports birthtime
-    my $time;
-    if ( $path->can('birthtime') ) {
-        $time = $path->birthtime;
-    }
-    else {
-        my @stat = stat($file_path);
-        $time = $stat[9]; # mtime
-    }
-    return $time;
-}
+Searches and returns an article based on the provided path. Optionally, you can
+specify a category as well.
 
+=over 4
+
+=item * C<path>: The path to the article. This is mandatory.
+
+=item * C<category>: The category of the article. This is optional. If given, the path will be prefixed with the category.
+
+=back
+
+If the article is found, it returns an instance of
+C<Dancer2::Plugin::LiteBlog::Article> corresponding to the article. Otherwise,
+it returns undef.
+
+Examples:
+
+    # Find an article in the 'tech' category with path 'new-tech'
+    my $article = $blog->find_article(category => 'tech', path => 'new-tech');
+
+    # Find an article with path 'about-me'
+    my $article = $blog->find_article(path => 'about-me');
+
+Note: The method will croak if the C<path> parameter is not provided or if an
+invalid category is provided.
+
+=cut
 
 sub find_article {
     my ($self, %params) = @_;
@@ -163,7 +227,38 @@ sub find_article {
 
 # Dancer Section - TODO: split this class in two?
 
+=head1 LITEBLOG WIDGET INTERFACE
+
+This class implements the L<Dancer2::Plugin::LiteBlog::Widget> interface.
+It declares routes.
+
+=head2 has_routes 
+
+Returns a true value as routes are declared by this Widget.
+
+=cut
+
 sub has_routes { 1 }
+
+=head2 declare_routes 
+
+This method declares routes for the Dancer2 application. 
+
+=head3 GET C</$mount/:cat/:slug>
+
+Retrieves and displays a specific article based on its category (C<:cat>) and
+permalink (C<:slug>). If the article is not found, it will return a 404 status.
+The rendering is done with the C<liteblog/single-page> template.
+
+The prefix (C<$mount>) is taken from the C<mount> attriute of the instance and
+defaults to C</blog>.
+
+Examples:
+
+  /blog/tech/new-tech
+  /blog/lifestyle/my-journey
+
+=cut
 
 sub declare_routes {
     my ($self, $plugin, $config) = @_;
@@ -209,6 +304,19 @@ sub declare_routes {
         }
     );
 
+=head3 GET C</blog/:category/>
+
+Displays a landing page for a specific category. If the category is not found or
+invalid, it will return a 404 status. The rendering is done with the
+'liteblog/single-page' template.
+
+Examples:
+
+  /blog/tech/
+  /blog/lifestyle/
+
+=cut
+
     # the /category landing page
     $plugin->app->add_route(
         method => 'get',
@@ -236,6 +344,19 @@ sub declare_routes {
             );
         }
     );
+
+=head3 GET C</:page>
+
+This is a catch-all route for retrieving and displaying any article based on its
+page path. If the article is not found, it will return a 404 status. The
+rendering is done with the 'liteblog/single-page' template.
+
+Examples:
+
+  /about-me
+  /contact
+
+=cut
 
     $plugin->app->add_route(
         method => 'get',
@@ -266,5 +387,25 @@ sub declare_routes {
         },
     );
 }
+
+# Private subs
+
+sub _created_time {
+    my ($self, $file_path) = @_;
+    my $path = path($file_path);
+
+    # Hopefully the underlying FS supports birthtime
+    my $time;
+    if ( $path->can('birthtime') ) {
+        $time = $path->birthtime;
+    }
+    else {
+        my @stat = stat($file_path);
+        $time = $stat[9]; # mtime
+    }
+    return $time;
+}
+
+
 
 1;
