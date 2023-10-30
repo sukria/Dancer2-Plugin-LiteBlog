@@ -1,4 +1,5 @@
 package Dancer2::Plugin::LiteBlog;
+
 =head1 NAME
 
 Dancer2::Plugin::LiteBlog - A minimalist, file-based blog engine for Dancer2. 
