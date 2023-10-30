@@ -1,7 +1,6 @@
 
 /* Restore full width */
 section#activities {
-    width: 100%;
     max-width: 2000px;
     margin: auto;
 }
