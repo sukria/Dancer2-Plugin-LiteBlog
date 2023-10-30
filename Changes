@@ -1,5 +1,18 @@
 Revision history for Dancer2-Plugin-LiteBlog
 
-0.01    Date/time
-        First version, released on an unsuspecting world.
+0.01    2023-10-30
+
+        [ DOCUMENTATION ]
+        * All public Classes are documented.
+
+        [ SCAFFOLDER ]
+        * bin/liteblog-scaffold to generate views and assets in a Dancer2 app
+          dir.
+
+        [ FEATURES ]
+        * Default routes loaded when using the plugin for a landing page (/) and
+          blog-related routes (/blog/cat/slug, ...)
+        * Activities card to show off hobby, social networks, profesional links…
+        * Widgets are generic classes that allow for unlimited extensibility in
+          the future (Activities and Blog are implementing it).
 
