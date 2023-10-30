@@ -5,7 +5,6 @@ lib/Dancer2/Plugin/LiteBlog.pm
 lib/Dancer2/Plugin/LiteBlog/Activities.pm
 lib/Dancer2/Plugin/LiteBlog/Article.pm
 lib/Dancer2/Plugin/LiteBlog/Blog.pm
-lib/Dancer2/Plugin/LiteBlog/Routes.pm
 lib/Dancer2/Plugin/LiteBlog/Scaffolder.pm
 lib/Dancer2/Plugin/LiteBlog/Scaffolder/Data.pm
 lib/Dancer2/Plugin/LiteBlog/Widget.pm
