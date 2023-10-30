@@ -1,21 +1,19 @@
-<!-- Blog Cards -->
-<section id="blog">
-    <div class="blog-header">
-        <h2>[% widget.title %]</h2>
-    </div>
-    <div class="blog-cards">
-
+<div class="blog-cards">
         <!-- Individual blog post cards go here -->
         [% FOREACH p IN widget.elements %]
     <div class="blog-card" id="blog-[% p.slug %]">
-        <a href="[% p.permalink %]"><img src="[% p.featured %]" alt="[% p.title %]"></a>
-        <h3>[% p.title %]</h3>
+        [% IF p.image %]
+        <a href="[% p.permalink %]"><img class="post-image" src="[% p.image %]" alt="[% p.title %]"></a>
+        [% END %]
+        <h3 class="post-title">[% p.title %]</h3>
 
+        [% UNLESS p.is_page %]
 	    <div class="category-container">
             <div class="category-ribbon">[% p.category %]</div>
         </div>
+        [% END %]
     
-	    <p>[% p.excerpt %]</p>
+	    <p class="post-excerpt">[% p.excerpt %]</p>
     </div>
 
     <script type="text/javascript">
@@ -26,11 +24,10 @@
     </script>
     [% END %]
 
-    </div> <!-- END blog-cards -->
+</div> <!-- END blog-cards -->
     
-    [% IF blog.readmore_button %]
-    <div class="blog-button">
-        <a href="/blog">[% blog.readmore_button %]</a>
-    </div>
-    [% END %]
-</section>
+[% IF widget.readmore_button %]
+<div class="blog-button">
+    <a href="/blog">[% widget.readmore_button %]</a>
+</div>
+[% END %]

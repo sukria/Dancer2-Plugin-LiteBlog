@@ -1,6 +1,6 @@
 [% IF no_widgets %]
-<section id="activities">
-    <div class="activity-card" id="activity-welcome">
+<section id="main-page">
+    <div class="main-page-content">
         <h2>Great! Now it's time to enable some widgets</h2>
         <p>
             Welcome to your LiteBlog site! Everything is working just fine. You just have to enable some widgets in your Dancer2 config.
@@ -25,7 +25,7 @@ liteblog:
 [% ELSE %]
 
 [% FOREACH widget IN widgets %]
-[% INCLUDE "liteblog/$widget.view" %]
+[% INCLUDE "liteblog/widgets/$widget.view" %]
 [% END %]
 
 [% END %]

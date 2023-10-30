@@ -1,0 +1,157 @@
+/* Styling for the post entry page */
+
+/* The hero header is smaller in height */
+.hero-single-page {
+    flex-direction: row-reverse; /* Reverse the direction to align hero section to the right */
+    text-align: center;
+	display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    padding: 10px 40px !important; /* Adjust padding as needed */
+}
+
+.hero-single-page h1 {
+    font-size: 18px;
+}
+
+.hero-single-page #avatar {
+    width: 64px !important; /* Adjust the size as needed */
+    height: 64px !important;
+    border-radius: 50%;
+    margin: 0 !important; /* Remove margin */
+}
+
+
+/* Title of the article / page */
+
+.hero-title-single-page {
+    text-align: center;
+    width: 100%;
+}
+
+.hero-title-single-page h1.hero-title-text  {
+    font-family: 'Roboto', sans-serif; /* Use Raleway font */
+    font-size: 36px; /* Adjust font size as needed */
+    color: #eee; /* Light grey color */
+    padding-left: 100px; /* to counter the space taken by the avatar on the right */
+}
+
+section#single-page {
+    position: relative; /* this will be the anchor for the meta section */
+    margin: auto;
+    width: 70%;
+    min-width: 450px;
+    max-width: 800px;
+    background-color: #fff;
+    padding: 20px;
+    border-left: 2px solid #DDD;
+    border-right: 2px solid #DDD;
+    border-bottom: 2px solid #DDD;
+    font-size: 18px;
+}
+
+.single-page-wrapper {
+    width: 100%;
+    max-width: 800px;
+    margin: auto;
+}
+
+section#single-page p, ul, li {
+    font-family: source-serif-pro, Georgia, Cambria, "Times New Roman", Times, serif;
+}
+
+section#single-page h1, h2, h3, h4 {
+    font-family: 'Roboto', sohne, "Helvetica Neue", Helvetica, Arial, sans-serif;
+    color: #444;
+}
+
+section#single-page h1 {  font-size: 28px !important; }
+
+section#single-page div.single-page-wrapper h2 {  
+  font-size: 22px;
+}
+
+section#single-page h3 {  font-size: 18px !important; }
+section#single-page h4 {  font-size: 14px !important; }
+
+
+/* single-page meta */
+
+/* Style the single-page-meta section to fit naturally on the right of the centered main content section */
+#single-page-top {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    margin-top: 0px; /* Add spacing between hero and content */
+}
+
+/* Styling for the post entry page */
+.single-page-meta {
+    position: absolute; /* position it absolutely */
+    bottom: 0px; /* distance from the bottom of the container */
+    right: 0px; /* distance from the right of the container */
+    background-color: rgba(255, 255, 255, 0.9); /* slightly translucent white background to ensure legibility */
+    padding: 5px 5px; /* some padding for aesthetics */
+    border-radius: 5px; /* rounded corners */
+    font-family: 'Roboto', sans-serif;
+    font-size: 0.8em;
+    color: #999;
+    box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1); /* subtle shadow for a lifted effect */
+}
+
+.single-page-meta span {
+    margin-left: 5px; /* space between meta items */
+    padding-left: 5px;
+    border-left: 1px solid #ddd;
+}
+.single-page-meta span:first-child {
+    border-left: none;
+    margin-left: 0;
+    padding-left: 0;
+}
+
+.single-page-meta span:last-child {
+    margin-right: 0; /* remove the margin for the last item */
+}
+
+/* Links in the single-page-meta elements like buttons */
+.single-page-meta span a {
+    color: inherit; /* takes the color of the parent element, in this case, the .single-page-meta color */
+    text-decoration: none; /* removes the underline */
+    padding: 5px 10px;
+}
+
+.single-page-meta span.clickable:hover {
+    background-color: rgba(220, 220, 220, 0.7); /* slightly gray background on hover */
+    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1); /* subtle shadow for a lifted effect on hover */
+}
+
+
+/* Responsiveness for the single-page layout */
+
+@media screen and (max-width: 768px) {
+
+.hero-title-single-page h1.hero-title-text {
+    padding: 0;
+    margin: 0;
+  }
+
+  div#single-page-top {
+      width: 100%;
+    flex-direction: column;
+  }
+
+  section#single-page {
+    width: 100%; /* Make the article full-width on small screens */
+    margin: auto;
+  }
+
+  .single-page-meta {
+    width: 100%; /* Make the meta section full-width on small screens */
+    margin-top: 20px; /* Add spacing between the article and meta section */
+  }
+
+  .single-page-meta .meta-box {
+    margin-bottom: 10px; /* Add spacing between menu items */
+  }
+}

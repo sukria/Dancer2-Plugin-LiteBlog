@@ -11,11 +11,15 @@ use MIME::Base64;
 my @files_to_embed = qw(
     public/images/liteblog.jpg
     public/css/liteblog.css
+    public/css/liteblog/blog.css
+    public/css/liteblog/activities.css
+    public/css/liteblog/single-page.css
     views/layouts/liteblog.tt
     views/liteblog/index.tt
-    views/liteblog/article.tt
-    views/liteblog/blog.tt
-    views/liteblog/activities.tt
+    views/liteblog/single-page.tt
+    views/liteblog/widgets/blog.tt
+    views/liteblog/widgets/activities.tt
+    views/liteblog/widgets/blog-cards.tt
     articles/blog-meta.yml
     articles/tech/first-article/content.md
     articles/tech/first-article/meta.yml

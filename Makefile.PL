@@ -17,12 +17,36 @@ my %WriteMakefileArgs = (
         'Test::More' => '0',
     },
     PREREQ_PM => {
-        #'ABC'              => '1.6',
-        #'Foo::Bar::Module' => '5.0401',
+        'DateTime' => 0,
+        'File::Basename' => 0,
+        'File::Path' => 0,
+        'File::Slurp' => 0,
+        'File::Spec' => 0,
+        'File::Stat' => 0,
+        'MIME::Base64' => 0,
+        'Moo' => 0,
+        'Path::Tiny' => 0,
+        'Text::Markdown' => 0,
+        'YAML::XS' => 0,
     },
     dist  => { COMPRESS => 'gzip -9f', SUFFIX => 'gz', },
     clean => { FILES => 'Dancer2-Plugin-LiteBlog-*' },
 );
+
+
+sub MY::postamble {
+    return <<'EOM';
+
+build_scaffolder:
+	@perl -Ilib -Idist dist/build.pl
+
+listdeps:
+	@grep -r 'use' lib/ | sed -e 's/.*:\s*use //' | sed -e 's/;//' | grep -v 'LiteBlog' | sort -u
+
+distdir: build_scaffolder
+
+EOM
+}
 
 # Compatibility with old versions of ExtUtils::MakeMaker
 unless (eval { ExtUtils::MakeMaker->VERSION('6.64'); 1 }) {
@@ -43,3 +67,4 @@ delete $WriteMakefileArgs{LICENSE}
     unless eval { ExtUtils::MakeMaker->VERSION('6.31'); 1 };
 
 WriteMakefile(%WriteMakefileArgs);
+

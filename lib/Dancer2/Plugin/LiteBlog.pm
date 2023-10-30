@@ -1,7 +1,28 @@
 package Dancer2::Plugin::LiteBlog;
+
 =head1 NAME
 
 Dancer2::Plugin::LiteBlog - A minimalist, file-based blog engine for Dancer2. 
+
+=head1 DESCRIPTION
+
+This Dancer2 plugin provides a lightweight blogging engine. Instead of relying
+on a database, it utilizes flat files, primarily markdown and YAML, to store and
+manage content. Through this plugin, Dancer2 applications can seamlessly
+integrate a blog without the overhead of database management.
+
+=head1 SYNOPSIS
+
+First, you need to scaffold Liteblog's assets in your Dancer2 application directory:
+
+   $ liteblog-scaffold . 
+
+Then, in your Dancer2 PSGI startup script:
+
+   # in your app.psgi 
+   use Dancer2;
+   use Dancer2::Plugin::LiteBlog;
+   liteblog_init();
 
 =head1 VERSION
 
@@ -18,10 +39,109 @@ use Carp 'croak';
 
 use Dancer2::Plugin;
 use Dancer2::Plugin::LiteBlog::Activities;
-use Dancer2::Plugin::LiteBlog::Routes;
 use Dancer2::Plugin::LiteBlog::Blog;
 
-sub load_widgets {
+=head1 METHODS
+
+=head2 BUILD 
+
+At build time, sets up essential configurations for the plugin and initializes
+the default routes.
+
+Template::Toolkit is forced (all scaffolded views are designed to be TT views). 
+Similarly, views tags are forced to TT's defaults: '[%' and '%]'.
+
+A C<before_template> hook is registered to populate tokens such as settings read 
+from the liteblog config (C<liteblog> entry in Dancer2's config) or the widgets 
+elements (see L<Dancer2::Plugin::LiteBlog::Widget>).
+
+A default C<GET /> route is defined and handles the landing page of the liteblog 
+site.
+
+=cut
+
+sub BUILD {
+    my $plugin = shift;
+
+    $plugin->dsl->info("LiteBlog Init: forcing template_toolkit with '[%', '%]'");
+    $plugin->app->config->{template} = 'template_toolkit';
+    $plugin->app->config->{engines}->{template}->{template_toolkit} = {
+        start_tag => '[%',
+        end_tag   => '%]',
+    };
+
+    # Prepare default template tokens with appropriate resources.
+    $plugin->app->add_hook( Dancer2::Core::Hook->new(
+        name => 'before_template',
+        code => sub {
+            my $tokens = shift;
+            my $liteblog = $plugin->dsl->config->{'liteblog'};
+            
+            # Each app setting is fowarded to the tokens
+            $plugin->dsl->info("LiteBlog Init: 'liteblog' loaded in the template tokens.");
+            foreach my $k (keys %$liteblog) {
+                $tokens->{$k} = $liteblog->{$k};
+                $plugin->dsl->info("setting token '$k'");
+            }
+
+            # Populate the loaded widgets in the tokens 
+            my $widgets = _load_widgets($plugin, $liteblog);
+            $tokens->{widgets} = $widgets;
+            $tokens->{no_widgets} = scalar(@$widgets) == 0;
+
+            # set a default title, if unset
+            $tokens->{title} = $liteblog->{'title'} || "A Great Liteblog Site" 
+                if !defined $tokens->{title};
+
+            return $tokens;
+        }
+    ));
+
+    $plugin->dsl->info("LiteBlog Init: registering route GET /");
+    $plugin->app->add_route(
+        method => 'get',
+        regexp => '/',
+        code   => sub {
+            $plugin->dsl->info("in the index route");
+            return $plugin->dsl->template(
+                'liteblog/index', {}, { layout => 'liteblog' }
+            );
+        });
+}
+
+=head2 liteblog_init
+
+A Liteblog app must call this keyword right after having C<use>'ed Dancer2::Plugin::Liteblog.
+This allows to declare widget-specific routes (defined in the Widget's classes) once the 
+config is fully read by Dancer2 (which is not the case at BUILD time).
+
+=cut
+
+sub liteblog_init {
+    my ($plugin) = @_;
+ 
+    my $liteblog = $plugin->dsl->config->{'liteblog'};
+    my $widgets = _load_widgets($plugin, $liteblog);
+
+    # implement the declared routes of all registered widgets 
+    foreach my $widget (@{ $widgets }) {
+        my $w = $widget->{instance};
+        next if ! $w->has_routes;
+        $plugin->dsl->info("Widget '".$widget->{name}."' registered, declaring its routes…");
+        $w->declare_routes($plugin, $widget);
+    }
+}
+
+plugin_keywords 'liteblog_init';
+
+
+# Private subs 
+
+# Loads all widgets and initializes them. Each widget is responsible for a
+# specific function or display within the blog. They are associated to stylesheets
+# in public/css/liteblog/widgets/$widget.css and views in
+# views/liteblog/$widget.
+sub _load_widgets {
     my ($plugin, $liteblog) = @_;
 
     # Load all widgets and initialize them 
@@ -58,100 +178,8 @@ sub load_widgets {
     return \@widgets;
 }
 
-sub BUILD {
-    my $plugin = shift;
-
-    $plugin->dsl->info("LiteBlog Init: forcing template_toolkit");
-    $plugin->app->config->{template} = 'template_toolkit';
-
-    # Prepare default template tokens with appropriate resources.
-    $plugin->app->add_hook( Dancer2::Core::Hook->new(
-        name => 'before_template',
-        code => sub {
-            my $tokens = shift;
-            my $liteblog = $plugin->dsl->config->{'liteblog'};
-            
-            # Each app setting is fowarded to the tokens
-            $plugin->dsl->info("LiteBlog Init: 'liteblog' loaded in the template tokens.");
-            foreach my $k (keys %$liteblog) {
-                $tokens->{$k} = $liteblog->{$k};
-                $plugin->dsl->info("token '$k' => ",$liteblog->{$k});
-            }
-
-            # Populate the loaded widgets in the tokens 
-            my $widgets = load_widgets($plugin, $liteblog);
-            $tokens->{widgets} = $widgets;
-            $tokens->{no_widgets} = scalar(@$widgets) == 0;
-
-            # set a default title, if unset
-            $tokens->{title} = $liteblog->{'title'} || "A Great Liteblog Site" 
-                if !defined $tokens->{title};
-
-            $plugin->dsl->info("LiteBlog: tokens: ", $tokens);
-            return $tokens;
-        }
-    ));
-
-    $plugin->dsl->info("LiteBlog Init: registering route GET /");
-    $plugin->app->add_route(
-        method => 'get',
-        regexp => '/',
-        code   => Dancer2::Plugin::LiteBlog::Routes->index($plugin),
-    );
-}
-
-sub liteblog_init {
-    my ($plugin) = @_;
- 
-    my $liteblog = $plugin->dsl->config->{'liteblog'};
-    my $widgets = load_widgets($plugin, $liteblog);
-    $plugin->dsl->info("liteblog INIT...");
-
-    # implement the declared routes of all registered widgets 
-    foreach my $widget (@{ $widgets }) {
-        my $w = $widget->{instance};
-        next if ! $w->has_routes;
-        $w->declare_routes($plugin, $widget);
-    }
-}
-
-plugin_keywords 'liteblog_init';
 
 1; # End of Dancer2::Plugin::LiteBlog
-=head1 SYNOPSIS
-
-Effortlessly transform your Dancer2 app to db-free blog engine. 
-Articles are stored in local markdown files. and .yml files into a sleek and
-responsive blog without the need for a database.
-
-    # in your Dancer2 app
-
-    use Dancer2::Plugin::LiteBlog;
-
-    # default routes are created (/, /blog, /blog/:category/:slug, ...)
-
-=head1 Plugin Keywords 
-
-This plugin exports the following keywords in your app's DSL.
-
-=head2 liteblog_blog()
-
-Returns the L<Dancer2::Plugin::LiteBlog::Blog> singleton that is instanciated by
-the plugin.  This is the object that represents the blog itself: it holds local
-path to the article files and other meta data.
-
-It will be enabled as soon as the setting C<app.blogroot> is defined and points
-to a valid directory.
-
-This directory is the root of the blog. Refer to
-L<Dancer2::Plugin::LiteBlog::Blog> for expecting files and directory hierarchy
-in this directory.
-
-If the app does not provide a C<blogroot> setting, this keyword will return
-undef, this means the site will not feature blog posts.
-
-=cut
-
 
 =head1 AUTHOR
 
@@ -159,19 +187,16 @@ Alexis Sukrieh, C<< <sukria at gmail.com> >>
 
 =head1 BUGS
 
-Please report any bugs or feature requests to C<bug-dancer2-plugin-liteblog at rt.cpan.org>, or through
-the web interface at L<https://rt.cpan.org/NoAuth/ReportBug.html?Queue=Dancer2-Plugin-LiteBlog>.  I will be notified, and then you'll
-automatically be notified of progress on your bug as I make changes.
-
-
-
+Please report any bugs or feature requests to C<bug-dancer2-plugin-liteblog at
+rt.cpan.org>, or through the web interface at L<https://rt.cpan.org/NoAuth/ReportBug.html?Queue=Dancer2-Plugin-LiteBlog>.
+I will be notified, and then you'll automatically be notified of progress on your
+bug as I make changes.
 
 =head1 SUPPORT
 
 You can find documentation for this module with the perldoc command.
 
     perldoc Dancer2::Plugin::LiteBlog
-
 
 You can also look for information at:
 
@@ -189,11 +214,17 @@ L<https://cpanratings.perl.org/d/Dancer2-Plugin-LiteBlog>
 
 L<https://metacpan.org/release/Dancer2-Plugin-LiteBlog>
 
+=item * GitHub Official Repository
+
+L<https://github.com/sukria/Dancer2-Plugin-LiteBlog>
+
+=item * The Author's personal site, built with Liteblog
+
+L<https://alexissukrieh.com>
+
 =back
 
-
 =head1 ACKNOWLEDGEMENTS
-
 
 =head1 LICENSE AND COPYRIGHT
 
@@ -203,6 +234,4 @@ This is free software, licensed under:
 
   The Artistic License 2.0 (GPL Compatible)
 
-
 =cut
-
