@@ -12,6 +12,7 @@ NEXT
         * Widgets now log what they do in Dancer2's logging system.
 
         [FIXES]
+        * (CSS) Images adapt their width to small screens.
         * All routes for articles, pages, categories are now forced to their
           trailing slash version (/some/article/). Requests to the version
           without a trailing / are redirected. Needed to allow images loeaded
