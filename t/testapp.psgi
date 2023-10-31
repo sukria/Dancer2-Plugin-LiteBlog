@@ -17,6 +17,7 @@ use lib "$FindBin::Bin/../lib";
 
     set liteblog => {
         title => "My Testing Liteblog",
+        logo => '/images/liteblog.jpg',
         widgets => [
             { name => 'activities',
               params => { source => 'activities.yml' }},
