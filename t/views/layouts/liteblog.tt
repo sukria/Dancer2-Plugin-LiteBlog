@@ -3,13 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     [% IF page_title %]
+    
     <title>[% page_title %] | [% title %]</title>
+   
+    [% IF feature.highlight %] 
+    <!-- Highlight JS Lib -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.0/styles/default.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.0/highlight.min.js"></script>
+    [% END %]
+
     [% ELSE %]
+    
     <title>[% title %]</title>
+    
     [% END %]
 
     <link href="https://fonts.googleapis.com/css?family=Roboto:400,700|Lato:400,400i,700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
 
     <link rel="stylesheet" href="/css/liteblog.css">
     [% FOREACH w IN widgets %]
@@ -37,10 +49,25 @@
 
     [% IF page_title %]
     <!-- single-page layout -->
-    <section id="hero" class="hero-single-page">
+    <div class="hero-banner">
+      <div class="hero-banner-wrapper">
+        <div class="site-title">[% title %]</div>
+        <nav>
+          <a href="#">Home</a>
+          <a href="#">About</a>
+          <a href="#">Blog</a>
+          <a href="#">Contact</a>
+        </nav>
+        
+        [% IF logo %]
+        <a href="/"><img src="[% logo %]" alt="[% title %] Logo" class="avatar-logo"></a>
+        [% END %]
+      </div>
+    </div>
+    
     [% ELSE %]
+    <!-- Home Landing Page -->
     <section id="hero">
-    [% END %]
         <div class="header-wrapper">
             [% IF logo %]
             <a href="/"><img src="[% logo %]" alt="[% title %] Logo" id="avatar"></a>
@@ -53,16 +80,12 @@
             <h3 class="site-baseline">[% baseline %]</h3>
             [% END %]
         </div>
-
-    [% IF page_title %]
-        <div class="hero-title-single-page">
-            <h1 class="hero-title-text">[% page_title %]</h1>
-        </div>
-    [% END %]
     </section>
+    [% END %]
 
 [% content %]
 
+<!-- mobile header detection -->
 <script type="text/javascript">
 window.addEventListener('scroll', function () {
     var heroSection = document.getElementById('hero');
@@ -75,6 +98,16 @@ window.addEventListener('scroll', function () {
     }
 });
 </script>
+
+[% IF feature.highlight %]
+<script type="text/javascript">
+document.addEventListener('DOMContentLoaded', (event) => {
+    document.querySelectorAll('pre code').forEach((block) => {
+        hljs.highlightBlock(block);
+    });
+});
+</script>
+[% END %]
 
     </body>
 </html>
