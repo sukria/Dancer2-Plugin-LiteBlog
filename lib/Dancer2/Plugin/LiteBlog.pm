@@ -26,11 +26,11 @@ Then, in your Dancer2 PSGI startup script:
 
 =head1 VERSION
 
-Version 0.01
+Version 0.02
 
 =cut
 
-our $VERSION = '0.01';
+our $VERSION = '0.02';
 
 use strict;
 use warnings;
