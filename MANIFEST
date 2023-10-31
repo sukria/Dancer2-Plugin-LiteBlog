@@ -31,6 +31,8 @@ t/articles/tech/first-article/meta.yml
 t/articles/tech/second-article-tech/meta.yml
 t/articles/tech/the-last-article-in-tech/content.md
 t/articles/tech/the-last-article-in-tech/meta.yml
+t/articles/perl/liteblog-a-minimalist-file-based-blog-engine-for-perl/content.md
+t/articles/perl/liteblog-a-minimalist-file-based-blog-engine-for-perl/meta.yml
 t/manifest.t
 t/pod-coverage.t
 t/pod.t
