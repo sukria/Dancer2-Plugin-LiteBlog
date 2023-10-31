@@ -119,15 +119,18 @@ config is fully read by Dancer2 (which is not the case at BUILD time).
 
 sub liteblog_init {
     my ($plugin) = @_;
- 
+    $plugin->dsl->info("Liteblog init");
+
     my $liteblog = $plugin->dsl->config->{'liteblog'};
     my $widgets = _load_widgets($plugin, $liteblog);
 
     # implement the declared routes of all registered widgets 
     foreach my $widget (@{ $widgets }) {
         my $w = $widget->{instance};
+        $plugin->dsl->info("Widget '".$widget->{name}."' registered");
         next if ! $w->has_routes;
-        $plugin->dsl->info("Widget '".$widget->{name}."' registered, declaring its routes…");
+
+        $plugin->dsl->info("Widget '".$widget->{name}."' has routes to declare");
         $w->declare_routes($plugin, $widget);
     }
 }
