@@ -1,5 +1,17 @@
 Revision history for Dancer2-Plugin-LiteBlog
 
+0.02    2023-10-31
+        
+        [DIST]
+        * ship bin/liteblog-scaffold (was not in 0.01)
+        * README.md/README with more information.
+        
+        [SCAFFOLDER]
+        * Better design for the blog post page
+
+        [FEATURES]
+        * Feature 'highlight' can be set to include the Highligh JS library.
+
 0.01    2023-10-30
 
         [ DOCUMENTATION ]
