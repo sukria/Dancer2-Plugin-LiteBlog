@@ -21,6 +21,13 @@ use lib "$FindBin::Bin/../lib";
         feature => {
             highlight => 1,
         },
+        navigation => [
+            { label => 'Text Elem'},
+            { label => 'Home', link => '/'},
+            { label => 'About', link => '/'},
+            { label => 'Perl', link => '/blog/perl'},
+            { label => 'Contact', link => '/'},
+        ],
         widgets => [
             { name => 'activities',
               params => { source => 'activities.yml' }},
