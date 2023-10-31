@@ -209,11 +209,25 @@ ul.post-meta {
   padding: 0 20px;
 }
 
-/*.single-page-wrapper {
-    width: 100%;
-    max-width: 800px;
-    margin: auto;
-}*/
+/* Cover image */
+
+.cover-image-container {
+    width: 100%;                  /* Full width of the container */
+    height: 33.33vh;             /* 1/3rd of the viewport height */
+    display: flex;               /* Use flexbox to center the image */
+    align-items: center;         /* Vertically center the image */
+    justify-content: center;     /* Horizontally center the image */
+    overflow: hidden;            /* Hide parts of the image that exceed the container */
+}
+
+.cover-image-container img {
+    max-width: 100%;             /* Image takes the maximum width possible */
+    max-height: 100%;            /* Image takes the maximum height possible */
+    object-fit: cover;           /* Resize the image to cover the container, keeping its aspect ratio */
+    object-position: center;     /* Center the image within the container */
+}
+
+
 
 /* Titles */
 h1 {
