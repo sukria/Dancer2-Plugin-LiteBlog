@@ -23,3 +23,7 @@ Here I can add a quote:
 
 And some regular paragraph to finish this test article.
 
+<pre><code class="perl">
+# Your Perl code goes here
+print "Hello, world!";
+</code></pre>
