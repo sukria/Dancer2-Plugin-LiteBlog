@@ -1,9 +1,8 @@
 ---
 title: "A super Tech Blog Post"
-author: sukria
-published: 2023-10-21
 tags:
   - perl
   - dancer
   - blog
-featured: /images/liteblog.jpg
+image: /images/liteblog.jpg
+excerpt: "An example of an article for you to see easily how to write content for your Liteblog site."

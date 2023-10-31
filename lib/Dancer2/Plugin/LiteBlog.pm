@@ -26,11 +26,11 @@ Then, in your Dancer2 PSGI startup script:
 
 =head1 VERSION
 
-Version 0.01
+Version 0.02
 
 =cut
 
-our $VERSION = '0.01';
+our $VERSION = '0.02';
 
 use strict;
 use warnings;
@@ -93,6 +93,9 @@ sub BUILD {
             $tokens->{title} = $liteblog->{'title'} || "A Great Liteblog Site" 
                 if !defined $tokens->{title};
 
+            # Set the navigation elements for the nav bar
+            my $navigation = $liteblog->{navigation};
+            $tokens->{navigation} = $navigation if defined $navigation;
             return $tokens;
         }
     ));
@@ -119,15 +122,18 @@ config is fully read by Dancer2 (which is not the case at BUILD time).
 
 sub liteblog_init {
     my ($plugin) = @_;
- 
+    $plugin->dsl->info("Liteblog init");
+
     my $liteblog = $plugin->dsl->config->{'liteblog'};
     my $widgets = _load_widgets($plugin, $liteblog);
 
     # implement the declared routes of all registered widgets 
     foreach my $widget (@{ $widgets }) {
         my $w = $widget->{instance};
+        $plugin->dsl->info("Widget '".$widget->{name}."' registered");
         next if ! $w->has_routes;
-        $plugin->dsl->info("Widget '".$widget->{name}."' registered, declaring its routes…");
+
+        $plugin->dsl->info("Widget '".$widget->{name}."' has routes to declare");
         $w->declare_routes($plugin, $widget);
     }
 }

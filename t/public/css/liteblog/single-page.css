@@ -1,157 +1,215 @@
 /* Styling for the post entry page */
 
-/* The hero header is smaller in height */
-.hero-single-page {
-    flex-direction: row-reverse; /* Reverse the direction to align hero section to the right */
-    text-align: center;
-	display: flex !important;
-    justify-content: space-between !important;
-    align-items: center !important;
-    padding: 10px 40px !important; /* Adjust padding as needed */
-}
 
-.hero-single-page h1 {
-    font-size: 18px;
-}
+/* The small navigation bar */
 
-.hero-single-page #avatar {
-    width: 64px !important; /* Adjust the size as needed */
-    height: 64px !important;
-    border-radius: 50%;
-    margin: 0 !important; /* Remove margin */
-}
-
-
-/* Title of the article / page */
-
-.hero-title-single-page {
-    text-align: center;
-    width: 100%;
-}
-
-.hero-title-single-page h1.hero-title-text  {
-    font-family: 'Roboto', sans-serif; /* Use Raleway font */
-    font-size: 36px; /* Adjust font size as needed */
-    color: #eee; /* Light grey color */
-    padding-left: 100px; /* to counter the space taken by the avatar on the right */
-}
-
-section#single-page {
-    position: relative; /* this will be the anchor for the meta section */
-    margin: auto;
-    width: 70%;
-    min-width: 450px;
-    max-width: 800px;
-    background-color: #fff;
-    padding: 20px;
-    border-left: 2px solid #DDD;
-    border-right: 2px solid #DDD;
-    border-bottom: 2px solid #DDD;
-    font-size: 18px;
-}
-
-.single-page-wrapper {
-    width: 100%;
-    max-width: 800px;
-    margin: auto;
-}
-
-section#single-page p, ul, li {
-    font-family: source-serif-pro, Georgia, Cambria, "Times New Roman", Times, serif;
-}
-
-section#single-page h1, h2, h3, h4 {
-    font-family: 'Roboto', sohne, "Helvetica Neue", Helvetica, Arial, sans-serif;
-    color: #444;
-}
-
-section#single-page h1 {  font-size: 28px !important; }
-
-section#single-page div.single-page-wrapper h2 {  
-  font-size: 22px;
-}
-
-section#single-page h3 {  font-size: 18px !important; }
-section#single-page h4 {  font-size: 14px !important; }
-
-
-/* single-page meta */
-
-/* Style the single-page-meta section to fit naturally on the right of the centered main content section */
-#single-page-top {
+.hero-banner {
     display: flex;
+    align-items: center;
     justify-content: center;
-    align-items: flex-start;
-    margin-top: 0px; /* Add spacing between hero and content */
+    transition: height 0.3s ease;
+    background-color: #2D2D2D;
+
+    position: sticky;
+    top: 0;
+    z-index: 1000; 
 }
 
-/* Styling for the post entry page */
-.single-page-meta {
-    position: absolute; /* position it absolutely */
-    bottom: 0px; /* distance from the bottom of the container */
-    right: 0px; /* distance from the right of the container */
-    background-color: rgba(255, 255, 255, 0.9); /* slightly translucent white background to ensure legibility */
-    padding: 5px 5px; /* some padding for aesthetics */
-    border-radius: 5px; /* rounded corners */
-    font-family: 'Roboto', sans-serif;
-    font-size: 0.8em;
-    color: #999;
-    box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1); /* subtle shadow for a lifted effect */
+.hero-banner-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 10px 20px; /* side padding */
 }
 
-.single-page-meta span {
-    margin-left: 5px; /* space between meta items */
-    padding-left: 5px;
-    border-left: 1px solid #ddd;
-}
-.single-page-meta span:first-child {
-    border-left: none;
-    margin-left: 0;
-    padding-left: 0;
+.site-title {
+	font-family: "Roboto", "Open Sans", sans-serif;
+    font-size: 1.5em;
+	color: #999;
+    font-weight: normal;
 }
 
-.single-page-meta span:last-child {
-    margin-right: 0; /* remove the margin for the last item */
+/* Navigation elements */
+
+nav {
+    display: flex;
+    gap: 1em;
+	font-family: "Roboto", "Open Sans", sans-serif;
 }
 
-/* Links in the single-page-meta elements like buttons */
-.single-page-meta span a {
-    color: inherit; /* takes the color of the parent element, in this case, the .single-page-meta color */
-    text-decoration: none; /* removes the underline */
-    padding: 5px 10px;
+nav a {
+    text-decoration: none;
+	color: #B0B0B0;
+    padding: 0.5em 1em;
+    transition: background-color 0.3s, color 0.3s;
 }
 
-.single-page-meta span.clickable:hover {
-    background-color: rgba(220, 220, 220, 0.7); /* slightly gray background on hover */
-    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1); /* subtle shadow for a lifted effect on hover */
+nav a:hover {
+    color: #2D2D2D; /* Dark background color for text on hover */
+    background-color: #FFA500; /* Orange color on hover */
+}
+
+/* Small version of the site's logo */
+
+.avatar-logo {
+	margin-top: 5px;
+    width: 50px;
+    border-radius: 50%;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* End of Hero Banner */
+
+/* Tags and Meta Data of the Page */
+
+.tags {
+    display: flex;
+    flex-wrap: wrap;
+    list-style-type: none;
+    margin: 10px 0 20px 0; /* spacing above and below the tags */
+    margin: 0;
+    padding: 0;
+    gap: 6px; /* reduced space between tags */
+    justify-content: flex-end; /* aligns the tags to the right */
+}
+
+.tags li {
+    font-family: 'Roboto', 'Arial', sans-serif;
+    margin: 0;
+    display: inline-block; /* makes the li inline */
+    padding: 2px 8px; /* reduced padding */
+    background-color: #f7f7f7; /* light gray background */
+    border: 1px solid #eaeaea; /* subtle border color */
+    border-radius: 10px; /* adjusted rounded corners */
+    font-size: 12px; /* smaller font size */
+    color: #777; /* softer color */
+}
+
+.tags a {
+    text-decoration: none;
+    color: inherit; /* takes color from parent element */
+    transition: background-color 0.3s ease, color 0.3s ease;
+    display: block; /* fills the li container */
+    height: 100%;
+    width: 100%;
+    padding: inherit; /* takes padding from parent element */
+    box-sizing: border-box; /* ensures that padding does not increase the size */
+}
+
+.tags a:hover {
+    background-color: #eaeaea; /* subtle hover effect */
+    color: #555; /* slightly darker text */
+}
+
+/* End of tags */
+
+/* The main content area : the page/ the article */
+
+.container {
+  max-width: 800px;
+  margin: 40px auto;
+  padding: 0 20px;
+}
+
+/*.single-page-wrapper {
+    width: 100%;
+    max-width: 800px;
+    margin: auto;
+}*/
+
+/* Titles */
+h1 {
+  font-family: "Roboto", "Open Sans", sans-serif;
+  font-weight: bold;
+  font-size: 2.5em;
+  color: #444;
+  text-align: center;
+  margin-bottom: 1em;
+}
+
+h2, h3, h4 {
+  font-family: "Roboto", "Open Sans", sans-serif;
+}
+
+/* Article Content */
+article p, li, blockquote {
+    font-family: 'Merriweather', source-serif-pro, Georgia, Cambria, "Times New Roman", Times, serif;
+    line-height: 1.6;
+    font-size: 17px;
+    color: #333; /* A soft black */
+    font-weight: 400; /* Regular font weight */
+    margin: 1.4em 0; /* This gives some space between paragraphs for better readability */
+}
+
+/* List elements in the article */
+
+article ul, /* target ul inside the article */
+article ol { /* target ordered lists as well just in case you have any */
+    margin: 1em 0;
+    padding-left: 1.2em; /* provides space for bullet points or numbers */
+}
+
+article li {
+    line-height: 1.2; /* slightly more than regular text for readability */
+    margin: 0.5em;
+}
+
+/* Blockquotes should stand out from regular content to indicate emphasis or a quote from another source. Here's a typical styling that differentiates blockquotes from regular text: */
+article blockquote {
+    margin: 1.5em 0;
+    padding: 0.5em 1em; /* some padding to the quote */
+    border-left: 4px solid #eee; /* a subtle left border to highlight the quote */
+    font-style: italic; /* italicize the quote */
+    font-size: 1.1em; /* make it slightly larger */
+    color: #666; /* a soft gray to differentiate from regular text */
+    line-height: 1.5; /* a slightly increased line height for readability */
+    background-color: #fafafa; /* a subtle background can also help the quote stand out */
 }
 
 
 /* Responsiveness for the single-page layout */
 
-@media screen and (max-width: 768px) {
+/* When the screen size is less than or equal to 768px (Tablet and below) */
+@media (max-width: 768px) {
+    article {
+        font-size: 17px; /* Slightly reduce font size for better fit */
+        padding: 15px;
+    }
 
-.hero-title-single-page h1.hero-title-text {
-    padding: 0;
-    margin: 0;
-  }
+    article h1, article h2, article h3, article h4 {
+        /* Adjusting header sizes for smaller screens */
+        font-size: calc(1em + 2vw); /* This allows the font size to scale slightly based on viewport width */
+    }
 
-  div#single-page-top {
-      width: 100%;
-    flex-direction: column;
-  }
+    article p, li, blockquote {
+        font-size: 17px;
+    }
 
-  section#single-page {
-    width: 100%; /* Make the article full-width on small screens */
-    margin: auto;
-  }
+    article blockquote {
+        padding: 0.5em;
+        border-left-width: 3px;
+    }
+}
 
-  .single-page-meta {
-    width: 100%; /* Make the meta section full-width on small screens */
-    margin-top: 20px; /* Add spacing between the article and meta section */
-  }
+/* When the screen size is less than or equal to 480px (Mobile) */
+@media (max-width: 480px) {
+    article {
+        font-size: 16px; /* Further reduce font size for mobile */
+        padding: 10px;
+    }
 
-  .single-page-meta .meta-box {
-    margin-bottom: 10px; /* Add spacing between menu items */
-  }
+    article ul, article ol {
+        padding-left: 1em;
+    }
+
+    article .tags {
+        /* Adjusting tags for smaller screens */
+        flex-direction: column; /* stack tags vertically */
+        align-items: flex-start;
+    }
+
+    article .tags li {
+        margin-bottom: 0.5em; /* space between tags */
+    }
 }

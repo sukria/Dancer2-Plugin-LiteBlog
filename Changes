@@ -1,5 +1,23 @@
 Revision history for Dancer2-Plugin-LiteBlog
 
+0.02    2023-10-31
+
+        [FEATURES]
+        * Feature 'highlight' can be set to include the Highligh JS library.
+        * Navigation Bar: possible to configure navigation links in the liteblog
+          settings. If present (as an array of hash containing a link and a
+          label), each element will be displayed in the navigation bar.
+          Currently only visible in the single-page layout.
+        
+        [DIST]
+        * ship bin/liteblog-scaffold (was not in 0.01)
+        * README.md/README with more information.
+        
+        [SCAFFOLDER]
+        * Better design for the blog post page
+        * The provided article is a little documentation about the blog system,
+          with indication on how to edit the article.
+
 0.01    2023-10-30
 
         [ DOCUMENTATION ]

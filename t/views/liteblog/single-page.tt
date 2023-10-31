@@ -1,23 +1,20 @@
-<div id="single-page-top">
+<div class="container">
+<article class="main-content">
+<h1>[% page_title %]</h1>
 
-<section id="single-page">
-
-  [% IF meta %]
-  <section class="single-page-meta">
+<ul class="tags">
+[% IF meta %]
     [% FOREACH m IN meta %]
       [% IF m.link %]
-      <span class="meta-box clickable"><a href="[% m.link %]/">[% m.label %]</a></span>
+      <li class="clickable"><a href="[% m.link %]/">[% m.label %]</a></li>
       [% ELSE %]
-      <span class="meta-box">[% m.label %]</span>
+      <li>[% m.label %]</li>
       [% END %]
     [% END %]
-  </section>
   [% END %]
-
-  <div class="single-page-wrapper">
+</ul>
   [% content %]
-  </div>
-</section>
+  <!-- </div> -->
 
-</div>
-
+</article> 
+</div> 
