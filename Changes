@@ -52,6 +52,8 @@ Revision history for Dancer2-Plugin-LiteBlog
         
         [SCAFFOLDER]
         * Better design for the blog post page
+        * The provided article is a little documentation about the blog system,
+          with indication on how to edit the article.
 
 0.01    2023-10-30
 
