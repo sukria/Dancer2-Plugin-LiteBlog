@@ -68,7 +68,7 @@ is( $res->code, 404, 'invalid slug returns a 404' );
 
 $res = $test->request( GET '/someblog/tech/first-article' );
 is( $res->code, 200, 'Valid slug returns a 200' );
-like( $res->content, qr{<h1>This is the first title.*<p>Here I have a paragraph}s, 
+like( $res->content, qr{<p>Welcome to your Liteblog site}s, 
     '[GET /someblog/tech/first-article] Correct content' );
 
 

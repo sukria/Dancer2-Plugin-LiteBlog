@@ -11,6 +11,14 @@
         <pre>
 liteblog:
   title: "My Liteblog Site"
+  logo: "/images/liteblog.jpg"
+  feature:
+    highlight: 1
+  navigation:
+    - label: "Home"
+      link: "/"
+    - label: "Tech"
+      link: "/blog/tech"
   widgets:
     - name: activities
       params: 
@@ -29,3 +37,4 @@ liteblog:
 [% END %]
 
 [% END %]
+
