@@ -32,7 +32,7 @@ ok($article->meta, "meta initialized correctly");
 like($article->meta->{'title'}, qr/A super Tech Blog Post/, 'title looks good');
 is_deeply($article->meta->{'tags'}, [qw(perl dancer blog)], "tags looks ok");
 
-like ($article->content, qr/<h1>This is the first.*<\/h1>/, "content has been rendered as HTML");
+like ($article->content, qr/<p>.*Welcome to your Liteblog site/s, "content has been rendered as HTML");
 
 like ($article->permalink, qr{/blog/tech/first-article}, "permalink looks good");
 
