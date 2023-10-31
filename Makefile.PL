@@ -10,6 +10,9 @@ my %WriteMakefileArgs = (
     ABSTRACT_FROM    => 'lib/Dancer2/Plugin/LiteBlog.pm',
     LICENSE          => 'artistic_2',
     MIN_PERL_VERSION => '5.006',
+    
+    EXE_FILES    => ['bin/liteblog-scaffold'],
+
     CONFIGURE_REQUIRES => {
         'ExtUtils::MakeMaker' => '0',
     },
