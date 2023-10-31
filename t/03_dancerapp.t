@@ -16,6 +16,9 @@ use File::Spec;
     set logger => 'Null';
     set liteblog => {
         title => "03_dancerapp.t",
+        feature => {
+            highlight => 1,
+        },
         logo  => '/images/foo.jpg',
         widgets => [
             { name => 'blog',
@@ -60,7 +63,16 @@ is( $res->code, 404, 'invalid slug returns a 404' );
 
 $res = $test->request( GET '/someblog/tech/first-article' );
 is( $res->code, 200, 'Valid slug returns a 200' );
-like( $res->content, qr{class="single-page-wrapper">\n\s*<h1>This is the first title.*<p>Here I have a paragraph}s, 
+like( $res->content, qr{<h1>This is the first title.*<p>Here I have a paragraph}s, 
     '[GET /someblog/tech/first-article] Correct content' );
+
+
+subtest 'Feature: highlight' => sub {
+    $res = $test->request( GET '/someblog/perl/liteblog-a-minimalist-file-based-blog-engine-for-perl' );
+    like $res->content, qr/link.*highlight\.js.*default\.min\.css/, "Highlight JS CSS source detected";
+    like $res->content, qr/script.*highlight\.js.*highlight\.min\.js/, "Highlight JS lib source detected";
+    like $res->content, qr/hljs\.highlightBlock/, "Highlight JS call detected";
+    done_testing;
+};
 
 done_testing;

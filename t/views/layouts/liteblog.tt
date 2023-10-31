@@ -3,10 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     [% IF page_title %]
+    
     <title>[% page_title %] | [% title %]</title>
+   
+    [% IF feature.highlight %] 
+    <!-- Highlight JS Lib -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.0/styles/default.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.0/highlight.min.js"></script>
+    [% END %]
+
     [% ELSE %]
+    
     <title>[% title %]</title>
+    
     [% END %]
 
     <link href="https://fonts.googleapis.com/css?family=Roboto:400,700|Lato:400,400i,700&display=swap" rel="stylesheet">
@@ -87,6 +98,16 @@ window.addEventListener('scroll', function () {
     }
 });
 </script>
+
+[% IF feature.highlight %]
+<script type="text/javascript">
+document.addEventListener('DOMContentLoaded', (event) => {
+    document.querySelectorAll('pre code').forEach((block) => {
+        hljs.highlightBlock(block);
+    });
+});
+</script>
+[% END %]
 
     </body>
 </html>
