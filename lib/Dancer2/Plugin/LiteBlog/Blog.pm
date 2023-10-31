@@ -83,6 +83,8 @@ has elements => (
     default => sub {
         my ($self) = @_;
         
+        #TODO: warn "in elements";
+
         my @posts;
         foreach my $path (@{ $self->meta->{featured_posts} }) {
             my $post;
@@ -91,11 +93,18 @@ has elements => (
                     basedir => File::Spec->catfile( $self->root, $path)
                 )
             };
-            next if $@; # invalid path for a LiteBlog::Article object
-            
-            eval { $post->content && $post->title };
-            next if $@; # invalid LiteBlog::Article object: no content & meta
+            if ($@) {
+                #TODO: warn "error [$path] : $@"; # invalid path for a LiteBlog::Article object
+                next;
+            }
 
+            eval { $post->content && $post->title };
+            if ($@) {
+                #TODO: warn "Error in content or title [$path] : $@"; # invalid LiteBlog::Article object: no content & meta
+                next;
+            }
+
+            #TODO: warn "success for post";
             # At this point, we're sure the post is OK to be rendered.
             push @posts, $post;
         }
