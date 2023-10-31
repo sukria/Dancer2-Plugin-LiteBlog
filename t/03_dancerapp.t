@@ -16,6 +16,11 @@ use File::Spec;
     set logger => 'Null';
     set liteblog => {
         title => "03_dancerapp.t",
+
+        navigation => [
+            { label => 'Text Elem'},
+            { label => 'Home', link => '/'},
+        ],
         feature => {
             highlight => 1,
         },
@@ -72,6 +77,12 @@ subtest 'Feature: highlight' => sub {
     like $res->content, qr/link.*highlight\.js.*default\.min\.css/, "Highlight JS CSS source detected";
     like $res->content, qr/script.*highlight\.js.*highlight\.min\.js/, "Highlight JS lib source detected";
     like $res->content, qr/hljs\.highlightBlock/, "Highlight JS call detected";
+    done_testing;
+};
+
+subtest 'Navigation bar' => sub {
+    $res = $test->request( GET '/someblog/perl/liteblog-a-minimalist-file-based-blog-engine-for-perl' );
+    like $res->content, qr{<nav>.*<a href="/">Home</a>.*</nav>}s, "Navigation bar looks good";
     done_testing;
 };
 

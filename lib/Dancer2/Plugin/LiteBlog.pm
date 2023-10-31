@@ -26,11 +26,11 @@ Then, in your Dancer2 PSGI startup script:
 
 =head1 VERSION
 
-Version 0.01
+Version 0.02
 
 =cut
 
-our $VERSION = '0.01';
+our $VERSION = '0.02';
 
 use strict;
 use warnings;
@@ -93,6 +93,9 @@ sub BUILD {
             $tokens->{title} = $liteblog->{'title'} || "A Great Liteblog Site" 
                 if !defined $tokens->{title};
 
+            # Set the navigation elements for the nav bar
+            my $navigation = $liteblog->{navigation};
+            $tokens->{navigation} = $navigation if defined $navigation;
             return $tokens;
         }
     ));
