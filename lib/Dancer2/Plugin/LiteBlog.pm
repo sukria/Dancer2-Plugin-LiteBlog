@@ -93,6 +93,9 @@ sub BUILD {
             $tokens->{title} = $liteblog->{'title'} || "A Great Liteblog Site" 
                 if !defined $tokens->{title};
 
+            # Set the navigation elements for the nav bar
+            my $navigation = $liteblog->{navigation};
+            $tokens->{navigation} = $navigation if defined $navigation;
             return $tokens;
         }
     ));
