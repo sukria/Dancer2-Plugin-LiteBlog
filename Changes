@@ -7,6 +7,12 @@ NEXT
         * New method <render_client_error> to properly render 404 in Liteblog's
           look and feel.
 
+        [FIXES]
+        * All routes for articles, pages, categories are now forced to their
+          trailing slash version (/some/article/). Requests to the version
+          without a trailing / are redirected. Needed to allow images loeaded
+          locally from article locations.
+
 0.02    2023-10-31
 
         [FEATURES]
