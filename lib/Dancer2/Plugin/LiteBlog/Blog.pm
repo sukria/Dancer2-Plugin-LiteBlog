@@ -276,10 +276,21 @@ sub declare_routes {
     my $prefix = $config->{mount} || '/blog';
     $plugin->dsl->info("LiteBlog::Blog - declaring route ${prefix}/:cat/:slug");
 
+    # redirect missing trailing / 
+    $plugin->app->add_route(
+        method => 'get',
+        regexp  => "${prefix}/:cat/:slug",
+        code    => sub {
+            my $cat  = $plugin->dsl->param('cat');
+            my $slug = $plugin->dsl->param('slug');
+            $plugin->dsl->redirect("$prefix/$cat/$slug/");
+        },
+    );
+
     # /blog/:category/:permalink
     $plugin->app->add_route(
         method  => 'get',
-        regexp  => "${prefix}/:cat/:slug",
+        regexp  => "${prefix}/:cat/:slug/",
         code    => sub {
             my $cat  = $plugin->dsl->param('cat');
             my $slug = $plugin->dsl->param('slug');
@@ -288,8 +299,7 @@ sub declare_routes {
             my $article = $self->find_article(category => $cat, path => $slug );
 
             if (! defined $article) {
-                $plugin->dsl->info("Article not found : $cat/$slug");
-                return $plugin->dsl->status('not_found');
+                return $plugin->render_client_error("Article not found : $cat/$slug");
             }
             # TODO hanlde invalid/missing $article->content as a 404
 
@@ -367,16 +377,25 @@ Examples:
 
 =cut
 
+    # redirect missing trailing / 
+    $plugin->app->add_route(
+        method => 'get',
+        regexp  => "${prefix}/:cat",
+        code    => sub {
+            my $cat  = $plugin->dsl->param('cat');
+            $plugin->dsl->redirect("$prefix/$cat/");
+        },
+    );
+
     # the /category landing page
     $plugin->app->add_route(
         method => 'get',
-        regexp => "${prefix}/:category/?",
+        regexp => "${prefix}/:category/",
         code   => sub {
             $plugin->dsl->info("in /$prefix/category route");
             my $category = $plugin->dsl->param('category');
             if (! -d File::Spec->catdir($self->root, $category)) {
-                $plugin->dsl->info("Invalid category requested: '$category'");
-                return $plugin->dsl->status('not_found');
+                return $plugin->render_client_error("Invalid category requested: '$category'");
             }
             my $articles = $self->select_articles(category => $category, limit => 6);
             $plugin->dsl->info("retrieved ".scalar(@$articles)." articles");
@@ -408,17 +427,25 @@ Examples:
 
 =cut
 
+    # redirect to trailing / path
     $plugin->app->add_route(
         method => 'get',
         regexp => '/:page',
         code => sub {
             my $slug = $plugin->dsl->param('page');
+            $plugin->dsl->redirect("/$slug/");
+        }
+    );
+
+    $plugin->app->add_route(
+        method => 'get',
+        regexp => '/:page/',
+        code => sub {
+            my $slug = $plugin->dsl->param('page');
             my $article = $self->find_article(path => $slug );
 
-            if (! defined $article) {
-                $plugin->dsl->info("Page not found : $slug");
-                return $plugin->dsl->status('not_found');
-            }
+            return $plugin->render_client_error("Page not found : $slug")
+                if ! defined $article;
             
             # TODO hanlde invalid/missing $article->content as a 404
             return $plugin->dsl->template(
