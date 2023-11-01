@@ -311,11 +311,11 @@ sub declare_routes {
                     page_image => $article->image,
                     meta       => [
                         { 
-                            label => "In: ".$article->category, 
+                            label => $article->category, 
                             link => "$prefix/$cat" 
                         },
                         { 
-                            label => "Last update: ".$article->published_date 
+                            label => $article->published_date 
                         }
                     ],
                 },
