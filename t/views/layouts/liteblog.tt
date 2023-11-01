@@ -48,7 +48,9 @@
       </div> <!-- END site logo -->
 
       <!-- the Site Title -->
-      <a href="/"><button id="site-title-button">[% title %]</button></a>
+      <button id="site-title-button">
+        <a href="/">[% title %]</a>
+      </button>
 
       [% IF navigation %]
       <!-- the hamburger menu -->
