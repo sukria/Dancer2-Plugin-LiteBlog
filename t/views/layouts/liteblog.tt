@@ -34,18 +34,32 @@
 </head>
 <body>
 
+    <!-- This is the menu bar for small screens -->
     <header id="mobile-header">
-        <div id="avatar-icon">
-            <!-- TODO : avatar should be a setting with these as defaults -->
-            [% IF logo %]
-            <a href="/"><img src="[% logo %]" alt="[% title %] Logo"></a>
-            [% ELSE %]
-            <!-- Change the 'logo' setting (under the 'liteblog' config entry) to change this image -->
-            <a href="/"><img src="/images/liteblog.jpg" alt="LiteBlog Logo"></a>
-            [% END %]
-        </div>
-        <a href="/"><button id="menu-toggle">[% title %]</button></a>
-    </header>
+    
+      <!-- the site logo -->
+      <div id="avatar-icon">
+        [% IF logo %]
+        <a href="/"><img src="[% logo %]" alt="[% title %] Logo"></a>
+        [% ELSE %]
+        <!-- Change the 'logo' setting (under the 'liteblog' config entry) to change this image -->
+        <a href="/"><img src="/images/liteblog.jpg" alt="LiteBlog Logo"></a>
+        [% END %]
+      </div> <!-- END site logo -->
+
+      <!-- the Site Title -->
+      <a href="/"><button id="site-title-button">[% title %]</button></a>
+
+      [% IF navigation %]
+      <!-- the hamburger menu -->
+      <div id="menu-toggle" class="hamburger-menu">
+        <div class="bar"></div>
+        <div class="bar"></div>
+        <div class="bar"></div>
+      </div> <!-- END hamburger menu -->
+      [% END %]
+
+    </header> <!-- END mobile-header -->
 
     [% IF page_title %]
     <!-- single-page layout -->
@@ -95,7 +109,7 @@ window.addEventListener('scroll', function () {
     var mobileHeader = document.getElementById('mobile-header');
 
     if (window.scrollY > heroSection.clientHeight) {
-        mobileHeader.style.display = 'block';
+        mobileHeader.style.display = 'flex';
     } else {
         mobileHeader.style.display = 'none';
     }
@@ -109,7 +123,7 @@ window.addEventListener('scroll', function () {
     var mobileHeader = document.getElementById('mobile-header');
 
     if (window.scrollY > heroSection.clientHeight) {
-        mobileHeader.style.display = 'block';
+        mobileHeader.style.display = 'flex';
     } else {
         mobileHeader.style.display = 'none';
     }

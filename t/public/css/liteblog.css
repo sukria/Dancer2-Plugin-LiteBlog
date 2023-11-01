@@ -59,10 +59,43 @@ button:hover, .btn:hover {
     top: 0;
     left: 0;
     width: 100%;
-    z-index: 1000; /* Adjust z-index as needed */
+    z-index: 10; /* Adjust z-index as needed */
     align-items: center; /* Center vertically */
-    justify-content: center; /* Center horizontally */
+    justify-content: space-between; /* space out the logo, title, and menu */
     flex-direction: row; /* Default flex-direction */
+    padding: 10px; /* adjust as needed */
+}
+
+#menu-toggle {
+	margin-left: auto;
+	margin-right: 30px;
+}
+
+#avatar-icon {
+    max-width: 50px; /* adjust as needed */
+    margin-right: 10px; /* spacing between the logo and site title */
+}
+
+.site-title {
+    margin: 0;
+    flex-grow: 1; /* allows the title to take available space */
+    text-align: left; /* align the site name to the left */
+    padding: 0 10px; /* spacing around the site title */
+}
+
+.hamburger-menu {
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 24px; /* adjust height of the whole menu */
+}
+
+.hamburger-menu .bar {
+    background-color: #d4d4d4; /* color of the bar */
+    height: 4px; /* thickness of each bar */
+    width: 25px; /* width of each bar */
+    border-radius: 2px; /* rounded edges */
 }
 
 #avatar-icon {
@@ -80,14 +113,13 @@ button:hover, .btn:hover {
     object-fit: cover;
 }
 
-/* CSS for the menu toggle button */
-#menu-toggle {
+#site-title-button {
     background: none;
     border: none;
-    color: #eee;
+    color: #ddd;
     font-size: 20px;
     cursor: pointer;
-    margin-right: 10px;
+    margin: auto;
     flex: 1; /* Expand to fill available space */
     text-align: center; /* Center text horizontally */
 }

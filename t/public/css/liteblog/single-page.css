@@ -272,9 +272,8 @@ article blockquote {
     }
 
     #mobile-header {
-        display: block;
+        display: flex;
     }
-
 
     article {
         font-size: 17px; /* Slightly reduce font size for better fit */
