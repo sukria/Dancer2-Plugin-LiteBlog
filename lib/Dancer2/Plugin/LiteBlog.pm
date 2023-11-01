@@ -138,6 +138,29 @@ sub liteblog_init {
     }
 }
 
+=head2 render_client_error($message)
+
+Immediatly exits from the current route handler and render a 404
+page with Liteblog's default templates.
+
+=cut
+
+sub render_client_error {
+    my ($plugin, $message) = @_;
+    
+    # log the error
+    $plugin->dsl->error('['.ref($plugin).
+        "] Client Error: $message");
+
+    $plugin->dsl->status('not_found');
+    $plugin->dsl->template('liteblog/single-page', 
+        {
+            page_title => "Page Not Found",
+            content => $message
+        },
+        {layout => 'liteblog'});
+}
+
 plugin_keywords 'liteblog_init';
 
 
