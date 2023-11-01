@@ -214,7 +214,7 @@ section#main-page {
 @media screen and (max-width: 768px) {
     
     body {
-        font-size: 15px;
+        font-size: 14px;
     }
     h1, h2, h3 {
         line-height: 1.4;
