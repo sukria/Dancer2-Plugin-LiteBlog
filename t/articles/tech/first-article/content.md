@@ -12,4 +12,7 @@ And there a last paragraph with a bullet-point list
   * A second one
   * And a third
 
+Here an image local to the article :
+<img src="featured.jpg" />
+
 Voilà.
