@@ -266,6 +266,16 @@ article blockquote {
 
 /* When the screen size is less than or equal to 768px (Tablet and below) */
 @media (max-width: 768px) {
+
+    #hero-banner {
+        display: none;
+    }
+
+    #mobile-header {
+        display: block;
+    }
+
+
     article {
         font-size: 17px; /* Slightly reduce font size for better fit */
         padding: 15px;
