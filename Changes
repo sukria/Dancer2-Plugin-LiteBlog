@@ -1,5 +1,12 @@
 Revision history for Dancer2-Plugin-LiteBlog
 
+NEXT
+        [FEATURES]
+        * New route to render static assets in article's directory (eg: 
+          /blog/some-article/featured.jpg). 
+        * New method <render_client_error> to properly render 404 in Liteblog's
+          look and feel.
+
 0.02    2023-10-31
 
         [FEATURES]
