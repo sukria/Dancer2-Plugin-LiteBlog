@@ -1,9 +1,7 @@
 ---
 title: "A super Tech Blog Post"
-author: sukria
-published: 2023-10-21
 tags:
   - perl
   - dancer
   - blog
-featured: /images/liteblog.jpg
+image: "featured.jpg"
