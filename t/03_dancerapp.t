@@ -86,4 +86,22 @@ subtest 'Navigation bar' => sub {
     done_testing;
 };
 
+subtest "Local images to the article dir are rendered" => sub {
+    $res = $test->request( GET '/someblog/tech/first-article' );
+    like $res->content, qr{<img src="featured\.jpg"}, 
+        "the first-article rendered HTML contains an image";
+
+    $res = $test->request( GET '/someblog/tech/first-article/featured.jpg' );
+    is $res->code, 200, "the image path is valid";
+    is $res->header('Content-Type'), 'image/jpeg', "the response is an image";
+
+    done_testing;
+};
+
+subtest "Rendered Liteblog Errors" => sub {
+    $res = $test->request( GET '/someblog/tech/first-article/not-existing.pdf' );
+    is $res->code, 404, "HTTP status is 404";
+    like $res->content, qr{<article class="main-content">.*<h1>Page Not Found</h1>.*Asset}s, "We got a nice 404 page rendered";
+};
+
 done_testing;

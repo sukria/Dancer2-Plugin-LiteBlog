@@ -22,6 +22,7 @@ objects.
 
 use Moo;
 use Carp 'croak';
+use Cwd 'abs_path';
 use YAML::XS;
 use File::Spec;
 use File::Stat;
@@ -311,6 +312,46 @@ sub declare_routes {
                     layout => 'liteblog'
                 });
         }
+    );
+
+=head3 GET C</blog/:category/:slug/:asset>
+
+If the C<:asset> is a readable file in the article's directory, 
+this route sends it back to the client. This is useful for hosting
+local files like images, PDF, etc in the article's folder.
+
+Example:
+
+    /blog/tech/some-article/featured.jpg
+
+=cut
+
+    $plugin->app->add_route(
+        method => 'get',
+        regexp => "${prefix}/:category/:slug/:asset",
+        code   => sub {
+            my $cat = $plugin->dsl->param('category');
+            my $slug = $plugin->dsl->param('slug');
+            my $asset = $plugin->dsl->param('asset');
+            $plugin->dsl->info("in $prefix/$cat/$slug/$asset");
+
+            # the article must exist
+            my $article = $self->find_article(
+                category => $cat, path => $slug );
+            return $plugin->render_client_error(
+                "Requested article not found ($cat / $slug)") 
+                if ! defined $article;
+            $plugin->dsl->info("article is found ($cat/$slug)");
+            
+            # the asset file must exist in the article's basedir
+            my $asset_file = abs_path(File::Spec->catfile($article->basedir, $asset));
+            return $plugin->render_client_error(
+                "Asset file '$asset' does not exist"
+            ) if ! -e $asset_file;
+            $plugin->dsl->info("asset is found ($asset_file)");
+
+            return $plugin->dsl->send_file($asset_file, system_path => 1);
+        },
     );
 
 =head3 GET C</blog/:category/>
