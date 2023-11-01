@@ -12,6 +12,8 @@ NEXT
           trailing slash version (/some/article/). Requests to the version
           without a trailing / are redirected. Needed to allow images loeaded
           locally from article locations.
+        * (CSS) Activities Cards sizes are now stable to 280px. Responsiveness
+          is good now.
 
 0.02    2023-10-31
 
