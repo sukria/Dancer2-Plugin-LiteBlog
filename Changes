@@ -14,7 +14,7 @@ NEXT
           locally from article locations.
         * (CSS) Activities Cards sizes are now stable to 280px. Responsiveness
           is good now.
-        * (CSS) blog-cards sizes are now stable (480px max). Responsiveness is
+        * (CSS) blog-cards sizes are now stable (420px max). Responsiveness is
           good now.
 
 0.02    2023-10-31
