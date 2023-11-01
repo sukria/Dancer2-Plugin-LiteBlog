@@ -308,13 +308,14 @@ sub declare_routes {
                 {
                     page_title => $article->title,
                     content    => $article->content, 
+                    page_image => $article->image,
                     meta       => [
                         { 
-                            label => "In: ".$article->category, 
+                            label => $article->category, 
                             link => "$prefix/$cat" 
                         },
                         { 
-                            label => "Last update: ".$article->published_date 
+                            label => $article->published_date 
                         }
                     ],
                 },
@@ -452,6 +453,7 @@ Examples:
                 'liteblog/single-page',
                 {
                     page_title => $article->title,
+                    page_image => $article->image,
                     content    => $article->content, 
                     meta       => [
                         { 

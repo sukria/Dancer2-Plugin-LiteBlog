@@ -61,6 +61,101 @@ nav a:hover {
 
 /* End of Hero Banner */
 
+/* START single page post-header style */
+.post-header {
+    display: flex;
+	height: 100%;
+position: relative;
+
+    flex-direction: column;
+    justify-content: space-between; /* This will push the title to the center and meta to the bottom */
+    align-items: center;
+    background-size: cover;
+    background-position: center;
+    max-width: 100%;
+    border-radius: 5px;
+    position: relative; /* Needed for the overlay and for the meta's absolute positioning */
+    margin-bottom: 20px;
+}
+
+.post-header::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.6); /* Black overlay to ensure text readability */
+    z-index: 1;
+}
+
+.post-header .header-content {
+	flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;  
+    z-index: 2; /* To ensure it's above the ::before pseudo-element */
+    width: 100%; /* Ensure it takes the full width of the container */
+}
+
+.post-title {
+    font-size: 3.5em;
+    margin-bottom: 20px; /* Can adjust this for spacing, if needed */
+	margin-top: 80px;
+
+    text-align: center;
+    color: #fff;
+    z-index: 2;
+}
+
+ul.post-meta {
+    align-self: flex-end; /* Align to the end of the flex container */
+    z-index: 3;
+    
+	padding: 0;
+	margin: 0px; 
+	margin-right: 10px; 
+	margin-top: 50px;
+
+    list-style-type: none; /* Remove bullet points */
+    display: flex; /* Arrange child items horizontally */
+    gap: 15px; /* Space between meta items */
+    justify-content: flex-end; /* Aligns meta to the right */
+
+}
+
+.post-meta li {
+    background: rgba(220, 220, 220, 0.8); /* 7220% opaque white */
+    margin: 0;
+    border-radius: 10px 10px 0 0; /* top-left, top-right, bottom-right, bottom-left */
+
+	font-family: 'Roboto', 'Arial', sans-serif;
+    font-size: 0.9em; 
+    padding: 3px 10px; 
+}
+
+.post-meta li a, .post-meta li {
+    color: #4d4d4d;
+    text-decoration: none;
+}
+
+.post-meta li.clickable:hover a {
+    color: #fff; /* Changing text color on hover */
+}
+.post-meta li.clickable:hover
+{
+    background-color: rgba(255, 165, 0, 0.8); /* transparent orange color */
+
+    color: #fff; /* Changing text color on hover */
+}
+.post-meta li.clickable a:hover {
+    text-decoration: none; /* Removing underline on hover */
+    color: #fff; /* Changing text color on hover */
+}
+
+/* END single page post-header style */
+
+
 /* Tags and Meta Data of the Page */
 
 .tags {
@@ -109,6 +204,7 @@ nav a:hover {
 .container {
   max-width: 800px;
   margin: 40px auto;
+  margin-top: 20px;
   padding: 0 20px;
 }
 
@@ -170,6 +266,16 @@ article blockquote {
 
 /* When the screen size is less than or equal to 768px (Tablet and below) */
 @media (max-width: 768px) {
+
+    #hero-banner {
+        display: none;
+    }
+
+    #mobile-header {
+        display: block;
+    }
+
+
     article {
         font-size: 17px; /* Slightly reduce font size for better fit */
         padding: 15px;
@@ -187,6 +293,17 @@ article blockquote {
     article blockquote {
         padding: 0.5em;
         border-left-width: 3px;
+    }
+
+    .container {
+        padding: 0;
+        margin: 0;
+    }
+
+    .post-meta {
+        margin: 0;
+        padding: 0;
+        padding-right: 10px;
     }
 }
 
@@ -209,5 +326,10 @@ article blockquote {
 
     article .tags li {
         margin-bottom: 0.5em; /* space between tags */
+    }
+
+    .header-content {
+        margin: 0 !important;
+        padding: 0 !important;
     }
 }
