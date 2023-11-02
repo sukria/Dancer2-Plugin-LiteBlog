@@ -27,6 +27,7 @@ t/articles/contact/content.md
 t/articles/contact/meta.yml
 t/articles/some-test-article/meta.yml
 t/articles/tech/first-article/content.md
+t/articles/tech/first-article/featured.jpg
 t/articles/tech/first-article/meta.yml
 t/articles/tech/second-article-tech/meta.yml
 t/articles/tech/the-last-article-in-tech/content.md

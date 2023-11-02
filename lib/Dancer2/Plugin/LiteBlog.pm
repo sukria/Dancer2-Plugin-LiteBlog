@@ -26,11 +26,11 @@ Then, in your Dancer2 PSGI startup script:
 
 =head1 VERSION
 
-Version 0.02
+Version 0.03
 
 =cut
 
-our $VERSION = '0.02';
+our $VERSION = '0.03';
 
 use strict;
 use warnings;
@@ -38,8 +38,6 @@ use File::Spec;
 use Carp 'croak';
 
 use Dancer2::Plugin;
-use Dancer2::Plugin::LiteBlog::Activities;
-use Dancer2::Plugin::LiteBlog::Blog;
 
 =head1 METHODS
 
@@ -138,6 +136,29 @@ sub liteblog_init {
     }
 }
 
+=head2 render_client_error($message)
+
+Immediatly exits from the current route handler and render a 404
+page with Liteblog's default templates.
+
+=cut
+
+sub render_client_error {
+    my ($plugin, $message) = @_;
+    
+    # log the error
+    $plugin->dsl->error('['.ref($plugin).
+        "] Client Error: $message");
+
+    $plugin->dsl->status('not_found');
+    $plugin->dsl->template('liteblog/single-page', 
+        {
+            page_title => "Page Not Found",
+            content => $message
+        },
+        {layout => 'liteblog'});
+}
+
 plugin_keywords 'liteblog_init';
 
 
@@ -158,16 +179,38 @@ sub _load_widgets {
         my $widget;
         
         my $class = 'Dancer2::Plugin::LiteBlog::'.ucfirst($w->{name});
-        eval { $widget = $class->new( 
-                    root => $plugin->dsl->config->{'appdir'}, 
+        $plugin->dsl->info("Initializing widget: $class");
+
+        my $module;
+        eval {
+            $module = File::Spec->catfile(split /::/, $class) . '.pm';
+            require $module;
+        };
+        if ($@) {
+            $plugin->dsl->error("Unable to import '$module': $@");
+            next;
+        }
+        else {
+            $plugin->dsl->info("Widget '$module' successfully imported");
+        }
+
+        eval { 
+            $widget = $class->new( 
+                    root   => $plugin->dsl->config->{'appdir'}, 
+                    dancer => $plugin->dsl,
                     %{$w->{params}}
                 );
         };
+        
         if ($@) {
-        $plugin->dsl->error("Unable to initialized widget '".
+            $plugin->dsl->error("Unable to initialized widget '".
             $w->{name}."' : $@");
             next;
         }
+        else {
+            $plugin->dsl->info("Widget '$class' successfully initialized");
+        }
+
         $elements = $widget->elements;
 
         if (scalar(@$elements)) {

@@ -49,6 +49,20 @@ As you can see, an article or a page is represented by three elements:
   3. the content itself (written in Markdown format), located in
      <code>content.md</code>
 
+## About images integration in your articles/page
+
+It's super easy to include images in your articles. The recommended way to
+proceed is simply to host your assets within the article/page directory and just
+source them with a relative path. 
+
+Just like that : 
+
+<pre><code class="html">&lt;img src="featured.jpg" /&gt;</code></pre>
+
+Which renders properly into that : 
+
+<img src="featured.jpg" />
+
 ## It's your time to start editing!
 
 Now, you know everything you need to write your own content. Why not starting by
@@ -64,3 +78,5 @@ Happy Liteblogging!
 Feel free to [give Liteblog a star on CPAN Ratings](https://metacpan.org/dist/Dancer2-Plugin-LiteBlog) 
 and [follow the official GitHub Project](https://github.com/sukria/Dancer2-Plugin-LiteBlog).
 
+
+Voilà.

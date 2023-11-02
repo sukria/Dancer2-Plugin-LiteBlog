@@ -34,22 +34,53 @@
 </head>
 <body>
 
+    <!-- This is the menu bar for small screens -->
     <header id="mobile-header">
-        <div id="avatar-icon">
-            <!-- TODO : avatar should be a setting with these as defaults -->
-            [% IF logo %]
-            <a href="/"><img src="[% logo %]" alt="[% title %] Logo"></a>
-            [% ELSE %]
-            <!-- Change the 'logo' setting (under the 'liteblog' config entry) to change this image -->
-            <a href="/"><img src="/images/liteblog.jpg" alt="LiteBlog Logo"></a>
-            [% END %]
-        </div>
-        <a href="/"><button id="menu-toggle">[% title %]</button></a>
-    </header>
+    
+      <!-- the site logo -->
+      <div id="avatar-icon">
+        [% IF logo %]
+        <a href="/"><img src="[% logo %]" alt="[% title %] Logo"></a>
+        [% ELSE %]
+        <!-- Change the 'logo' setting (under the 'liteblog' config entry) to change this image -->
+        <a href="/"><img src="/images/liteblog.jpg" alt="LiteBlog Logo"></a>
+        [% END %]
+      </div> <!-- END site logo -->
 
+      <!-- the Site Title -->
+      <button id="site-title-button">
+        <a href="/">[% title %]</a>
+      </button>
+
+      [% IF navigation %]
+      <div id="mobile-menu-container">
+      <!-- the hamburger toggle button -->
+      <div id="menu-toggle" class="hamburger-menu">
+        <div class="bar"></div>
+        <div class="bar"></div>
+        <div class="bar"></div>
+      </div> <!-- END hamburger toggle button -->
+      </div>
+      [% END %]
+
+    [% IF navigation %]
+    <!-- the hamburger menu -->
+      <div id="mobile-navigation-menu" class="mobile-nav">
+      [% FOREACH nav IN navigation %]
+        [% IF nav.link %]
+        <a class="mobile-nav-item" href="[% nav.link %]">[% nav.label %]</a>
+        [% END %]
+      [% END %]
+      </div>
+    [% END %] <!-- END hamburger menu -->
+
+
+    </header> <!-- END mobile-header -->
+
+    
     [% IF page_title %]
     <!-- single-page layout -->
-    <div class="hero-banner">
+    <div id="hero-banner" class="hero-banner">
       <div class="hero-banner-wrapper">
         <div class="site-title">[% title %]</div>
         [% IF navigation %]
@@ -87,19 +118,51 @@
 
 [% content %]
 
-<!-- mobile header detection -->
+[% IF page_title %]
+<!-- mobile header detection for the 'hero-banner' (small) single page -->
+<script type="text/javascript">
+window.addEventListener('scroll', function () {
+    var heroSection = document.getElementById('hero-banner');
+    var mobileHeader = document.getElementById('mobile-header');
+
+    if (window.scrollY > heroSection.clientHeight) {
+        mobileHeader.style.display = 'flex';
+    } else {
+        mobileHeader.style.display = 'none';
+    }
+});
+</script>
+[% ELSE %]
+<!-- mobile header detection for the 'hero' (big) landing page -->
 <script type="text/javascript">
 window.addEventListener('scroll', function () {
     var heroSection = document.getElementById('hero');
     var mobileHeader = document.getElementById('mobile-header');
 
     if (window.scrollY > heroSection.clientHeight) {
-        mobileHeader.style.display = 'block';
+        mobileHeader.style.display = 'flex';
     } else {
         mobileHeader.style.display = 'none';
     }
 });
 </script>
+[% END %]
+
+[% IF navigation %]
+<script type="text/javascript">
+document.addEventListener('DOMContentLoaded', (event) => {
+    // Get the elements
+    const menuToggle = document.querySelector('#menu-toggle');
+    const mobileMenu = document.querySelector('#mobile-navigation-menu');
+
+    // Add event listener
+    menuToggle.addEventListener('click', function() {
+        // Toggle the .open class on the mobile menu
+        mobileMenu.classList.toggle('open');
+    });
+});
+</script>
+[% END %]
 
 [% IF feature.highlight %]
 <script type="text/javascript">

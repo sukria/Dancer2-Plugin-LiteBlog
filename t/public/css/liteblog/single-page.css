@@ -61,6 +61,155 @@ nav a:hover {
 
 /* End of Hero Banner */
 
+/* START single page post-header style */
+.post-header {
+    display: flex;
+	height: 100%;
+    position: relative;
+
+	border-bottom: 5px solid #e2e2e2; 
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
+    padding-bottom: 20px; /* Space at the bottom */
+
+    flex-direction: column;
+    justify-content: space-between; /* This will push the title to the center and meta to the bottom */
+    align-items: center;
+    background-size: cover;
+    background-position: center;
+    max-width: 100%;
+    border-radius: 5px;
+    position: relative; /* Needed for the overlay and for the meta's absolute positioning */
+    margin-bottom: 20px;
+}
+
+.post-header::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.6); /* Black overlay to ensure text readability */
+    z-index: 1;
+}
+
+.post-header .header-content {
+	flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;  
+    z-index: 2; /* To ensure it's above the ::before pseudo-element */
+    width: 100%; /* Ensure it takes the full width of the container */
+}
+
+.post-title {
+    font-size: 3.5em;
+    margin-bottom: 20px; /* Can adjust this for spacing, if needed */
+	margin-top: 80px;
+
+	text-shadow: 1px 1px 1px rgba(255, 255, 255, 0.7); /* Subtle text outline for depth */
+    text-align: center;
+    color: #fff;
+    z-index: 2;
+}
+
+ul.post-meta {
+    align-self: flex-end; /* Align to the end of the flex container */
+    z-index: 3;
+    
+	padding: 0;
+	margin: 0px; 
+	margin-right: 10px; 
+	margin-top: 40px;
+    margin-bottom: 10px;
+
+    list-style-type: none; /* Remove bullet points */
+    display: flex; /* Arrange child items horizontally */
+    gap: 15px; /* Space between meta items */
+    justify-content: flex-end; /* Aligns meta to the right */
+
+}
+
+.post-meta li {
+    background: rgba(220, 220, 220, 0.8); /* 7220% opaque white */
+    margin: 0;
+    border-radius: 10px 10px 10px 10px; /* top-left, top-right, bottom-right, bottom-left */
+
+	font-family: 'Roboto', 'Arial', sans-serif;
+    font-size: 0.9em; 
+    padding: 3px 10px; 
+}
+
+.post-meta li a, .post-meta li {
+    color: #4d4d4d;
+    text-decoration: none;
+}
+
+.post-meta li.clickable:hover a {
+    color: #fff; /* Changing text color on hover */
+}
+.post-meta li.clickable:hover
+{
+    background-color: rgba(255, 165, 0, 0.8); /* transparent orange color */
+
+    color: #fff; /* Changing text color on hover */
+}
+.post-meta li.clickable a:hover {
+    text-decoration: none; /* Removing underline on hover */
+    color: #fff; /* Changing text color on hover */
+}
+
+/* END single page post-header style */
+
+/* post-header when there is no featured image */
+
+.post-header.no-featured-image {
+    background: #f0f0f0; /* Light background */
+    color: #333; /* Darker text color for better contrast on light bg */
+    
+}
+
+/* Override the dark overlay when no featured image */
+.post-header.no-featured-image::before {
+    background: rgba(255, 255, 255, 0); /* Transparent overlay */
+}
+
+/* Adjust the title color for better readability on light background */
+.post-header.no-featured-image .post-title {
+    color: #333;
+    text-shadow: 1px 1px 1px rgba(255, 255, 255, 0.7); /* Subtle text outline for depth */
+    padding: 20px 0; /* Padding for visual space */
+}
+
+/* Adjust the meta background and text color for light theme */
+.post-header.no-featured-image .post-meta li {
+    background: rgba(0, 0, 0, 0.05); /* Very light background for the meta */
+    border: 1px solid #ddd; /* Subtle border for definition */
+    color: #333;
+}
+
+.post-header.no-featured-image .post-meta li.clickable:hover,
+.post-header.no-featured-image .post-meta li.clickable:hover a {
+    background-color: #e2e2e2; /* Light grey for hover */
+    color: #333; /* Dark text for contrast */
+}
+
+/* If the links need to be a different color, update here */
+.post-header.no-featured-image .post-meta li a {
+    color: #333;
+}
+
+.post-header.no-featured-image .header-content {
+    align-items: center; /* Center align the content for a polished look */
+    text-align: center; /* Center the text for a modern feel */
+}
+
+.post-header.no-featured-image .post-meta li.clickable a:hover {
+    color: #333; 
+}
+
+
+
 /* Tags and Meta Data of the Page */
 
 .tags {
@@ -109,14 +258,29 @@ nav a:hover {
 .container {
   max-width: 800px;
   margin: 40px auto;
+  margin-top: 20px;
   padding: 0 20px;
 }
 
-/*.single-page-wrapper {
-    width: 100%;
-    max-width: 800px;
-    margin: auto;
-}*/
+/* Cover image */
+
+.cover-image-container {
+    width: 100%;                  /* Full width of the container */
+    height: 33.33vh;             /* 1/3rd of the viewport height */
+    display: flex;               /* Use flexbox to center the image */
+    align-items: center;         /* Vertically center the image */
+    justify-content: center;     /* Horizontally center the image */
+    overflow: hidden;            /* Hide parts of the image that exceed the container */
+}
+
+.cover-image-container img {
+    max-width: 100%;             /* Image takes the maximum width possible */
+    max-height: 100%;            /* Image takes the maximum height possible */
+    object-fit: cover;           /* Resize the image to cover the container, keeping its aspect ratio */
+    object-position: center;     /* Center the image within the container */
+}
+
+
 
 /* Titles */
 h1 {
@@ -172,9 +336,20 @@ article blockquote {
 
 /* When the screen size is less than or equal to 768px (Tablet and below) */
 @media (max-width: 768px) {
+
+    #hero-banner {
+        display: none;
+    }
+
+    #mobile-header {
+        display: flex;
+    }
+
     article {
-        font-size: 17px; /* Slightly reduce font size for better fit */
-        padding: 15px;
+        font-size: 14px; /* Slightly reduce font size for better fit */
+        padding-left: 3rem;
+        padding-right: 3rem;
+        padding-bottom: 3rem;
     }
 
     article h1, article h2, article h3, article h4 {
@@ -189,6 +364,17 @@ article blockquote {
     article blockquote {
         padding: 0.5em;
         border-left-width: 3px;
+    }
+
+    .container {
+        padding: 0;
+        margin: 0;
+    }
+
+    .post-meta {
+        margin: 0;
+        padding: 0;
+        padding-right: 10px;
     }
 }
 
@@ -211,5 +397,10 @@ article blockquote {
 
     article .tags li {
         margin-bottom: 0.5em; /* space between tags */
+    }
+
+    .header-content {
+        margin: 0 !important;
+        padding: 0 !important;
     }
 }

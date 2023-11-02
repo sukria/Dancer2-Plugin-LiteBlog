@@ -1,6 +1,18 @@
+/* Our common colors for the Liteblog theme */
+:root {
+    --primary-color: #007BFF;
+    --primary-hover: #0056b3;
+    --text-color: #333;
+    --background-color: #f4f4f4;
+    --header-bg-color: #2d2d2d;
+    --link-color: #007BFF;
+    --link-hover-color: #0056b3;
+}
+
 body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
+    font-family: 'Roboto', 'Arial', sans-serif;
+    background-color: var(--background-color);
+
     margin: 0;
     padding: 0;
 
@@ -12,30 +24,31 @@ h1, h2, h3, h4, h5, h6 {
     font-weight: 600; /* slightly bold but not too heavy */
 }
 h1 {
-    font-size: 2.5em;
+    font-size: 2.5rem;
 }
 h2 {
-    font-size: 2em;
+    font-size: 2rem;
 }
 h3 {
-    font-size: 1.75em;
+    font-size: 1.75rem;
 }
 
 h1.site-title {
-    font-size: 1.5em;
+    font-size: 1.5rem;
+    text-align: center;
 }
 
 a {
-    color: #007BFF; /* Example blue color */
+    color: var(--link-color);
     text-decoration: none; /* Remove underline */
     transition: color 0.3s ease; /* Smooth color transition */
 }
 a:hover {
-    color: #0056b3; /* Darker shade of blue for hover state */
+    color: var(--link-hover-color);
 }
 
 button, .btn {
-    background-color: #007BFF;
+    background-color: var(--primary-color);
     color: #fff;
     border: none;
     padding: 10px 20px;
@@ -44,31 +57,109 @@ button, .btn {
     transition: background-color 0.3s ease;
 }
 button:hover, .btn:hover {
-    background-color: #0056b3;
+    background-color: var(--primary-hover);
 }
 
+/* Accessibility rules */
+a:focus, button:focus, .btn:focus {
+    outline: 3px solid rgba(0, 123, 255, 0.5);
+    outline-offset: 2px;
+}
 
 /* Header Menu */
 /* CSS for the mobile header */
+#mobile-menu-container {
+    position: relative; /* to hold the popup menu */
+}
+
 #mobile-header {
     display: none;
     background-color: #2d2d2d;
     color: #ffffff;
-    padding: 10px;
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
-    z-index: 1000; /* Adjust z-index as needed */
+    z-index: 10; /* Adjust z-index as needed */
     align-items: center; /* Center vertically */
-    justify-content: center; /* Center horizontally */
+    justify-content: space-between; /* space out the logo, title, and menu */
     flex-direction: row; /* Default flex-direction */
+    padding: 5px;
+}
+
+#menu-toggle {
+	margin-left: auto;
+	margin-right: 20px;
+    flex: none;
+}
+
+.site-title {
+    margin: 0;
+    flex-grow: 1; /* allows the title to take available space */
+    text-align: left; /* align the site name to the left */
+    padding: 0 10px; /* spacing around the site title */
+}
+
+.hamburger-menu {
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 24px; /* adjust height of the whole menu */
+}
+
+.hamburger-menu .bar {
+    background-color: #ccc; /* color of the bar */
+    height: 4px; /* thickness of each bar */
+    width: 32px; /* width of each bar */
+    border-radius: 2px; /* rounded edges */
+}
+
+/* The Hamburger Menu */
+#mobile-navigation-menu {
+    z-index: 9999; /* on top of other content */
+    display: flex;
+    flex-direction: column;
+    background-color: #f5f5f5; 
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+    
+    /* display: none; */
+    visibility: hidden;
+    opacity: 0;
+    transition: visibility 0s, opacity 0.2s linear;
+}
+
+#mobile-navigation-menu.open {
+    visibility: visible;
+    opacity: 1;
+    transition-delay: 0s; /* apply the transition immediately when opening */
+}
+
+.mobile-nav a {
+    padding: 10px 20px;
+    text-decoration: none;
+    text-align: center;
+    color: #333;
+    border-bottom: 1px solid #ddd; /* separator between items */
+}
+
+.mobile-nav a:last-child {
+    border-bottom: none; /* remove separator for the last item */
+}
+
+.mobile-nav a:hover {
+    background-color: #ddd; /* change hover color as desired */
 }
 
 #avatar-icon {
     display: inline-block;
-    width: 30px; /* Adjust the size as needed */
-    height: 30px;
+    margin-left: 5px; 
+    width: 38px;
+    height: 38px;
     border-radius: 50%;
     overflow: hidden;
     margin-right: 10px;
@@ -80,18 +171,19 @@ button:hover, .btn:hover {
     object-fit: cover;
 }
 
-/* CSS for the menu toggle button */
-#menu-toggle {
+#site-title-button a {
+    color: #ccc;
+}
+
+#site-title-button {
     background: none;
     border: none;
-    color: #eee;
-    font-size: 20px;
+    font-size: 22px;
     cursor: pointer;
-    margin-right: 10px;
+    margin: auto;
     flex: 1; /* Expand to fill available space */
     text-align: center; /* Center text horizontally */
 }
-
 
 /* Home Page Layout */
 
@@ -99,7 +191,7 @@ button:hover, .btn:hover {
     background-color: #2d2d2d;
     text-align: center;
     padding: 50px 0;
-    padding-bottom: 1.5em;
+    padding-bottom: 1.5rem;
 }
 
 #avatar {
@@ -116,7 +208,7 @@ h1 {
 
 h3.site-baseline {
     margin: 0;
-    margin-top: 1em;
+    margin-top: 1rem;
     padding: 0;
     color: #777;
     font-weight: normal;
@@ -151,11 +243,14 @@ section#main-page {
 @media screen and (max-width: 768px) {
     
     body {
-        font-size: 15px;
+        font-size: 14px;
     }
     h1, h2, h3 {
         line-height: 1.4;
     }
 
+    img {
+        max-width: 100%;
+        margin: auto;
+    }
 }
-
