@@ -50,7 +50,9 @@ has meta => (
         if (! -e $meta) {
             croak "No meta file found for the blog : $meta";
         }
-        return YAML::XS::LoadFile($meta);
+        my $yaml = YAML::XS::LoadFile($meta);
+        $self->info("Meta loaded from : '$meta'");
+        return $yaml;
     },
 );
 
@@ -84,8 +86,6 @@ has elements => (
     default => sub {
         my ($self) = @_;
         
-        #TODO: warn "in elements";
-
         my @posts;
         foreach my $path (@{ $self->meta->{featured_posts} }) {
             my $post;
@@ -95,18 +95,18 @@ has elements => (
                 )
             };
             if ($@) {
-                #TODO: warn "error [$path] : $@"; # invalid path for a LiteBlog::Article object
+                $self->error("Invalid path '$path' : $@"); 
                 next;
             }
 
             eval { $post->content && $post->title };
             if ($@) {
-                #TODO: warn "Error in content or title [$path] : $@"; # invalid LiteBlog::Article object: no content & meta
+                $self->error("Error in content or title '$path' : $@"); 
                 next;
             }
-
-            #TODO: warn "success for post";
+            
             # At this point, we're sure the post is OK to be rendered.
+            $self->info("Post initialized : ".$post->title);
             push @posts, $post;
         }
         
@@ -274,7 +274,7 @@ sub declare_routes {
     my ($self, $plugin, $config) = @_;
 
     my $prefix = $config->{mount} || '/blog';
-    $plugin->dsl->info("LiteBlog::Blog - declaring route ${prefix}/:cat/:slug");
+    $self->info("LiteBlog::Blog - declaring route ${prefix}/:cat/:slug");
 
     # redirect missing trailing / 
     $plugin->app->add_route(
@@ -295,7 +295,7 @@ sub declare_routes {
             my $cat  = $plugin->dsl->param('cat');
             my $slug = $plugin->dsl->param('slug');
 
-            $plugin->dsl->info("Looking for article: $cat/$slug");
+            $self->info("Looking for article: $cat/$slug");
             my $article = $self->find_article(category => $cat, path => $slug );
 
             if (! defined $article) {
@@ -344,7 +344,7 @@ Example:
             my $cat = $plugin->dsl->param('category');
             my $slug = $plugin->dsl->param('slug');
             my $asset = $plugin->dsl->param('asset');
-            $plugin->dsl->info("in $prefix/$cat/$slug/$asset");
+            $self->info("in $prefix/$cat/$slug/$asset");
 
             # the article must exist
             my $article = $self->find_article(
@@ -352,14 +352,14 @@ Example:
             return $plugin->render_client_error(
                 "Requested article not found ($cat / $slug)") 
                 if ! defined $article;
-            $plugin->dsl->info("article is found ($cat/$slug)");
+            $self->info("article is found ($cat/$slug)");
             
             # the asset file must exist in the article's basedir
             my $asset_file = abs_path(File::Spec->catfile($article->basedir, $asset));
             return $plugin->render_client_error(
                 "Asset file '$asset' does not exist"
             ) if ! -e $asset_file;
-            $plugin->dsl->info("asset is found ($asset_file)");
+            $self->info("asset is found ($asset_file)");
 
             return $plugin->dsl->send_file($asset_file, system_path => 1);
         },
@@ -393,13 +393,13 @@ Examples:
         method => 'get',
         regexp => "${prefix}/:category/",
         code   => sub {
-            $plugin->dsl->info("in /$prefix/category route");
+            $self->info("in /$prefix/category route");
             my $category = $plugin->dsl->param('category');
             if (! -d File::Spec->catdir($self->root, $category)) {
                 return $plugin->render_client_error("Invalid category requested: '$category'");
             }
             my $articles = $self->select_articles(category => $category, limit => 6);
-            $plugin->dsl->info("retrieved ".scalar(@$articles)." articles");
+            $self->info("retrieved ".scalar(@$articles)." articles");
             return $plugin->dsl->template(
                 'liteblog/single-page', {
                     page_title => ucfirst($category)." Stories",

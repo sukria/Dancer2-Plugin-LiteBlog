@@ -9,6 +9,7 @@ NEXT
         * If 'navigation' is set, on mobile displays, a hamburger menu is
           displayed. When the user clicks on it, the navigation items are
           displayed as a popup menu.
+        * Widgets now log what they do in Dancer2's logging system.
 
         [FIXES]
         * All routes for articles, pages, categories are now forced to their
