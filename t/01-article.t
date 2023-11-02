@@ -52,5 +52,16 @@ like ($article->permalink, qr{/blog/tech/first-article}, "permalink looks good")
 like $article->published_time, qr/\d{10}/, "published_time is calculated";
 like $article->published_date, qr/\d+ \w+, \d{4}/, "published_date is correctly formatted";
 
+subtest "article's image meta should be transformed to permalink" => sub {
+    my $dir = File::Spec->catfile(dirname(__FILE__), 'articles','tech','first-article' );
+    my $a = Dancer2::Plugin::LiteBlog::Article->new( 
+        basedir => File::Spec->catfile($dir),
+        base_path => '/articles',
+    );
+    is $a->meta->{'image'}, 'featured.jpg', "the 'image' entry is set in the meta data";
+    is $a->image, '/articles/tech/first-article/featured.jpg',
+        "the 'image' accessor returns the correct permalink";
+};
+
 # End of tests
 done_testing;
