@@ -12,6 +12,8 @@ NEXT
         * Widgets now log what they do in Dancer2's logging system.
         * (CSS) Blog post header has a nice styling even when no feature image
           is set.
+        * (CSS) Activities cards are now fixed to a maximum of 3 cards per row,
+           with a maximum width of 320px and minimum width of 280px;
 
         [SCAFFOLDER]
         * The provided article is a little documentation about the 'Blog'
