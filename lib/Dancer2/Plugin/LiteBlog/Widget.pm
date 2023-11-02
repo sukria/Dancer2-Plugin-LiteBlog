@@ -58,12 +58,12 @@ has root => (
 
 Optional read-only attribute.
 
-The C<dancer> attribute is a handle over the L<Dancer2::Plugin> instance of
+The C<dancer> attribute is a handle over the L<Dancer2::Core::DSL> instance of
 Liteblog. This is useful for logging to the Dancer App.
 
 Example:
 
-   $self->dancer->dsl->info("Some debugging info from the widget");
+   $self->dancer->info("Some debugging info from the widget");
 
 =cut
 
@@ -86,7 +86,7 @@ sub info {
     return undef if ! defined $self->dancer;
 
     my $class = ref($self);
-    $class =~ s/^Dancer::Plugin:://;
+    $class =~ s/^Dancer2::Plugin:://;
     my $prefix = "[$class]";
 
     $self->dancer->info("$prefix $message");
@@ -105,7 +105,7 @@ sub error {
     return undef if ! defined $self->dancer;
 
     my $class = ref($self);
-    $class =~ s/^Dancer::Plugin:://;
+    $class =~ s/^Dancer2::Plugin:://;
     my $prefix = "[$class]";
 
     $self->dancer->error("$prefix $message");

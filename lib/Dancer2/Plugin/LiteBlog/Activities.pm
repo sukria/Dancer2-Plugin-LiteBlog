@@ -91,7 +91,9 @@ has elements => (
         if (! -e $activities) {
             croak "Missing file: $activities";
         }
-        return YAML::XS::LoadFile($activities);
+        my $yaml = YAML::XS::LoadFile($activities);
+        $self->info("Accessor 'elements' initialized from '$activities'");
+        return $yaml;
     },
 );
 

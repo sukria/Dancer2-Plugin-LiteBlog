@@ -197,7 +197,7 @@ sub _load_widgets {
         eval { 
             $widget = $class->new( 
                     root   => $plugin->dsl->config->{'appdir'}, 
-                    dancer => $plugin,
+                    dancer => $plugin->dsl,
                     %{$w->{params}}
                 );
         };
