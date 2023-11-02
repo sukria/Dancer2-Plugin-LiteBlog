@@ -50,6 +50,10 @@ button:hover, .btn:hover {
 
 /* Header Menu */
 /* CSS for the mobile header */
+#mobile-menu-container {
+    position: relative; /* to hold the popup menu */
+}
+
 #mobile-header {
     display: none;
     background-color: #2d2d2d;
@@ -91,6 +95,35 @@ button:hover, .btn:hover {
     height: 4px; /* thickness of each bar */
     width: 32px; /* width of each bar */
     border-radius: 2px; /* rounded edges */
+}
+
+/* The Hamburger Menu */
+#mobile-navigation-menu {
+    z-index: 9999; /* on top of other content */
+    display: none;
+    flex-direction: column;
+    background-color: #f5f5f5; 
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+}
+
+.mobile-nav a {
+    padding: 10px 20px;
+    text-decoration: none;
+    text-align: center;
+    color: #333;
+    border-bottom: 1px solid #ddd; /* separator between items */
+}
+
+.mobile-nav a:last-child {
+    border-bottom: none; /* remove separator for the last item */
+}
+
+.mobile-nav a:hover {
+    background-color: #ddd; /* change hover color as desired */
 }
 
 #avatar-icon {
