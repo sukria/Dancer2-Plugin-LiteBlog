@@ -36,7 +36,7 @@ can provide their own views and CSS.
 
 =head2 root
 
-The `root` attribute specifies the root directory for the widget. It's a
+The C<root> attribute specifies the root directory for the widget. It's a
 required attribute and must be a valid directory, or an error will be thrown.
 
 This directory is the base directory of the widget, where resources will be 
@@ -54,7 +54,62 @@ has root => (
     },
 );
 
+=head2 dancer 
+
+Optional read-only attribute.
+
+The C<dancer> attribute is a handle over the L<Dancer2::Plugin> instance of
+Liteblog. This is useful for logging to the Dancer App.
+
+Example:
+
+   $self->dancer->dsl->info("Some debugging info from the widget");
+
+=cut
+
+has dancer => (
+    is => 'ro',
+);
+
 =head1 METHODS
+
+=head2 info ($message)
+
+If a C<dancer> attribute is set, issue a C<info> call with the given message,
+properly prefixed by the Widget's name. If no C<dancer> is defined, returns undef and does 
+nothing.
+
+=cut
+
+sub info {
+    my ($self, $message) = @_;
+    return undef if ! defined $self->dancer;
+
+    my $class = ref($self);
+    $class =~ s/^Dancer::Plugin:://;
+    my $prefix = "[$class]";
+
+    $self->dancer->info("$prefix $message");
+}
+
+=head2 error ($message)
+
+If a C<dancer> attribute is set, issue a C<error> call with the given message,
+properly prefixed by the Widget's name. If no C<dancer> is defined, returns undef and does 
+nothing.
+
+=cut
+
+sub error {
+    my ($self, $message) = @_;
+    return undef if ! defined $self->dancer;
+
+    my $class = ref($self);
+    $class =~ s/^Dancer::Plugin:://;
+    my $prefix = "[$class]";
+
+    $self->dancer->error("$prefix $message");
+}
 
 =head2 elements
 
