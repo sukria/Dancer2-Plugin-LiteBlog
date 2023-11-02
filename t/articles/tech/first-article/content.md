@@ -55,7 +55,7 @@ It's super easy to include images in your articles. The recommended way to
 proceed is simply to host your assets within the article/page directory and just
 source them with a relative path. 
 
-Jut like that : 
+Just like that : 
 
 <pre><code class="html">&lt;img src="featured.jpg" /&gt;</code></pre>
 
