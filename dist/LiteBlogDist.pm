@@ -22,6 +22,7 @@ my @files_to_embed = qw(
     views/liteblog/widgets/blog-cards.tt
     articles/blog-meta.yml
     articles/tech/first-article/content.md
+    articles/tech/first-article/featured.jpg
     articles/tech/first-article/meta.yml
     activities.yml
 );
