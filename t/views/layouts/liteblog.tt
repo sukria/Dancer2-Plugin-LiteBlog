@@ -34,19 +34,50 @@
 </head>
 <body>
 
+    <!-- This is the menu bar for small screens -->
     <header id="mobile-header">
-        <div id="avatar-icon">
-            <!-- TODO : avatar should be a setting with these as defaults -->
-            [% IF logo %]
-            <a href="/"><img src="[% logo %]" alt="[% title %] Logo"></a>
-            [% ELSE %]
-            <!-- Change the 'logo' setting (under the 'liteblog' config entry) to change this image -->
-            <a href="/"><img src="/images/liteblog.jpg" alt="LiteBlog Logo"></a>
-            [% END %]
-        </div>
-        <a href="/"><button id="menu-toggle">[% title %]</button></a>
-    </header>
+    
+      <!-- the site logo -->
+      <div id="avatar-icon">
+        [% IF logo %]
+        <a href="/"><img src="[% logo %]" alt="[% title %] Logo"></a>
+        [% ELSE %]
+        <!-- Change the 'logo' setting (under the 'liteblog' config entry) to change this image -->
+        <a href="/"><img src="/images/liteblog.jpg" alt="LiteBlog Logo"></a>
+        [% END %]
+      </div> <!-- END site logo -->
 
+      <!-- the Site Title -->
+      <button id="site-title-button">
+        <a href="/">[% title %]</a>
+      </button>
+
+      [% IF navigation %]
+      <div id="mobile-menu-container">
+      <!-- the hamburger toggle button -->
+      <div id="menu-toggle" class="hamburger-menu">
+        <div class="bar"></div>
+        <div class="bar"></div>
+        <div class="bar"></div>
+      </div> <!-- END hamburger toggle button -->
+      </div>
+      [% END %]
+
+    [% IF navigation %]
+    <!-- the hamburger menu -->
+      <div id="mobile-navigation-menu" class="mobile-nav">
+      [% FOREACH nav IN navigation %]
+        [% IF nav.link %]
+        <a class="mobile-nav-item" href="[% nav.link %]">[% nav.label %]</a>
+        [% END %]
+      [% END %]
+      </div>
+    [% END %] <!-- END hamburger menu -->
+
+
+    </header> <!-- END mobile-header -->
+
+    
     [% IF page_title %]
     <!-- single-page layout -->
     <div id="hero-banner" class="hero-banner">
@@ -95,7 +126,7 @@ window.addEventListener('scroll', function () {
     var mobileHeader = document.getElementById('mobile-header');
 
     if (window.scrollY > heroSection.clientHeight) {
-        mobileHeader.style.display = 'block';
+        mobileHeader.style.display = 'flex';
     } else {
         mobileHeader.style.display = 'none';
     }
@@ -109,10 +140,30 @@ window.addEventListener('scroll', function () {
     var mobileHeader = document.getElementById('mobile-header');
 
     if (window.scrollY > heroSection.clientHeight) {
-        mobileHeader.style.display = 'block';
+        mobileHeader.style.display = 'flex';
     } else {
         mobileHeader.style.display = 'none';
     }
+});
+</script>
+[% END %]
+
+[% IF navigation %]
+<script type="text/javascript">
+// This ensures that the script sets the initial display style on page load
+document.addEventListener("DOMContentLoaded", function() {
+    var mobileNav = document.getElementById("mobile-navigation-menu");
+    // Set the initial display style if it's not set by inline styles
+    if (!mobileNav.style.display) {
+        mobileNav.style.display = "none";
+    }
+});
+
+document.querySelector(".hamburger-menu").addEventListener("click", function() {
+    console.log("Hamburger menu clicked");
+    var mobileNav = document.getElementById("mobile-navigation-menu");
+    console.log("Current display style: ", mobileNav.style.display);
+    mobileNav.style.display = mobileNav.style.display === "none" ? "flex" : "none";
 });
 </script>
 [% END %]

@@ -63,17 +63,19 @@ like( $res->content, qr/blog-card.*<h3 class="post-title">A super Tech Blog Post
     '[GET /] First blog card found');
 
 # Testing the blog post permalink route
-$res = $test->request( GET '/someblog/tech/some-article' );
+$res = $test->request( GET '/someblog/tech/some-article-does-not-exist/' );
 is( $res->code, 404, 'invalid slug returns a 404' );
 
 $res = $test->request( GET '/someblog/tech/first-article' );
+is( $res->code, 302, 'Redirect to good permalink with trailing /' );
+$res = $test->request( GET '/someblog/tech/first-article/' );
 is( $res->code, 200, 'Valid slug returns a 200' );
 like( $res->content, qr{<h1>This is the first title.*<p>Here I have a paragraph}s, 
     '[GET /someblog/tech/first-article] Correct content' );
 
 
 subtest 'Feature: highlight' => sub {
-    $res = $test->request( GET '/someblog/perl/liteblog-a-minimalist-file-based-blog-engine-for-perl' );
+    $res = $test->request( GET '/someblog/perl/liteblog-a-minimalist-file-based-blog-engine-for-perl/' );
     like $res->content, qr/link.*highlight\.js.*default\.min\.css/, "Highlight JS CSS source detected";
     like $res->content, qr/script.*highlight\.js.*highlight\.min\.js/, "Highlight JS lib source detected";
     like $res->content, qr/hljs\.highlightBlock/, "Highlight JS call detected";
@@ -81,13 +83,13 @@ subtest 'Feature: highlight' => sub {
 };
 
 subtest 'Navigation bar' => sub {
-    $res = $test->request( GET '/someblog/perl/liteblog-a-minimalist-file-based-blog-engine-for-perl' );
+    $res = $test->request( GET '/someblog/perl/liteblog-a-minimalist-file-based-blog-engine-for-perl/' );
     like $res->content, qr{<nav>.*<a href="/">Home</a>.*</nav>}s, "Navigation bar looks good";
     done_testing;
 };
 
 subtest "Local images to the article dir are rendered" => sub {
-    $res = $test->request( GET '/someblog/tech/first-article' );
+    $res = $test->request( GET '/someblog/tech/first-article/' );
     like $res->content, qr{<img src="featured\.jpg"}, 
         "the first-article rendered HTML contains an image";
 
@@ -101,7 +103,7 @@ subtest "Local images to the article dir are rendered" => sub {
 subtest "Rendered Liteblog Errors" => sub {
     $res = $test->request( GET '/someblog/tech/first-article/not-existing.pdf' );
     is $res->code, 404, "HTTP status is 404";
-    like $res->content, qr{<article class="main-content">.*<h1>Page Not Found</h1>.*Asset}s, "We got a nice 404 page rendered";
+    like $res->content, qr{<h1 class="post-title">Page Not Found</h1>.*Asset}s, "We got a nice 404 page rendered";
 };
 
 done_testing;

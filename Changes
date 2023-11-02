@@ -6,6 +6,9 @@ NEXT
           /blog/some-article/featured.jpg). 
         * New method <render_client_error> to properly render 404 in Liteblog's
           look and feel.
+        * If 'navigation' is set, on mobile displays, a hamburger menu is
+          displayed. When the user clicks on it, the navigation items are
+          displayed as a popup menu.
 
         [FIXES]
         * All routes for articles, pages, categories are now forced to their
