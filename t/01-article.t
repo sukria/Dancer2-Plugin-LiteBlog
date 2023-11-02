@@ -55,12 +55,21 @@ like $article->published_date, qr/\d+ \w+, \d{4}/, "published_date is correctly 
 subtest "article's image meta should be transformed to permalink" => sub {
     my $dir = File::Spec->catfile(dirname(__FILE__), 'articles','tech','first-article' );
     my $a = Dancer2::Plugin::LiteBlog::Article->new( 
-        basedir => File::Spec->catfile($dir),
+        basedir => $dir,
         base_path => '/articles',
     );
     is $a->meta->{'image'}, 'featured.jpg', "the 'image' entry is set in the meta data";
     is $a->image, '/articles/tech/first-article/featured.jpg',
         "the 'image' accessor returns the correct permalink";
+
+    # a regular page, with an absolute image set.
+    $dir = File::Spec->catfile(dirname(__FILE__), 'articles','contact' );
+    my $page = Dancer2::Plugin::LiteBlog::Article->new( 
+        basedir => $dir, base_path => '' ); # mounted at the site's root
+    is $page->meta->{'image'}, '/images/liteblog.jpg',
+        "page's meta image is an absolute path";
+    is $page->image, '/images/liteblog.jpg',
+        "page's image accessor returns the 'image' meta field unchanged";
 };
 
 # End of tests

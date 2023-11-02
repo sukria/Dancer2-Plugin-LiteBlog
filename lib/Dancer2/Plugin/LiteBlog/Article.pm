@@ -216,17 +216,49 @@ has title => (
 =head2 image
 
 An associated image for the article, if any.
-Parsed from the content of C<meta.yml>.
+
+Parsed from the content of C<meta.yml>.  If that value is relative (no starting
+'/'), then it is transformed into the absolute permalink of the asset, using
+C<base_path>, the C<category> if needed and the C<slug>.
+
+If the C<image> meta field is an absolute path (either starting with a C</> 
+or with C<https?>, it is returned unchanged.
+
+Example:
+
+    image: "featured.jpg" # in article/meta.yml
+    $article->image; # returns '/blog/cat/some-article/featured.jpg' 
 
 =cut
 
+# Returns true if the $path begins with either a '/' or 'https?'.
+sub _is_absolute_path {
+    my ($self, $path) = @_;
+    return $path =~ /^\// || $path =~ /^https?:\/\//;
+}
 
 has image => (
     is => 'ro',
     lazy => 1,
     default => sub {
         my ($self) = @_;
-        return $self->meta->{'image'};
+        my $asset = $self->meta->{'image'};
+
+        # an absolute path remains unchanged
+        return $asset if $self->_is_absolute_path($asset);
+        
+        # this is a relative path, transform to its permalink
+        if ($self->is_page) {
+            return $self->base_path .
+                   '/'.$self->slug .
+                   '/'.$asset;
+        }
+        else {
+            return $self->base_path .
+                   '/'.$self->category .
+                   '/'.$self->slug .
+                   '/'.$asset;
+        }
     },
 );
 
