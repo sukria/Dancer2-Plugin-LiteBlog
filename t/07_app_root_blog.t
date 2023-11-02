@@ -50,7 +50,7 @@ subtest "A page mounted at the root of the site" => sub {
 subtest "An article mounted at the root of the site" => sub {
     my $res = $test->request( GET '/tech/first-article/' );
     is $res->code, 200, "/tech/first-article/ is OK";
-    like $res->content, qr{Here I have a paragraph},
+    like $res->content, qr{It's your time to start editing!},
         "The article /tech/first-article/ is rendered correctly.";
     done_testing;
 };
