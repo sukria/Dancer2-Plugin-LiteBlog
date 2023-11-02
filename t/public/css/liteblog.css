@@ -24,17 +24,17 @@ h1, h2, h3, h4, h5, h6 {
     font-weight: 600; /* slightly bold but not too heavy */
 }
 h1 {
-    font-size: 2.5em;
+    font-size: 2.5rem;
 }
 h2 {
-    font-size: 2em;
+    font-size: 2rem;
 }
 h3 {
-    font-size: 1.75em;
+    font-size: 1.75rem;
 }
 
 h1.site-title {
-    font-size: 1.5em;
+    font-size: 1.5rem;
     text-align: center;
 }
 
@@ -60,6 +60,11 @@ button:hover, .btn:hover {
     background-color: var(--primary-hover);
 }
 
+/* Accessibility rules */
+a:focus, button:focus, .btn:focus {
+    outline: 3px solid rgba(0, 123, 255, 0.5);
+    outline-offset: 2px;
+}
 
 /* Header Menu */
 /* CSS for the mobile header */
@@ -113,7 +118,7 @@ button:hover, .btn:hover {
 /* The Hamburger Menu */
 #mobile-navigation-menu {
     z-index: 9999; /* on top of other content */
-    display: none;
+    display: flex;
     flex-direction: column;
     background-color: #f5f5f5; 
     position: absolute;
@@ -121,6 +126,17 @@ button:hover, .btn:hover {
     left: 0;
     right: 0;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+    
+    /* display: none; */
+    visibility: hidden;
+    opacity: 0;
+    transition: visibility 0s, opacity 0.2s linear;
+}
+
+#mobile-navigation-menu.open {
+    visibility: visible;
+    opacity: 1;
+    transition-delay: 0s; /* apply the transition immediately when opening */
 }
 
 .mobile-nav a {
@@ -175,7 +191,7 @@ button:hover, .btn:hover {
     background-color: #2d2d2d;
     text-align: center;
     padding: 50px 0;
-    padding-bottom: 1.5em;
+    padding-bottom: 1.5rem;
 }
 
 #avatar {
@@ -192,7 +208,7 @@ h1 {
 
 h3.site-baseline {
     margin: 0;
-    margin-top: 1em;
+    margin-top: 1rem;
     padding: 0;
     color: #777;
     font-weight: normal;
