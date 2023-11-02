@@ -22,6 +22,8 @@ NEXT
           good now.
         * Fix article->image accessor to return proper permalinks if the meta
           value of the 'image' parameter is relative.
+        * It's now possible to mount the Blog widget to the root of the site
+          (/). This was causing many bugs in permalinks generation. Fixed now.
 
 0.02    2023-10-31
 
