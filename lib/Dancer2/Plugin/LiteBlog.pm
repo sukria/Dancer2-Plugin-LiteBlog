@@ -38,8 +38,6 @@ use File::Spec;
 use Carp 'croak';
 
 use Dancer2::Plugin;
-use Dancer2::Plugin::LiteBlog::Activities;
-use Dancer2::Plugin::LiteBlog::Blog;
 
 =head1 METHODS
 
@@ -181,16 +179,38 @@ sub _load_widgets {
         my $widget;
         
         my $class = 'Dancer2::Plugin::LiteBlog::'.ucfirst($w->{name});
-        eval { $widget = $class->new( 
-                    root => $plugin->dsl->config->{'appdir'}, 
+        $plugin->dsl->info("Initializing widget: $class");
+
+        my $module;
+        eval {
+            $module = File::Spec->catfile(split /::/, $class) . '.pm';
+            require $module;
+        };
+        if ($@) {
+            $plugin->dsl->error("Unable to import '$module': $@");
+            next;
+        }
+        else {
+            $plugin->dsl->info("Widget '$module' successfully imported");
+        }
+
+        eval { 
+            $widget = $class->new( 
+                    root   => $plugin->dsl->config->{'appdir'}, 
+                    dancer => $plugin,
                     %{$w->{params}}
                 );
         };
+        
         if ($@) {
-        $plugin->dsl->error("Unable to initialized widget '".
+            $plugin->dsl->error("Unable to initialized widget '".
             $w->{name}."' : $@");
             next;
         }
+        else {
+            $plugin->dsl->info("Widget '$class' successfully initialized");
+        }
+
         $elements = $widget->elements;
 
         if (scalar(@$elements)) {
