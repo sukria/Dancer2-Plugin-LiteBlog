@@ -19,6 +19,8 @@ NEXT
           is good now.
         * (CSS) blog-cards sizes are now stable (420px max). Responsiveness is
           good now.
+        * Fix article->image accessor to return proper permalinks if the meta
+          value of the 'image' parameter is relative.
 
 0.02    2023-10-31
 
