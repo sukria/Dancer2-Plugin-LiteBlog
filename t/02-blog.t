@@ -27,9 +27,6 @@ my $a;
 eval { $blog->find_article(); };
 like $@, qr/Required param 'path' missing/, "path must be passed to find_article";
 
-$a = $blog->find_article(path => 'some-test-article' );
-is $a->title, 'This is a Great Test Article', "find_article works for a page";
-
 $a = $blog->find_article(category => 'tech', path => 'first-article' );
 is $a->title, 'A super Tech Blog Post', "find_article works for a tech article";
 $a = $blog->find_article(category => 'tech', path => '/first-article' );

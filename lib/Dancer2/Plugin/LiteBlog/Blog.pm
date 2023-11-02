@@ -98,12 +98,6 @@ has elements => (
                 $self->error("Invalid path '$path' : $@"); 
                 next;
             }
-
-            eval { $post->content && $post->title };
-            if ($@) {
-                $self->error("Error in content or title '$path' : $@"); 
-                next;
-            }
             
             # At this point, we're sure the post is OK to be rendered.
             $self->info("Post initialized : ".$post->title);
@@ -168,12 +162,17 @@ sub select_articles {
     # Load Article objects up to the limit
     foreach my $dir (@dirs) {
         my $article;
-        $article = Dancer2::Plugin::LiteBlog::Article->new( 
-            basedir => File::Spec->catdir($root, $dir) );
-
+        eval { 
+            $article = Dancer2::Plugin::LiteBlog::Article->new( 
+                basedir => File::Spec->catdir($root, $dir),
+                base_path => $self->mount,
+            );
+        };
         # make sur this is a valid article 
-        eval { $article->content };
-        next if $@;
+        if ($@) {
+            $self->info("Not a valid article '$root/$dir' : $@, skipping");
+            next;
+        }
 
         push @records, $article;
         last if ++$count == $limit;
@@ -270,11 +269,22 @@ Examples:
 
 =cut
 
+
+# returns the right prefix, based on mount.
+sub _get_prefix {
+    my ($self, $mount) = @_;
+    $mount ||= '/blog'; # default value is /blog
+    
+    # handle top-level mount
+    return "" if $mount eq '/';
+    return $mount;
+}
+
 sub declare_routes {
     my ($self, $plugin, $config) = @_;
 
-    my $prefix = $config->{mount} || '/blog';
-    $self->info("LiteBlog::Blog - declaring route ${prefix}/:cat/:slug");
+    my $prefix = $self->_get_prefix($config->{mount});
+    $self->info("declaring route ${prefix}/:cat/:slug");
 
     # redirect missing trailing / 
     $plugin->app->add_route(
@@ -283,19 +293,22 @@ sub declare_routes {
         code    => sub {
             my $cat  = $plugin->dsl->param('cat');
             my $slug = $plugin->dsl->param('slug');
+            $self->info("In $prefix/$cat/$slug");
+
             $plugin->dsl->redirect("$prefix/$cat/$slug/");
         },
     );
 
     # /blog/:category/:permalink
+    $self->info("declaring route ${prefix}/:cat/:slug/");
     $plugin->app->add_route(
         method  => 'get',
         regexp  => "${prefix}/:cat/:slug/",
         code    => sub {
             my $cat  = $plugin->dsl->param('cat');
             my $slug = $plugin->dsl->param('slug');
+            $self->info("In $prefix/$cat/$slug");
 
-            $self->info("Looking for article: $cat/$slug");
             my $article = $self->find_article(category => $cat, path => $slug );
 
             if (! defined $article) {
@@ -337,6 +350,7 @@ Example:
 
 =cut
 
+    $self->info("declaring route ${prefix}/:cat/:slug/:asset");
     $plugin->app->add_route(
         method => 'get',
         regexp => "${prefix}/:category/:slug/:asset",
@@ -365,6 +379,66 @@ Example:
         },
     );
 
+=head3 GET C</:page>
+
+This is a catch-all route for retrieving and displaying any article based on its
+page path. If the article is not found, it will pass, this might be a category
+page.
+
+Examples:
+
+  /about-me
+  /contact
+
+=cut
+
+    # redirect to trailing / path
+    $self->info("declaring route ${prefix}/:page");
+    $plugin->app->add_route(
+        method => 'get',
+        regexp => "${prefix}/:page",
+        code => sub {
+            my $slug = $plugin->dsl->param('page');
+            $self->info("In $prefix/$slug");
+
+            $plugin->dsl->redirect("${prefix}/$slug/");
+        }
+    );
+
+    $self->info("declaring route ${prefix}/:page/");
+    $plugin->app->add_route(
+        method => 'get',
+        regexp => "${prefix}/:page/",
+        code => sub {
+            my $slug = $plugin->dsl->param('page');
+            $self->info("In $prefix/$slug/");
+            
+            my $article = $self->find_article(path => $slug );
+
+            if (! defined $article) {
+                $self->info("Not a page '$slug', passing");
+                return $plugin->dsl->pass();
+            }
+            $self->info("Got article : $article");
+            
+            # TODO hanlde invalid/missing $article->content as a 404
+            return $plugin->dsl->template(
+                'liteblog/single-page',
+                {
+                    page_title => $article->title,
+                    page_image => $article->image,
+                    content    => $article->content, 
+                    meta       => [
+                        { 
+                            label => "Last update: ".$article->published_date 
+                        }
+                    ],
+                },
+                { layout => 'liteblog'}
+            );
+        },
+    );
+
 =head3 GET C</blog/:category/>
 
 Displays a landing page for a specific category. If the category is not found or
@@ -379,22 +453,27 @@ Examples:
 =cut
 
     # redirect missing trailing / 
+    $self->info("declaring route ${prefix}/:category");
     $plugin->app->add_route(
         method => 'get',
         regexp  => "${prefix}/:cat",
         code    => sub {
             my $cat  = $plugin->dsl->param('cat');
+            $self->info("In $prefix/$cat");
+
             $plugin->dsl->redirect("$prefix/$cat/");
         },
     );
 
     # the /category landing page
+    $self->info("declaring route ${prefix}/:category/");
     $plugin->app->add_route(
         method => 'get',
         regexp => "${prefix}/:category/",
         code   => sub {
-            $self->info("in /$prefix/category route");
             my $category = $plugin->dsl->param('category');
+            $self->info("In $prefix/$category");
+
             if (! -d File::Spec->catdir($self->root, $category)) {
                 return $plugin->render_client_error("Invalid category requested: '$category'");
             }
@@ -413,57 +492,6 @@ Examples:
                 {layout => 'liteblog'}
             );
         }
-    );
-
-=head3 GET C</:page>
-
-This is a catch-all route for retrieving and displaying any article based on its
-page path. If the article is not found, it will return a 404 status. The
-rendering is done with the 'liteblog/single-page' template.
-
-Examples:
-
-  /about-me
-  /contact
-
-=cut
-
-    # redirect to trailing / path
-    $plugin->app->add_route(
-        method => 'get',
-        regexp => '/:page',
-        code => sub {
-            my $slug = $plugin->dsl->param('page');
-            $plugin->dsl->redirect("/$slug/");
-        }
-    );
-
-    $plugin->app->add_route(
-        method => 'get',
-        regexp => '/:page/',
-        code => sub {
-            my $slug = $plugin->dsl->param('page');
-            my $article = $self->find_article(path => $slug );
-
-            return $plugin->render_client_error("Page not found : $slug")
-                if ! defined $article;
-            
-            # TODO hanlde invalid/missing $article->content as a 404
-            return $plugin->dsl->template(
-                'liteblog/single-page',
-                {
-                    page_title => $article->title,
-                    page_image => $article->image,
-                    content    => $article->content, 
-                    meta       => [
-                        { 
-                            label => "Last update: ".$article->published_date 
-                        }
-                    ],
-                },
-                { layout => 'liteblog'}
-            );
-        },
     );
 }
 

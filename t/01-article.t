@@ -18,19 +18,7 @@ like( $@, qr/Not a valid/, "failed to create with invalid basedir") ;
 my $page;
 my $localdir = File::Spec->catfile(dirname(__FILE__), 'articles', 'some-test-article');
 eval { $page = Dancer2::Plugin::LiteBlog::Article->new( basedir => $localdir ); };
-is( $@, '', "article created with a valid basedir");
-
-# Testing slug
-is($page->slug, 'some-test-article', 'slug is correctly initialized');
-
-# Testing category
-is ($page->category, 'page', "This article is actually a page (top-level)");
-ok($page->is_page, "Flag is_page works");
-like ($page->permalink, qr{/some-test-article}, "permalink looks good");
-
-# Testing content
-eval { $page->content };
-like ($@, qr/content\.md file not found/, "Exception triggered for missing content.md file");
+like( $@, qr{not valid: content.md}, "invalid article basedir prevents instanciation");
 
 
 # Testing a blog post under a category
@@ -71,6 +59,22 @@ subtest "article's image meta should be transformed to permalink" => sub {
     is $page->image, '/images/liteblog.jpg',
         "page's image accessor returns the 'image' meta field unchanged";
 };
+
+subtest "Article created on a category page is not working" => sub {
+    my $dir = File::Spec->catfile(dirname(__FILE__), 'articles','tech' );
+    my $a;
+    eval { $a = Dancer2::Plugin::LiteBlog::Article->new( 
+        basedir => $dir,
+        base_path => '/',
+    ); };
+
+    is $a, undef, "undef is returned as the article isn't valid";
+    like $@, qr{Basedir '$dir' is not valid}, 
+        "An exception is thrown to describe the problem";
+
+    done_testing;
+};
+
 
 # End of tests
 done_testing;
