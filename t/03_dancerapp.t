@@ -106,4 +106,9 @@ subtest "Rendered Liteblog Errors" => sub {
     like $res->content, qr{<h1 class="post-title">Page Not Found</h1>.*Asset}s, "We got a nice 404 page rendered";
 };
 
+$res = $test->request(GET '/');
+like $res->content, 
+    qr{<a href="/blog/tech/first-article"><img class="post-image" src="/blog/tech/first-article/featured\.jpg" alt="A super Tech Blog Post"></a>}, 
+    "Image URL under article path has proper permalink";
+
 done_testing;
