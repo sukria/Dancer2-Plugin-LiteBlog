@@ -1,6 +1,7 @@
 Revision history for Dancer2-Plugin-LiteBlog
 
-NEXT
+0.03    2023-11-02
+
         [FEATURES]
         * New route to render static assets in article's directory (eg: 
           /blog/some-article/featured.jpg). 
