@@ -329,17 +329,11 @@ has permalink => (
     lazy => 1,
     default => sub {
         my ($self) = @_;
-        if ($self->is_page) {
-            return '/' . $self->slug;
-        }
-        if ($self->base_path && $self->base_path ne '/') {
-            return join('/', 
-                ($self->base_path, $self->category, $self->slug ));
-        }
-        else {
-            return join('/', 
-                ("", $self->category, $self->slug ));
-        }
+        my $base = $self->base_path;
+        $base = '' if !defined $base || $base eq '/';
+
+        return join('/', ($base, $self->slug)) if $self->is_page;
+        return join('/', ($base, $self->category, $self->slug ));
     },
 );
 
