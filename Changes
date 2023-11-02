@@ -10,6 +10,8 @@ NEXT
           displayed. When the user clicks on it, the navigation items are
           displayed as a popup menu.
         * Widgets now log what they do in Dancer2's logging system.
+        * (CSS) Blog post header has a nice styling even when no feature image
+          is set.
 
         [SCAFFOLDER]
         * The provided article is a little documentation about the 'Blog'
