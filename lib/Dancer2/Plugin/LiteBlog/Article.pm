@@ -243,6 +243,7 @@ has image => (
     default => sub {
         my ($self) = @_;
         my $asset = $self->meta->{'image'};
+        return undef if ! defined $asset;
 
         # an absolute path remains unchanged
         return $asset if $self->_is_absolute_path($asset);

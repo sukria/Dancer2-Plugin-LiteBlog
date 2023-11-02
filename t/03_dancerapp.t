@@ -108,7 +108,7 @@ subtest "Rendered Liteblog Errors" => sub {
 
 $res = $test->request(GET '/');
 like $res->content, 
-    qr{<a href="/blog/tech/first-article"><img class="post-image" src="/blog/tech/first-article/featured\.jpg" alt="A super Tech Blog Post"></a>}, 
+    qr{<a href="/someblog/tech/first-article"><img class="post-image" src="/someblog/tech/first-article/featured\.jpg" alt="A super Tech Blog Post"></a>}, 
     "Image URL under article path has proper permalink";
 
 done_testing;
