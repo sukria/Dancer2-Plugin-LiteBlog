@@ -150,20 +150,16 @@ window.addEventListener('scroll', function () {
 
 [% IF navigation %]
 <script type="text/javascript">
-// This ensures that the script sets the initial display style on page load
-document.addEventListener("DOMContentLoaded", function() {
-    var mobileNav = document.getElementById("mobile-navigation-menu");
-    // Set the initial display style if it's not set by inline styles
-    if (!mobileNav.style.display) {
-        mobileNav.style.display = "none";
-    }
-});
+document.addEventListener('DOMContentLoaded', (event) => {
+    // Get the elements
+    const menuToggle = document.querySelector('#menu-toggle');
+    const mobileMenu = document.querySelector('#mobile-navigation-menu');
 
-document.querySelector(".hamburger-menu").addEventListener("click", function() {
-    console.log("Hamburger menu clicked");
-    var mobileNav = document.getElementById("mobile-navigation-menu");
-    console.log("Current display style: ", mobileNav.style.display);
-    mobileNav.style.display = mobileNav.style.display === "none" ? "flex" : "none";
+    // Add event listener
+    menuToggle.addEventListener('click', function() {
+        // Toggle the .open class on the mobile menu
+        mobileMenu.classList.toggle('open');
+    });
 });
 </script>
 [% END %]
