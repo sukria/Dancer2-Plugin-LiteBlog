@@ -72,5 +72,21 @@ subtest "article's image meta should be transformed to permalink" => sub {
         "page's image accessor returns the 'image' meta field unchanged";
 };
 
+subtest "Article created on a category page is not working" => sub {
+    my $dir = File::Spec->catfile(dirname(__FILE__), 'articles','tech' );
+    my $a;
+    eval { $a = Dancer2::Plugin::LiteBlog::Article->new( 
+        basedir => $dir,
+        base_path => '/',
+    ); };
+
+    is $a, undef, "undef is returned as the article isn't valid";
+    like $@, qr{Article basedir '$dir' is not a valid Article basedir (meta.yml or contend.md missing/invalid)}, 
+        "An exception is thrown to describe the problem";
+
+    done_testing;
+};
+
+
 # End of tests
 done_testing;
