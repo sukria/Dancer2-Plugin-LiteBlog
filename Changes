@@ -14,6 +14,8 @@ NEXT
           is set.
         * (CSS) Activities cards are now fixed to a maximum of 3 cards per row,
            with a maximum width of 320px and minimum width of 280px;
+        * (CSS) Use CSS variables for common colors in liteblog.css to ease
+          theming changes.
 
         [SCAFFOLDER]
         * The provided article is a little documentation about the 'Blog'

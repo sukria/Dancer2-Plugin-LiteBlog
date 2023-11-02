@@ -1,6 +1,18 @@
+/* Our common colors for the Liteblog theme */
+:root {
+    --primary-color: #007BFF;
+    --primary-hover: #0056b3;
+    --text-color: #333;
+    --background-color: #f4f4f4;
+    --header-bg-color: #2d2d2d;
+    --link-color: #007BFF;
+    --link-hover-color: #0056b3;
+}
+
 body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
+    font-family: 'Roboto', 'Arial', sans-serif;
+    background-color: var(--background-color);
+
     margin: 0;
     padding: 0;
 
@@ -27,16 +39,16 @@ h1.site-title {
 }
 
 a {
-    color: #007BFF; /* Example blue color */
+    color: var(--link-color);
     text-decoration: none; /* Remove underline */
     transition: color 0.3s ease; /* Smooth color transition */
 }
 a:hover {
-    color: #0056b3; /* Darker shade of blue for hover state */
+    color: var(--link-hover-color);
 }
 
 button, .btn {
-    background-color: #007BFF;
+    background-color: var(--primary-color);
     color: #fff;
     border: none;
     padding: 10px 20px;
@@ -45,7 +57,7 @@ button, .btn {
     transition: background-color 0.3s ease;
 }
 button:hover, .btn:hover {
-    background-color: #0056b3;
+    background-color: var(--primary-hover);
 }
 
 
