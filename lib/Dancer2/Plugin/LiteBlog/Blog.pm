@@ -98,12 +98,6 @@ has elements => (
                 $self->error("Invalid path '$path' : $@"); 
                 next;
             }
-
-            eval { $post->content && $post->title };
-            if ($@) {
-                $self->error("Error in content or title '$path' : $@"); 
-                next;
-            }
             
             # At this point, we're sure the post is OK to be rendered.
             $self->info("Post initialized : ".$post->title);
@@ -170,7 +164,9 @@ sub select_articles {
         my $article;
         eval { 
             $article = Dancer2::Plugin::LiteBlog::Article->new( 
-                basedir => File::Spec->catdir($root, $dir) );
+                basedir => File::Spec->catdir($root, $dir),
+                base_path => $self->mount,
+            );
         };
         # make sur this is a valid article 
         if ($@) {

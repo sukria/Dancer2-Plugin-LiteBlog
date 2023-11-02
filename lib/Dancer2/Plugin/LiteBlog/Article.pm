@@ -329,7 +329,14 @@ has permalink => (
         if ($self->is_page) {
             return '/' . $self->slug;
         }
-        return join('/', ($self->base_path, $self->category, $self->slug ));
+        if ($self->base_path && $self->base_path ne '/') {
+            return join('/', 
+                ($self->base_path, $self->category, $self->slug ));
+        }
+        else {
+            return join('/', 
+                ("", $self->category, $self->slug ));
+        }
     },
 );
 

@@ -34,7 +34,7 @@ use lib "$FindBin::Bin/../lib";
             { name => 'blog',
               params => {
                 title => "Stories of my Test App",
-                mount => '/blog',
+                mount => '/',
                 root => 't/articles' }},
         ],
     };
