@@ -35,6 +35,24 @@ use Text::Markdown 'markdown';
 use File::Slurp;
 use DateTime;
 
+=head1 METHODS
+
+=head2 BUILD 
+
+At build time, this class validates the integrity of the Article. Namely, it
+makes sure the object is corretly initialized, which means a valid meta.yml 
+and contend.md files are found and successfully parsed in the basedir.
+
+=cut
+
+sub BUILD {
+    my ($self) = @_;
+    eval {
+        $self->title && $self->content 
+    };
+    croak "Basedir '".$self->basedir."' is not valid: $@ " if $@; 
+}
+
 =head1 ATTRIBUTES
 
 =head2 basedir
