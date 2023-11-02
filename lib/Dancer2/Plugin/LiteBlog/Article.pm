@@ -266,14 +266,17 @@ has image => (
         # an absolute path remains unchanged
         return $asset if $self->_is_absolute_path($asset);
         
+        my $base = $self->base_path;
+        $base = '' if $base eq '/';
+
         # this is a relative path, transform to its permalink
         if ($self->is_page) {
-            return $self->base_path .
+            return $base .
                    '/'.$self->slug .
                    '/'.$asset;
         }
         else {
-            return $self->base_path .
+            return $base .
                    '/'.$self->category .
                    '/'.$self->slug .
                    '/'.$asset;
