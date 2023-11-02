@@ -67,6 +67,10 @@ nav a:hover {
 	height: 100%;
     position: relative;
 
+	border-bottom: 5px solid #e2e2e2; 
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
+    padding-bottom: 20px; /* Space at the bottom */
+
     flex-direction: column;
     justify-content: space-between; /* This will push the title to the center and meta to the bottom */
     align-items: center;
@@ -103,6 +107,7 @@ nav a:hover {
     margin-bottom: 20px; /* Can adjust this for spacing, if needed */
 	margin-top: 80px;
 
+	text-shadow: 1px 1px 1px rgba(255, 255, 255, 0.7); /* Subtle text outline for depth */
     text-align: center;
     color: #fff;
     z-index: 2;
@@ -155,6 +160,54 @@ ul.post-meta {
 }
 
 /* END single page post-header style */
+
+/* post-header when there is no featured image */
+
+.post-header.no-featured-image {
+    background: #f0f0f0; /* Light background */
+    color: #333; /* Darker text color for better contrast on light bg */
+    
+}
+
+/* Override the dark overlay when no featured image */
+.post-header.no-featured-image::before {
+    background: rgba(255, 255, 255, 0); /* Transparent overlay */
+}
+
+/* Adjust the title color for better readability on light background */
+.post-header.no-featured-image .post-title {
+    color: #333;
+    text-shadow: 1px 1px 1px rgba(255, 255, 255, 0.7); /* Subtle text outline for depth */
+    padding: 20px 0; /* Padding for visual space */
+}
+
+/* Adjust the meta background and text color for light theme */
+.post-header.no-featured-image .post-meta li {
+    background: rgba(0, 0, 0, 0.05); /* Very light background for the meta */
+    border: 1px solid #ddd; /* Subtle border for definition */
+    color: #333;
+}
+
+.post-header.no-featured-image .post-meta li.clickable:hover,
+.post-header.no-featured-image .post-meta li.clickable:hover a {
+    background-color: #e2e2e2; /* Light grey for hover */
+    color: #333; /* Dark text for contrast */
+}
+
+/* If the links need to be a different color, update here */
+.post-header.no-featured-image .post-meta li a {
+    color: #333;
+}
+
+.post-header.no-featured-image .header-content {
+    align-items: center; /* Center align the content for a polished look */
+    text-align: center; /* Center the text for a modern feel */
+}
+
+.post-header.no-featured-image .post-meta li.clickable a:hover {
+    color: #333; 
+}
+
 
 
 /* Tags and Meta Data of the Page */
