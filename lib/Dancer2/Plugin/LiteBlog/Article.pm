@@ -266,14 +266,17 @@ has image => (
         # an absolute path remains unchanged
         return $asset if $self->_is_absolute_path($asset);
         
+        my $base = $self->base_path;
+        $base = '' if $base eq '/';
+
         # this is a relative path, transform to its permalink
         if ($self->is_page) {
-            return $self->base_path .
+            return $base .
                    '/'.$self->slug .
                    '/'.$asset;
         }
         else {
-            return $self->base_path .
+            return $base .
                    '/'.$self->category .
                    '/'.$self->slug .
                    '/'.$asset;
@@ -326,17 +329,11 @@ has permalink => (
     lazy => 1,
     default => sub {
         my ($self) = @_;
-        if ($self->is_page) {
-            return '/' . $self->slug;
-        }
-        if ($self->base_path && $self->base_path ne '/') {
-            return join('/', 
-                ($self->base_path, $self->category, $self->slug ));
-        }
-        else {
-            return join('/', 
-                ("", $self->category, $self->slug ));
-        }
+        my $base = $self->base_path;
+        $base = '' if !defined $base || $base eq '/';
+
+        return join('/', ($base, $self->slug)) if $self->is_page;
+        return join('/', ($base, $self->category, $self->slug ));
     },
 );
 

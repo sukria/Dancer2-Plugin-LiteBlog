@@ -3,7 +3,7 @@
   [% IF page_image %]
   <section class="post-header" style="background-image: url('[% page_image %]');">
   [% ELSE %]
-  <section class="post-header">
+  <section class="post-header no-featured-image">
   [% END %]
 
   <div class="header-content">
