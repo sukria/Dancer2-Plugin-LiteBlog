@@ -111,4 +111,12 @@ like $res->content,
     qr{<a href="/someblog/tech/first-article"><img class="post-image" src="/someblog/tech/first-article/featured\.jpg" alt="A super Tech Blog Post"></a>}, 
     "Image URL under article path has proper permalink";
 
+$res = $test->request(GET '/someblog/doesnotexit/');
+is $res->code, 404, "Unknown category/page returns a 404";
+like $res->content, qr{<h1 class="post-title">Page Not Found</h1>}, "404 is correctly rendered";
+
+$res = $test->request(GET '/someblog/tech/');
+is $res->code, 200, "Valid category page";
+like $res->content, qr{<h1 class="post-title">Tech Stories</h1>}, "Category page is correctly rendered";
+
 done_testing;
