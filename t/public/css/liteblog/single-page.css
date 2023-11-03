@@ -42,10 +42,11 @@
     width: 100%; /* Ensure it takes the full width of the container */
 }
 
-.post-title {
+.header-content .post-title {
     font-size: 3.5em;
     margin-bottom: 20px; /* Can adjust this for spacing, if needed */
 	margin-top: 80px;
+    padding: 1rem;
 
 	text-shadow: 1px 1px 1px rgba(255, 255, 255, 0.7); /* Subtle text outline for depth */
     text-align: center;
