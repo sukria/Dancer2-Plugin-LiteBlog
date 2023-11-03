@@ -1,6 +1,7 @@
 Revision history for Dancer2-Plugin-LiteBlog
 
-NEXT
+0.03    2023-11-02
+
         [FEATURES]
         * New route to render static assets in article's directory (eg: 
           /blog/some-article/featured.jpg). 
@@ -12,6 +13,10 @@ NEXT
         * Widgets now log what they do in Dancer2's logging system.
         * (CSS) Blog post header has a nice styling even when no feature image
           is set.
+        * (CSS) Activities cards are now fixed to a maximum of 3 cards per row,
+           with a maximum width of 320px and minimum width of 280px;
+        * (CSS) Use CSS variables for common colors in liteblog.css to ease
+          theming changes.
 
         [SCAFFOLDER]
         * The provided article is a little documentation about the 'Blog'
