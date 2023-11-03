@@ -35,6 +35,7 @@
 nav {
     display: flex;
     gap: 1em;
+    margin-right: 2rem;
 	font-family: "Roboto", "Open Sans", sans-serif;
 }
 
@@ -260,6 +261,16 @@ ul.post-meta {
   margin: 40px auto;
   margin-top: 20px;
   padding: 0 20px;
+}
+
+.container article {
+    padding: 2rem;
+    padding-top: 0;
+}
+
+.container article h1 {
+    text-align: left;
+    font-size: 1.8rem;
 }
 
 /* Cover image */
