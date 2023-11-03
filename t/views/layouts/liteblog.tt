@@ -64,7 +64,7 @@
       [% END %]
 
     [% IF navigation %]
-    <!-- the hamburger menu -->
+    <!-- the hamburger menu, hidden by default -->
       <div id="mobile-navigation-menu" class="mobile-nav">
       [% FOREACH nav IN navigation %]
         [% IF nav.link %]
@@ -74,13 +74,16 @@
       </div>
     [% END %] <!-- END hamburger menu -->
 
-
     </header> <!-- END mobile-header -->
 
     
     [% IF page_title %]
-    <!-- single-page layout -->
+    <!-- The compcat hero bar with the navigation menu, visible  -->
     <div id="hero-banner" class="hero-banner">
+    [% ELSE %]
+    <!-- The compcat hero bar with the navigation menu, hidden  -->
+    <div id="hero-banner" class="hero-banner hero-bar-hidden">
+    [% END %]
       <div class="hero-banner-wrapper">
         <div class="site-title">[% title %]</div>
         [% IF navigation %]
@@ -98,8 +101,8 @@
       </div>
     </div>
     
-    [% ELSE %]
-    <!-- Home Landing Page -->
+    [% UNLESS page_title %]
+    <!-- The Big Hero Header for the Home Landing Page -->
     <section id="hero">
         <div class="header-wrapper">
             [% IF logo %]
@@ -118,37 +121,41 @@
 
 [% content %]
 
-[% IF page_title %]
-<!-- mobile header detection for the 'hero-banner' (small) single page -->
+[% UNLESS page_title %]
+<!-- We are on the landing page, there is the big Hero header -->
 <script type="text/javascript">
-window.addEventListener('scroll', function () {
-    var heroSection = document.getElementById('hero-banner');
-    var mobileHeader = document.getElementById('mobile-header');
 
-    if (window.scrollY > heroSection.clientHeight) {
-        mobileHeader.style.display = 'flex';
-    } else {
-        mobileHeader.style.display = 'none';
-    }
-});
-</script>
-[% ELSE %]
-<!-- mobile header detection for the 'hero' (big) landing page -->
-<script type="text/javascript">
+
+/* first, Hide heroBanner if landing page */
+
+var heroBanner = document.getElementById('hero-banner');
+heroBanner.style.display = 'none';
+
 window.addEventListener('scroll', function () {
     var heroSection = document.getElementById('hero');
+    var heroBanner = document.getElementById('hero-banner');
     var mobileHeader = document.getElementById('mobile-header');
+    mobileHeaderStyle = window.getComputedStyle(mobileHeader);
 
+    /* Just do nothing if the mobile nav bar is displayed */ 
+    if (mobileHeaderStyle.display == 'flex') {
+        return false;
+    }
+
+    /* Always display the hero navigation bar on scrolling */
     if (window.scrollY > heroSection.clientHeight) {
-        mobileHeader.style.display = 'flex';
+        heroBanner.style.display = 'flex';
+        if (heroSection) { heroSection.style.display = 'none'; }
     } else {
-        mobileHeader.style.display = 'none';
+        heroBanner.style.display = 'none';
+        if (heroSection) { heroSection.style.display = 'block'; }
     }
 });
 </script>
 [% END %]
 
 [% IF navigation %]
+<!-- Handle the click on the hamburger icon -->
 <script type="text/javascript">
 document.addEventListener('DOMContentLoaded', (event) => {
     // Get the elements
