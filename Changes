@@ -1,5 +1,13 @@
 Revision history for Dancer2-Plugin-LiteBlog
 
+NEXT    
+        [FIX]
+        (CSS) Navigation Bars cleanup. 
+          - The mobile navigation bar is always visible on small screens.
+          - The Compact navigation bar with visible nav items is always shown, 
+            even on the home page, when the user scrolls and has enough space
+            (not a small screen).
+
 0.03    2023-11-02
 
         [FEATURES]
