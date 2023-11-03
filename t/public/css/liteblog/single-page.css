@@ -1,67 +1,6 @@
 /* Styling for the post entry page */
 
 
-/* The small navigation bar */
-
-.hero-banner {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: height 0.3s ease;
-    background-color: #2D2D2D;
-
-    position: sticky;
-    top: 0;
-    z-index: 1000; 
-}
-
-.hero-banner-wrapper {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    width: 100%;
-    padding: 10px 20px; /* side padding */
-}
-
-.site-title {
-	font-family: "Roboto", "Open Sans", sans-serif;
-    font-size: 1.5em;
-	color: #999;
-    font-weight: normal;
-}
-
-/* Navigation elements */
-
-nav {
-    display: flex;
-    gap: 1em;
-    margin-right: 2rem;
-	font-family: "Roboto", "Open Sans", sans-serif;
-}
-
-nav a {
-    text-decoration: none;
-	color: #B0B0B0;
-    padding: 0.5em 1em;
-    transition: background-color 0.3s, color 0.3s;
-}
-
-nav a:hover {
-    color: #2D2D2D; /* Dark background color for text on hover */
-    background-color: #FFA500; /* Orange color on hover */
-}
-
-/* Small version of the site's logo */
-
-.avatar-logo {
-	margin-top: 5px;
-    width: 50px;
-    border-radius: 50%;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-}
-
-/* End of Hero Banner */
-
 /* START single page post-header style */
 .post-header {
     display: flex;
