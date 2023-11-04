@@ -19,6 +19,7 @@ use File::Spec;
         title => "03_dancerapp.t",
         logo  => '/images/foo.jpg',
         favicon => '/favicon.ico',
+        footer => 'Some Liteblog Site',
         
         navigation => [
             { label => 'Text Elem'},
@@ -62,6 +63,7 @@ like( $res->content, qr/<h2>Read my Stories/,
 like( $res->content, qr{"avatar-icon">.*img src="/images/foo.jpg"}s, "The logo of the site is changed"); 
 
 like( $res->content, qr{link rel="icon" type="image/x-icon" href="/favicon.ico"}, "favicon with appropriate mime type"); 
+like( $res->content, qr{<footer.* Built with}s, "footer is populated"); 
 
 # Activity cards
 like( $res->content, qr/blog-card.*<h3 class="post-title">A super Tech Blog Post/s, 

@@ -5,6 +5,8 @@
     --text-color: #333;
     --background-color: #f4f4f4;
     --header-bg-color: #2d2d2d;
+    --header-text-color: #777;
+    --header-link-color: #bbb;
     --link-color: #007BFF;
     --link-hover-color: #0056b3;
 }
@@ -306,6 +308,33 @@ section#main-page {
     margin: auto;
 }
 
+/* Footer */
+/* Footer Styles */
+.site-footer {
+  padding: 20px;
+  background-color: var(--header-bg-color);
+  color: var(--header-text-color);
+  text-align: center;
+  font-family: 'Lato', sans-serif; /* Already imported in your HTML */
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+
+.site-footer .footer-content p {
+  margin: 0;
+  line-height: 1.5;
+  font-size: 16px;
+}
+
+.site-footer a {
+    color: var(--header-link-color);
+    text-decoration: none;
+}
+.site-footer a:hover {
+    text-decoration: underline;
+}
+
+
 /* For mobile responsiveness */
 
 @media screen and (max-width: 768px) {
@@ -330,4 +359,8 @@ section#main-page {
         max-width: 100%;
         margin: auto;
     }
+  
+    .site-footer .footer-content p {
+    font-size: 14px;
+  }
 }

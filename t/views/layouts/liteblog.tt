@@ -127,6 +127,15 @@
 [% content %]
 <!-- End Content -->
 
+<!-- Footer -->
+<footer id="site-footer" class="site-footer">
+    <div class="footer-content">
+        <p>[% footer %]</p>
+    </div>
+</footer>
+<!-- End Footer -->
+
+
 [% UNLESS page_title %]
 <!-- We are on the landing page, there is the big Hero header -->
 <script type="text/javascript">
