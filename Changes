@@ -3,10 +3,15 @@ Revision history for Dancer2-Plugin-LiteBlog
 NEXT    
         [FIX]
         (CSS) Navigation Bars cleanup. 
-          - The mobile navigation bar is always visible on small screens.
+          - The mobile navigation bar is always visible on small screens, but
+            not shown on the landing page by dafault, only after a scroll down..
           - The Compact navigation bar with visible nav items is always shown, 
             even on the home page, when the user scrolls and has enough space
             (not a small screen).
+          - Category landing page fix: able to display larger areas for blog
+            post cards.
+
+
 
 0.03    2023-11-02
 

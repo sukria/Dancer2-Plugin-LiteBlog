@@ -7,7 +7,7 @@
     [% IF page_title %]
     
     <title>[% page_title %] | [% title %]</title>
-   
+
     [% IF feature.highlight %] 
     <!-- Highlight JS Lib -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.0/styles/default.min.css">
@@ -19,6 +19,7 @@
     <title>[% title %]</title>
     
     [% END %]
+    <link rel="icon" type="image/jpeg" href="[% logo %]">
 
     <link href="https://fonts.googleapis.com/css?family=Roboto:400,700|Lato:400,400i,700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
@@ -119,7 +120,9 @@
     </section>
     [% END %]
 
+<!-- Content -->
 [% content %]
+<!-- End Content -->
 
 [% UNLESS page_title %]
 <!-- We are on the landing page, there is the big Hero header -->
@@ -127,15 +130,38 @@
 
 
 /* first, Hide heroBanner if landing page */
-
 var heroBanner = document.getElementById('hero-banner');
 heroBanner.style.display = 'none';
+
+// This will hide the mobile-header on initial load
+document.addEventListener('DOMContentLoaded', (event) => {
+    var mobileHeader = document.getElementById('mobile-header');
+    if (window.innerWidth <= 768) { 
+        mobileHeader.style.display = 'none';
+    }
+});
 
 window.addEventListener('scroll', function () {
     var heroSection = document.getElementById('hero');
     var heroBanner = document.getElementById('hero-banner');
     var mobileHeader = document.getElementById('mobile-header');
     mobileHeaderStyle = window.getComputedStyle(mobileHeader);
+    var scrollY = window.scrollY || window.pageYOffset;
+
+    // Show the mobile-header if on small screen (<768) and 
+    // after user scrolls past a certain point: either heroSection height, or 
+    // 100px if not present.
+    if (window.innerWidth <= 768) {
+        mobileTriggerPoint = 100;
+        if (heroSection) {
+            mobileTriggerPoint = heroSection.clientHeight;
+        }
+        if (scrollY > mobileTriggerPoint) {
+            mobileHeader.style.display = 'flex';
+        } else {
+            mobileHeader.style.display = 'none';
+        }
+    }
 
     /* Just do nothing if the mobile nav bar is displayed */ 
     if (mobileHeaderStyle.display == 'flex') {
