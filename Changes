@@ -1,6 +1,12 @@
 Revision history for Dancer2-Plugin-LiteBlog
 
 NEXT    
+        [FEATURES]
+        * Support for 'favicon' config entry to define a favicon for the site.
+          Supported mime-types: jpg, png and ico. 
+        * Support for 'footer' setting. A footer section is added at the bottom
+          of the page. Either 'footer' is displayed, or the site title.
+
         [FIX]
         (CSS) Navigation Bars cleanup. 
           - The mobile navigation bar is always visible on small screens, but

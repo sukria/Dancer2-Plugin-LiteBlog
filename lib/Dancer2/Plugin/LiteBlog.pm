@@ -75,11 +75,17 @@ sub BUILD {
             my $tokens = shift;
             my $liteblog = $plugin->dsl->config->{'liteblog'};
             
+            _init_default($liteblog);
+
             # Each app setting is fowarded to the tokens
             $plugin->dsl->info("LiteBlog Init: 'liteblog' loaded in the template tokens.");
             foreach my $k (keys %$liteblog) {
-                $tokens->{$k} = $liteblog->{$k};
                 $plugin->dsl->info("setting token '$k'");
+                
+                _init_favicon_token($tokens, $k, $liteblog) and next;
+                _init_footer_token($tokens, $k, $liteblog) and next;
+
+                $tokens->{$k} = $liteblog->{$k};
             }
 
             # Populate the loaded widgets in the tokens 
@@ -109,6 +115,49 @@ sub BUILD {
             );
         });
 }
+
+sub _init_default {
+    my ($liteblog) = @_;
+    $liteblog->{footer} //= $liteblog->{title};
+}
+
+sub _init_favicon_token {
+    my ($tokens, $k, $liteblog) = @_;
+
+    if ($k eq 'favicon') {
+        my $favicon = $liteblog->{$k};
+        my $mime;
+        if ($favicon =~ /\.ico$/) {
+            $mime = 'image/x-icon'; 
+        }
+        elsif ($favicon =~ /\.png$/) {
+            $mime = 'image/png'; 
+        }
+        elsif ($favicon =~/\.jpe?g$/) {
+            $mime = 'image/jpeg'; 
+        }
+        else {
+            return 0;
+        }
+        $tokens->{favicon}   = $favicon;
+        $tokens->{mime_icon} = $mime;
+        return 1;
+    }
+    return 0;
+}
+
+sub _init_footer_token {
+    my ($tokens, $k, $liteblog) = @_;
+
+    if ($k eq 'footer') {
+        $tokens->{footer}   = $liteblog->{$k};
+        $tokens->{footer}  .= ' &middot; Built with <a href="https://metacpan.org/pod/Dancer2::Plugin::LiteBlog">Liteblog</a>' 
+            unless $liteblog->{no_liteblog_footer};
+        return 1;
+    }
+    return 0;
+}
+
 
 =head2 liteblog_init
 

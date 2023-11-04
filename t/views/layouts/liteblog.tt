@@ -19,7 +19,10 @@
     <title>[% title %]</title>
     
     [% END %]
-    <link rel="icon" type="image/jpeg" href="[% logo %]">
+
+    [% IF favicon %]
+    <link rel="icon" type="[% mime_icon %]" href="[% favicon %]">
+    [% END %]
 
     <link href="https://fonts.googleapis.com/css?family=Roboto:400,700|Lato:400,400i,700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
@@ -123,6 +126,15 @@
 <!-- Content -->
 [% content %]
 <!-- End Content -->
+
+<!-- Footer -->
+<footer id="site-footer" class="site-footer">
+    <div class="footer-content">
+        <p>[% footer %]</p>
+    </div>
+</footer>
+<!-- End Footer -->
+
 
 [% UNLESS page_title %]
 <!-- We are on the landing page, there is the big Hero header -->
