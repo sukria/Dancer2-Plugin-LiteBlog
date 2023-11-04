@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container [% IF class %][% class %][% END %]">
 
   [% IF page_image %]
   <section class="post-header" style="background-image: url('[% page_image %]');">
@@ -23,7 +23,7 @@
   </div> <!-- END div header-content -->
   </section> <!-- END section post-header -->
 
-  <article class="main-content">
+  <article class="main-content [% IF class %][% class %][% END %]">
   [% content %]
   </article> <!-- END article main-content -->
 
