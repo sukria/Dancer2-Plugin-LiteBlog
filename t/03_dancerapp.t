@@ -15,8 +15,11 @@ use File::Spec;
     #set logger => 'Console::Colored';
     set logger => 'Null';
     set liteblog => {
+        
         title => "03_dancerapp.t",
-
+        logo  => '/images/foo.jpg',
+        favicon => '/favicon.ico',
+        
         navigation => [
             { label => 'Text Elem'},
             { label => 'Home', link => '/'},
@@ -24,7 +27,6 @@ use File::Spec;
         feature => {
             highlight => 1,
         },
-        logo  => '/images/foo.jpg',
         widgets => [
             { name => 'blog',
               params => {
@@ -58,6 +60,9 @@ like( $res->content, qr/<h2>Read my Stories/,
     '[GET /] Blog section title found');
 
 like( $res->content, qr{"avatar-icon">.*img src="/images/foo.jpg"}s, "The logo of the site is changed"); 
+
+like( $res->content, qr{link rel="icon" type="image/x-icon" href="/favicon.ico"}, "favicon with appropriate mime type"); 
+
 # Activity cards
 like( $res->content, qr/blog-card.*<h3 class="post-title">A super Tech Blog Post/s, 
     '[GET /] First blog card found');
