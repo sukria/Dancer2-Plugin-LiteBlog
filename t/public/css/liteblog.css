@@ -271,6 +271,19 @@ nav a:hover {
     margin-bottom: 20px;
 }
 
+/* For smooth transition */
+.hidden-hero {
+  visibility: hidden;
+  opacity: 0;
+  transition: visibility 0s linear 0.3s, opacity 0.3s linear;
+}
+
+.visible-hero {
+  visibility: visible;
+  opacity: 1;
+  transition: visibility 0s linear 0s, opacity 0.3s linear;
+}
+
 h1 {
     color: #ffffff;
     margin: 0;

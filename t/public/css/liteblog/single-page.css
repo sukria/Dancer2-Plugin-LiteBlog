@@ -119,7 +119,6 @@ ul.post-meta {
 .post-header.no-featured-image .post-title {
     color: #333;
     text-shadow: 1px 1px 1px rgba(255, 255, 255, 0.7); /* Subtle text outline for depth */
-    padding: 20px 0; /* Padding for visual space */
 }
 
 /* Adjust the meta background and text color for light theme */
@@ -294,6 +293,15 @@ article blockquote {
 
     #mobile-header {
         display: flex;
+    }
+
+    .header-content .post-title,
+    .post-header.no-featured-image .post-title {
+        font-size: 2.5em;
+    }
+
+    ul.post-meta {
+        margin-top: 10px;
     }
 
     article {

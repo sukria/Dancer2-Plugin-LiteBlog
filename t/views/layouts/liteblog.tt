@@ -86,7 +86,7 @@
     <div id="hero-banner" class="hero-banner">
     [% ELSE %]
     <!-- The compcat hero bar with the navigation menu, hidden  -->
-    <div id="hero-banner" class="hero-banner hero-bar-hidden">
+    <div id="hero-banner" class="hero-banner hidden-hero">
     [% END %]
       <div class="hero-banner-wrapper">
         <div class="site-title">[% title %]</div>
@@ -147,6 +147,9 @@ heroBanner.style.display = 'none';
 
 // This will hide the mobile-header on initial load
 document.addEventListener('DOMContentLoaded', (event) => {
+    var heroBanner = document.getElementById('hero-banner');
+    heroBanner.classList.add('hidden-hero')
+
     var mobileHeader = document.getElementById('mobile-header');
     if (window.innerWidth <= 768) { 
         mobileHeader.style.display = 'none';
@@ -182,11 +185,22 @@ window.addEventListener('scroll', function () {
 
     /* Always display the hero navigation bar on scrolling */
     if (window.scrollY > heroSection.clientHeight) {
+        //heroBanner.style.display = 'flex';
+        heroBanner.classList.add('visible-hero')
+        heroBanner.classList.remove('hidden-hero')
         heroBanner.style.display = 'flex';
-        if (heroSection) { heroSection.style.display = 'none'; }
+        if (heroSection) { 
+            heroSection.classList.remove('visible-hero');
+            heroSection.classList.add('hidden-hero');
+        }
     } else {
         heroBanner.style.display = 'none';
-        if (heroSection) { heroSection.style.display = 'block'; }
+        heroBanner.classList.remove('visible-hero')
+        heroBanner.classList.add('hidden-hero')
+        if (heroSection) { 
+            heroSection.classList.add('visible-hero');
+            heroSection.classList.remove('hidden-hero');
+        }
     }
 });
 </script>
