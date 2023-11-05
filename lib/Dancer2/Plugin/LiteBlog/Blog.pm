@@ -482,12 +482,13 @@ Examples:
             return $plugin->dsl->template(
                 'liteblog/single-page', {
                     page_title => ucfirst($category)." Stories",
-                    content => $plugin->dsl->template('liteblog/widgets/blog-cards', {
-                    widget => {
+                    class      => "category_page",
+                    content    => $plugin->dsl->template('liteblog/widgets/blog-cards', {
+                        widget => {
                         title =>  "Title",
                         elements  => $articles,
                         #TODO: readmore_button => 'Load more articles', 
-                        }},{layout => undef})
+                    }},{layout => undef})
                 }, 
                 {layout => 'liteblog'}
             );

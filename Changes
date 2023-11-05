@@ -1,5 +1,27 @@
 Revision history for Dancer2-Plugin-LiteBlog
 
+0.04    2023-11-05
+
+        [FEATURES]
+        * Support for 'favicon' config entry to define a favicon for the site.
+          Supported mime-types: jpg, png and ico. 
+        * Support for 'footer' setting. A footer section is added at the bottom
+          of the page. Either 'footer' is displayed, or the site title.
+
+        [FIX]
+        (CSS) Navigation Bars cleanup. 
+          - The mobile navigation bar is always visible on small screens, but
+            not shown on the landing page by dafault, only after a scroll down..
+          - The Compact navigation bar with visible nav items is always shown, 
+            even on the home page, when the user scrolls and has enough space
+            (not a small screen), hiding/showing is done with smooth
+            transitions..
+          - Category landing page fix: able to display larger areas for blog
+            post cards.
+          - Better header styling for article headers on small screens (font
+            size, spacing).
+
+
 0.03    2023-11-02
 
         [FEATURES]

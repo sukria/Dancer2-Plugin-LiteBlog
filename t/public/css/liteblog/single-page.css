@@ -1,66 +1,6 @@
 /* Styling for the post entry page */
 
 
-/* The small navigation bar */
-
-.hero-banner {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: height 0.3s ease;
-    background-color: #2D2D2D;
-
-    position: sticky;
-    top: 0;
-    z-index: 1000; 
-}
-
-.hero-banner-wrapper {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    width: 100%;
-    padding: 10px 20px; /* side padding */
-}
-
-.site-title {
-	font-family: "Roboto", "Open Sans", sans-serif;
-    font-size: 1.5em;
-	color: #999;
-    font-weight: normal;
-}
-
-/* Navigation elements */
-
-nav {
-    display: flex;
-    gap: 1em;
-	font-family: "Roboto", "Open Sans", sans-serif;
-}
-
-nav a {
-    text-decoration: none;
-	color: #B0B0B0;
-    padding: 0.5em 1em;
-    transition: background-color 0.3s, color 0.3s;
-}
-
-nav a:hover {
-    color: #2D2D2D; /* Dark background color for text on hover */
-    background-color: #FFA500; /* Orange color on hover */
-}
-
-/* Small version of the site's logo */
-
-.avatar-logo {
-	margin-top: 5px;
-    width: 50px;
-    border-radius: 50%;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-}
-
-/* End of Hero Banner */
-
 /* START single page post-header style */
 .post-header {
     display: flex;
@@ -102,10 +42,11 @@ nav a:hover {
     width: 100%; /* Ensure it takes the full width of the container */
 }
 
-.post-title {
+.header-content .post-title {
     font-size: 3.5em;
     margin-bottom: 20px; /* Can adjust this for spacing, if needed */
 	margin-top: 80px;
+    padding: 1rem;
 
 	text-shadow: 1px 1px 1px rgba(255, 255, 255, 0.7); /* Subtle text outline for depth */
     text-align: center;
@@ -178,7 +119,6 @@ ul.post-meta {
 .post-header.no-featured-image .post-title {
     color: #333;
     text-shadow: 1px 1px 1px rgba(255, 255, 255, 0.7); /* Subtle text outline for depth */
-    padding: 20px 0; /* Padding for visual space */
 }
 
 /* Adjust the meta background and text color for light theme */
@@ -262,6 +202,16 @@ ul.post-meta {
   padding: 0 20px;
 }
 
+.container article {
+    padding: 2rem;
+    padding-top: 0;
+}
+
+.container article h1 {
+    text-align: left;
+    font-size: 1.8rem;
+}
+
 /* Cover image */
 
 .cover-image-container {
@@ -343,6 +293,15 @@ article blockquote {
 
     #mobile-header {
         display: flex;
+    }
+
+    .header-content .post-title,
+    .post-header.no-featured-image .post-title {
+        font-size: 2.5em;
+    }
+
+    ul.post-meta {
+        margin-top: 10px;
     }
 
     article {

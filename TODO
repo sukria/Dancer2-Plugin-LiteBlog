@@ -1,0 +1,6 @@
+
+    [DESIGN]
+    * The landing page shows the mobile navigation bar on scrolling. 
+      This is not good. The single-page bar should be shown instead.
+      This implies a refactoring of the navigation bars by merging
+      the logic of single-page.css and liteblog.css.
