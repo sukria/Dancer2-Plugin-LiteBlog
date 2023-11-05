@@ -130,7 +130,11 @@
 <!-- Footer -->
 <footer id="site-footer" class="site-footer">
     <div class="footer-content">
-        <p>[% footer %]</p>
+        <p>
+        [% footer %]
+        &middot; [% render_time %] ms.
+        </p>
+
     </div>
 </footer>
 <!-- End Footer -->

@@ -36,6 +36,7 @@ use strict;
 use warnings;
 use File::Spec;
 use Carp 'croak';
+use Time::HiRes qw(gettimeofday tv_interval);
 
 use Dancer2::Plugin;
 
@@ -68,6 +69,14 @@ sub BUILD {
         end_tag   => '%]',
     };
 
+    # Start the timer before each request
+    $plugin->app->add_hook( Dancer2::Core::Hook->new(
+        name => 'before',
+        code => sub {
+            $plugin->dsl->var(request_start_time => [gettimeofday]);
+        }
+    ));
+
     # Prepare default template tokens with appropriate resources.
     $plugin->app->add_hook( Dancer2::Core::Hook->new(
         name => 'before_template',
@@ -87,6 +96,11 @@ sub BUILD {
 
                 $tokens->{$k} = $liteblog->{$k};
             }
+
+            my $start_time = $plugin->dsl->vars->{'request_start_time'};
+            my $end_time = [gettimeofday];
+            my $elapsed = tv_interval($start_time, $end_time);
+            $tokens->{render_time} = $elapsed;
 
             # Populate the loaded widgets in the tokens 
             my $widgets = _load_widgets($plugin, $liteblog);
