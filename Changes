@@ -1,6 +1,7 @@
 Revision history for Dancer2-Plugin-LiteBlog
 
-NEXT    
+0.04    2023-11-05
+
         [FEATURES]
         * Support for 'favicon' config entry to define a favicon for the site.
           Supported mime-types: jpg, png and ico. 

@@ -21,6 +21,7 @@ t/03_dancerapp.t
 t/04_scaffold.t
 t/05_activities.t
 t/06_emptyapp.t
+t/07_app_root_blog.t
 t/activities.yml
 t/articles/blog-meta.yml
 t/articles/contact/content.md
