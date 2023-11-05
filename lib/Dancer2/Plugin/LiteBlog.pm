@@ -85,22 +85,21 @@ sub BUILD {
             my $liteblog = $plugin->dsl->config->{'liteblog'};
             
             _init_default($liteblog);
+            if ($liteblog->{show_render_time}) {
+                my $start_time = $plugin->dsl->vars->{'request_start_time'};
+                my $end_time = [gettimeofday];
+                my $elapsed = tv_interval($start_time, $end_time);
+                $tokens->{render_time} = $elapsedi * 1000; # in ms.
+            }
 
             # Each app setting is fowarded to the tokens
             $plugin->dsl->info("LiteBlog Init: 'liteblog' loaded in the template tokens.");
             foreach my $k (keys %$liteblog) {
                 $plugin->dsl->info("setting token '$k'");
-                
                 _init_favicon_token($tokens, $k, $liteblog) and next;
                 _init_footer_token($tokens, $k, $liteblog) and next;
-
                 $tokens->{$k} = $liteblog->{$k};
             }
-
-            my $start_time = $plugin->dsl->vars->{'request_start_time'};
-            my $end_time = [gettimeofday];
-            my $elapsed = tv_interval($start_time, $end_time);
-            $tokens->{render_time} = $elapsed;
 
             # Populate the loaded widgets in the tokens 
             my $widgets = _load_widgets($plugin, $liteblog);
@@ -133,6 +132,7 @@ sub BUILD {
 sub _init_default {
     my ($liteblog) = @_;
     $liteblog->{footer} //= $liteblog->{title};
+    $liteblog->{show_render_time} //= 1;
 }
 
 sub _init_favicon_token {
