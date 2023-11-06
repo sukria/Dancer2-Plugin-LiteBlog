@@ -130,10 +130,8 @@
 <!-- Footer -->
 <footer id="site-footer" class="site-footer">
     <div class="footer-content">
-        <p>
-        [% footer %]
-        [% IF render_time %]&middot; [% render_time %] ms.[% END %]
-        </p>
+        <p> [% footer %]</p>
+        [% IF render_time %]<p class="debug-infos">Page generated in [% render_time %]</p>[% END %]
 
     </div>
 </footer>
