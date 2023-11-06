@@ -19,6 +19,7 @@ use lib "$FindBin::Bin/../lib";
         title => "My Testing Liteblog",
         logo => '/images/liteblog.jpg',
         favicon => '/images/liteblog.jpg',
+        show_render_time => 1,
         feature => {
             highlight => 1,
         },

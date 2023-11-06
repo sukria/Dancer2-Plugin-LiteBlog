@@ -143,6 +143,10 @@ sub select_articles {
         croak "Not a valid category: '$cat'" if ! -d $root;
     }
 
+    # caching result exists? Return it if so.
+    my $cache_key = join('|', 'select', $root, $self->mount, $limit);
+    return $self->cache($cache_key) if defined $self->cache($cache_key);
+
     # Get the list of all directories in the root
     opendir my $dh, $root or croak "Cannot open directory: $!";
     my @dirs = grep { 
@@ -162,6 +166,8 @@ sub select_articles {
     # Load Article objects up to the limit
     foreach my $dir (@dirs) {
         my $article;
+
+        # TODO: use ->find ? 
         eval { 
             $article = Dancer2::Plugin::LiteBlog::Article->new( 
                 basedir => File::Spec->catdir($root, $dir),
@@ -177,13 +183,14 @@ sub select_articles {
         push @records, $article;
         last if ++$count == $limit;
     }
-    return \@records;
+    return $self->cache($cache_key, \@records);
 }
 
 =head2 find_article (%params)
 
 Searches and returns an article based on the provided path. Optionally, you can
 specify a category as well.
+Cache the resulting object in-memory for future calls with same params.
 
 =over 4
 
@@ -225,13 +232,20 @@ sub find_article {
         $path = "${category}/${path}";
     };
 
+    # if found in cache
+    my $cache_key = join('|', 'find', $self->mount, $self->root, $path);
+    return $self->cache($cache_key)
+        if defined $self->cache($cache_key);
+
     my $article;
     eval { 
         $article = Dancer2::Plugin::LiteBlog::Article->new(
             base_path => $self->mount,
             basedir => File::Spec->catfile( $self->root, $path));
     };
-    return $article;
+
+    # cache and return
+    return $self->cache($cache_key, $article);
 }
 
 # Dancer Section - TODO: split this class in two?

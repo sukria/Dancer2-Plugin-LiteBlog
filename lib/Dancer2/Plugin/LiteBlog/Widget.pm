@@ -156,6 +156,35 @@ sub declare_routes {
     croak "Must be implemented by chikld class";
 }
 
+=head2 cache ($key[, $val])
+
+  $widget->cache($key, $value);  # set
+  my $value = $widget->cache($key);  # get
+
+Provides a simple caching interface within a widget, storing values in a
+private singleton hash. Cache keys are constructed uniquely for each calling class and
+the provided key to avoid collisions, formatted as "ClassName[$key]". When
+called with a single argument, it acts as a getter, returning the value for the
+given key if present. With two arguments, it stores the value under the
+specified key, acting as a setter.
+
+=cut
+
+my $_cache = {};
+sub cache {
+    my ($self, $key, $val) = @_;
+    
+    my ($package) = caller();
+    my $cache_key = "${package}[$key]";
+
+    # getter
+    if (@_ == 2) {
+        return $_cache->{$cache_key};
+    }
+
+    return $_cache->{$cache_key} = $val;
+}
+
 1;
 __END__
 
