@@ -211,9 +211,6 @@ invalid category is provided.
 
 =cut
 
-my $_cache_articles = {};
-sub _cache { $_cache_articles }
-
 sub find_article {
     my ($self, %params) = @_;
     my $path = $params{path};
@@ -230,8 +227,8 @@ sub find_article {
     };
 
     # if found in cache
-    return $self->_cache->{$path} 
-        if defined $self->_cache->{$path};
+    return $self->cache($path)
+        if defined $self->cache($path);
 
     my $article;
     eval { 
@@ -241,7 +238,7 @@ sub find_article {
     };
 
     # cache and return
-    return $self->_cache->{$path} = $article;
+    return $self->cache($path, $article);
 }
 
 # Dancer Section - TODO: split this class in two?
