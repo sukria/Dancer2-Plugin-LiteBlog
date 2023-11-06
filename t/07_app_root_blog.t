@@ -12,21 +12,26 @@ use File::Spec;
     set appdir => File::Spec->catfile(dirname(__FILE__)),
 
     set log => 'info';
-    #set logger => 'Console::Colored';
-    set logger => 'Null';
+    set logger => 'Console::Colored';
+    #set logger => 'Null';
+    
     set liteblog => {
+        
         title => "Root Blog",
+        base_url => 'http://localhost:4000',
+        description => 'A great testing blog for testing purposes',
+        logo  => '/images/liteblog.jpg',
 
         navigation => [
             { label => 'Home', link => '/'},
         ],
-        logo  => '/images/liteblog.jpg',
+
         widgets => [
             { name => 'blog',
               params => {
                     title => 'Read my Stories',
                     mount => '/', # should be understood as 'root'
-                    root  => File::Spec->catfile(dirname(__FILE__), 'articles'),
+                    root  => File::Spec->catfile(dirname(__FILE__), 'articles' ),
                 },
             },
         ],
@@ -54,5 +59,15 @@ subtest "An article mounted at the root of the site" => sub {
         "The article /tech/first-article/ is rendered correctly.";
     done_testing;
 };
+
+subtest "RSS feed" => sub {
+    my $res = $test->request( GET '/rss/' );
+    is $res->code, 200, 'GET /rss/ returns a 200';
+    is $res->content_type, 'application/rss+xml', 'content type is valid xml/rss';
+    #like $res->content, qr{ddd}, "RSS content looks good";
+
+    done_testing;
+};
+
 
 done_testing;

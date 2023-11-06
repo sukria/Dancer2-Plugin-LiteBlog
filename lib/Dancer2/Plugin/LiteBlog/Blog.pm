@@ -27,7 +27,9 @@ use YAML::XS;
 use File::Spec;
 use File::Stat;
 use Path::Tiny;
+use POSIX qw(strftime);
 use Dancer2::Plugin::LiteBlog::Article;
+use XML::RSS;
 
 extends 'Dancer2::Plugin::LiteBlog::Widget';
 
@@ -115,6 +117,8 @@ Lookup the article repository (C<root>) for articles that match the criteria.
 Articles are always returned in descending chronological order (using their 
 published_date attibute).
 
+TODO : Should recursively find articles in all category as well as top-level pages.
+
 =head3 params
 
 =over 4 
@@ -147,6 +151,12 @@ sub select_articles {
     my $cache_key = join('|', 'select', $root, $self->mount, $limit);
     return $self->cache($cache_key) if defined $self->cache($cache_key);
 
+    # FIXME: this is only looking for top-level articles, if select_articles is
+    # called without category param, it will only return pages. 
+    # Should return all found articles.
+    # Hence, this routine should do the search on the top-level and 1 level
+    # below.
+    #
     # Get the list of all directories in the root
     opendir my $dh, $root or croak "Cannot open directory: $!";
     my @dirs = grep { 
@@ -312,6 +322,8 @@ sub declare_routes {
             $plugin->dsl->redirect("$prefix/$cat/$slug/");
         },
     );
+
+    $self->_declare_rss_routes($plugin, $prefix);
 
     # /blog/:category/:permalink
     $self->info("declaring route ${prefix}/:cat/:slug/");
@@ -509,6 +521,68 @@ Examples:
         }
     );
 }
+
+=head3 GET C</blog/rss/>
+
+=cut
+
+sub _time_to_rfc822 {
+    strftime("%a, %d %b %Y %H:%M:%S %z", 
+        localtime($_[0]));
+}
+
+sub _declare_rss_routes {
+    my ($self, $plugin, $prefix) = @_;
+
+    my $site_title = $plugin->dsl->config->{liteblog}->{title};
+    my $site_url   = $plugin->dsl->config->{liteblog}->{base_url};
+    if (! defined $site_url) {
+        croak "You have to set 'base_url' in liteblog's config to use RSS";
+    }
+    my $site_desc = $plugin->dsl->config->{liteblog}->{description};
+
+    $plugin->app->add_route(
+        method => 'get',
+        regexp => "${prefix}/rss/",
+        code => sub {
+    
+            # Fetch the last N Article objects
+            my $articles = $self->select_articles(limit => 10);
+
+            # Create a new RSS feed
+            my $rss = XML::RSS->new(version => '2.0');
+            $rss->channel(
+                title          => $site_title,
+                link           => $site_url,
+                description    => $site_desc, 
+                language       => "en",
+                copyright      => "Copyright © $site_title",
+                pubDate        => _time_to_rfc822(time),
+            );
+
+            # Add items to the feed for each article
+            foreach my $article (@$articles) {
+                $rss->add_item(
+                    title       => $article->title,
+                    permaLink   => $site_url.$article->permalink,
+                    description => $article->excerpt,
+                    pubDate     => _time_to_rfc822($article->published_time), # Format the date as RFC 2822
+                );
+            }
+
+            # Set the content type
+            $plugin->dsl->content_type( 'application/rss+xml' );
+
+            # Return the RSS feed
+            return $rss->as_string;
+        }, # end code sub
+    ); # end add_route
+}
+
+
+=head3 GET C</blog/category/rss/> 
+
+=cut
 
 # Private subs
 
