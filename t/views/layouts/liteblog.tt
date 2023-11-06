@@ -132,7 +132,7 @@
     <div class="footer-content">
         <p>
         [% footer %]
-        &middot; [% render_time %] ms.
+        [% IF render_time %]&middot; [% render_time %] ms.[% END %]
         </p>
 
     </div>

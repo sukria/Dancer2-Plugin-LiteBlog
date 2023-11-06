@@ -184,6 +184,7 @@ sub select_articles {
 
 Searches and returns an article based on the provided path. Optionally, you can
 specify a category as well.
+Cache the resulting object in-memory for future calls with same params.
 
 =over 4
 
@@ -210,6 +211,9 @@ invalid category is provided.
 
 =cut
 
+my $_cache_articles = {};
+sub _cache { $_cache_articles }
+
 sub find_article {
     my ($self, %params) = @_;
     my $path = $params{path};
@@ -225,13 +229,19 @@ sub find_article {
         $path = "${category}/${path}";
     };
 
+    # if found in cache
+    return $self->_cache->{$path} 
+        if defined $self->_cache->{$path};
+
     my $article;
     eval { 
         $article = Dancer2::Plugin::LiteBlog::Article->new(
             base_path => $self->mount,
             basedir => File::Spec->catfile( $self->root, $path));
     };
-    return $article;
+
+    # cache and return
+    return $self->_cache->{$path} = $article;
 }
 
 # Dancer Section - TODO: split this class in two?
