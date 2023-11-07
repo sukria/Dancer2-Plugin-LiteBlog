@@ -17,6 +17,7 @@ use File::Spec;
     set liteblog => {
         
         title => "03_dancerapp.t",
+        base_url => 'http://localhost:4000/',
         logo  => '/images/foo.jpg',
         favicon => '/favicon.ico',
         footer => 'Some Liteblog Site',

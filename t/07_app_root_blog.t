@@ -12,8 +12,8 @@ use File::Spec;
     set appdir => File::Spec->catfile(dirname(__FILE__)),
 
     set log => 'info';
-    set logger => 'Console::Colored';
-    #set logger => 'Null';
+    #set logger => 'Console::Colored';
+    set logger => 'Null';
     
     set liteblog => {
         
