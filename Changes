@@ -1,6 +1,6 @@
 Revision history for Dancer2-Plugin-LiteBlog
 
-NEXT
+0.05    2023-11-07
 
         [FEATURES]
         * Caching system to avoid recomputing responses from the Blog widget
