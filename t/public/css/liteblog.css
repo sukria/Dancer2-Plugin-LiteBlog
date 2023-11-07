@@ -333,6 +333,11 @@ section#main-page {
   padding-bottom: 20px;
 }
 
+.site-footer .footer-content p.debug-infos {
+    font-size: 0.7rem;
+
+}
+
 .site-footer .footer-content p {
   margin: 0;
   line-height: 1.5;

@@ -1,6 +1,17 @@
 
+
+    [FEATURES]
+    
+    [ ] 
+      Caching : articles, blog, all widget instances should not be rebuilt at
+      each request. Currently, each time a permalink is called, an Article
+      instance is created, the yaml and markdown files are parsed, etc. This
+      should be cached in the worker's memory, at least via an option.
+
     [DESIGN]
-    * The landing page shows the mobile navigation bar on scrolling. 
+    
+    [X] (0.04) 
+      The landing page shows the mobile navigation bar on scrolling. 
       This is not good. The single-page bar should be shown instead.
       This implies a refactoring of the navigation bars by merging
       the logic of single-page.css and liteblog.css.

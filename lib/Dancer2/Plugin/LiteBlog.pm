@@ -26,16 +26,17 @@ Then, in your Dancer2 PSGI startup script:
 
 =head1 VERSION
 
-Version 0.04
+Version 0.05
 
 =cut
 
-our $VERSION = '0.04';
+our $VERSION = '0.05';
 
 use strict;
 use warnings;
 use File::Spec;
 use Carp 'croak';
+use Time::HiRes qw(gettimeofday tv_interval);
 
 use Dancer2::Plugin;
 
@@ -68,6 +69,14 @@ sub BUILD {
         end_tag   => '%]',
     };
 
+    # Start the timer before each request
+    $plugin->app->add_hook( Dancer2::Core::Hook->new(
+        name => 'before',
+        code => sub {
+            $plugin->dsl->var(request_start_time => [gettimeofday]);
+        }
+    ));
+
     # Prepare default template tokens with appropriate resources.
     $plugin->app->add_hook( Dancer2::Core::Hook->new(
         name => 'before_template',
@@ -75,31 +84,19 @@ sub BUILD {
             my $tokens = shift;
             my $liteblog = $plugin->dsl->config->{'liteblog'};
             
-            _init_default($liteblog);
-
-            # Each app setting is fowarded to the tokens
-            $plugin->dsl->info("LiteBlog Init: 'liteblog' loaded in the template tokens.");
-            foreach my $k (keys %$liteblog) {
-                $plugin->dsl->info("setting token '$k'");
-                
-                _init_favicon_token($tokens, $k, $liteblog) and next;
-                _init_footer_token($tokens, $k, $liteblog) and next;
-
-                $tokens->{$k} = $liteblog->{$k};
+            if ($liteblog->{show_render_time}) {
+                my $start_time = $plugin->dsl->vars->{'request_start_time'};
+                my $end_time = [gettimeofday];
+                my $elapsed = tv_interval($start_time, $end_time);
+                $tokens->{render_time} = int($elapsed * 1000); # in ms.
+                $tokens->{render_time} = 'less than a' if ($tokens->{render_time} == 0);
+                $tokens->{render_time} .= ' ms.';
             }
 
-            # Populate the loaded widgets in the tokens 
-            my $widgets = _load_widgets($plugin, $liteblog);
-            $tokens->{widgets} = $widgets;
-            $tokens->{no_widgets} = scalar(@$widgets) == 0;
+            foreach my $k (keys %{ _default_tokens() }) {
+                $tokens->{$k} = _default_tokens()->{$k};
+            }
 
-            # set a default title, if unset
-            $tokens->{title} = $liteblog->{'title'} || "A Great Liteblog Site" 
-                if !defined $tokens->{title};
-
-            # Set the navigation elements for the nav bar
-            my $navigation = $liteblog->{navigation};
-            $tokens->{navigation} = $navigation if defined $navigation;
             return $tokens;
         }
     ));
@@ -119,6 +116,9 @@ sub BUILD {
 sub _init_default {
     my ($liteblog) = @_;
     $liteblog->{footer} //= $liteblog->{title};
+    $liteblog->{base_url} //= $ENV{HOST} || $ENV{HOSTNAME} || 'http://defineme.example.com';
+    $liteblog->{base_url} =~ s/\/$//; # remove trailing '/'
+    $liteblog->{show_render_time} //= 1;
 }
 
 sub _init_favicon_token {
@@ -165,7 +165,13 @@ A Liteblog app must call this keyword right after having C<use>'ed Dancer2::Plug
 This allows to declare widget-specific routes (defined in the Widget's classes) once the 
 config is fully read by Dancer2 (which is not the case at BUILD time).
 
+This method also initializes all default tokens that will be passed to template
+calls.
+
 =cut
+
+my $_default_tokens = {};
+sub _default_tokens { $_default_tokens }
 
 sub liteblog_init {
     my ($plugin) = @_;
@@ -173,6 +179,31 @@ sub liteblog_init {
 
     my $liteblog = $plugin->dsl->config->{'liteblog'};
     my $widgets = _load_widgets($plugin, $liteblog);
+
+    # init default tokens once for all
+    my $tokens = {};
+    _init_default($liteblog);
+
+    # all config entry of Liteblog is exposed in the tokens
+    foreach my $k (keys %$liteblog) {
+        $plugin->dsl->info("setting token '$k'");
+        _init_favicon_token($tokens, $k, $liteblog) and next;
+        _init_footer_token($tokens, $k, $liteblog) and next;
+        $tokens->{$k} = $liteblog->{$k};
+    }
+
+    # Populate the loaded widgets in the tokens 
+    $tokens->{widgets} = $widgets;
+    $tokens->{no_widgets} = scalar(@$widgets) == 0;
+
+    # set a default title, if unset
+    $tokens->{title} = $liteblog->{'title'} || "A Great Liteblog Site" 
+    if !defined $tokens->{title};
+
+    # Set the navigation elements for the nav bar
+    my $navigation = $liteblog->{navigation};
+    $tokens->{navigation} = $navigation if defined $navigation;
+    $_default_tokens = $tokens;
 
     # implement the declared routes of all registered widgets 
     foreach my $widget (@{ $widgets }) {

@@ -12,6 +12,7 @@ use File::Spec;
     set appdir => File::Spec->catfile(dirname(__FILE__), 'lib'); # no files will be found here
     require 'Dancer2/Plugin/LiteBlog.pm';
     Dancer2::Plugin::LiteBlog->import;
+    liteblog_init();
 }
 
 my $emptyapp = EmptyApp->to_app;
