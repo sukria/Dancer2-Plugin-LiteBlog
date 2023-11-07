@@ -30,6 +30,11 @@
     <link rel="stylesheet" href="/css/liteblog.css">
     [% FOREACH w IN widgets %]
     <link rel="stylesheet" href="/css/liteblog/[% w.name %].css">
+    [% IF w.instance.has_rss %]
+    <link rel="alternate" type="application/rss+xml" 
+        title="RSS Feed for [% title %]: [% w.title %]" 
+        href="[% base_url %][% w.instance.mount %]/rss/" />
+    [% END %]
     [% END %]
     [% IF page_title %]
     <!-- a page_title is defined, let's load the single-page css -->

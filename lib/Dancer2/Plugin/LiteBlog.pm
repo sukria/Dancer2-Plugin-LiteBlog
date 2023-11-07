@@ -88,8 +88,9 @@ sub BUILD {
                 my $start_time = $plugin->dsl->vars->{'request_start_time'};
                 my $end_time = [gettimeofday];
                 my $elapsed = tv_interval($start_time, $end_time);
-                $tokens->{render_time} = int($elapsed * 1000).' ms.'; # in ms.
-                $tokens->{render_time} = 'less than a ms.' if ($tokens->{render_time} == 0);
+                $tokens->{render_time} = int($elapsed * 1000); # in ms.
+                $tokens->{render_time} = 'less than a' if ($tokens->{render_time} == 0);
+                $tokens->{render_time} .= ' ms.';
             }
 
             foreach my $k (keys %{ _default_tokens() }) {
@@ -115,6 +116,7 @@ sub BUILD {
 sub _init_default {
     my ($liteblog) = @_;
     $liteblog->{footer} //= $liteblog->{title};
+    $liteblog->{base_url} =~ s/\/$//; # remove trailing '/'
     $liteblog->{show_render_time} //= 1;
 }
 

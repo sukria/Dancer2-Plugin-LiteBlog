@@ -27,7 +27,9 @@ use YAML::XS;
 use File::Spec;
 use File::Stat;
 use Path::Tiny;
+use POSIX qw(strftime LC_TIME setlocale);
 use Dancer2::Plugin::LiteBlog::Article;
+use XML::RSS;
 
 extends 'Dancer2::Plugin::LiteBlog::Widget';
 
@@ -70,11 +72,15 @@ has mount => (
     },
 );
 
+sub has_rss { 1 }
+
 =head2 elements
 
-Read-only attribute that contains a list of featured posts from the blog meta
-information. Each post is represented as an instance of the
-L<Dancer2::Plugin::LiteBlog::Article> class.
+Read-only attribute that contains a list of featured posts to show on the home
+page widget section.  If a C<featured_post> entry is found in the C<blog-meta>
+file of the widget, use this. If not, returns the last 3 posts published.  Each
+post is represented as an instance of the L<Dancer2::Plugin::LiteBlog::Article>
+class.
 
 =cut
 
@@ -86,27 +92,44 @@ has elements => (
     default => sub {
         my ($self) = @_;
         
-        my @posts;
-        foreach my $path (@{ $self->meta->{featured_posts} }) {
-            my $post;
-            eval { $post = Dancer2::Plugin::LiteBlog::Article->new(
-                    base_path => $self->mount,
-                    basedir => File::Spec->catfile( $self->root, $path)
-                )
-            };
-            if ($@) {
-                $self->error("Invalid path '$path' : $@"); 
-                next;
-            }
-            
-            # At this point, we're sure the post is OK to be rendered.
-            $self->info("Post initialized : ".$post->title);
-            push @posts, $post;
+        # A featured_posts entry is defined in the blog config...
+        my $featured_posts = $self->meta->{'featured_posts'};
+        return $self->featured_posts() if defined $featured_posts;
+       
+        # Return the last 3 published posts
+        return $self->select_articles(limit => 3);
+   },
+);
+
+=head2 featured_posts()
+
+=cut
+
+sub featured_posts {
+    my ($self) = @_;
+    my $featured_posts = $self->meta->{'featured_posts'};
+    croak "No 'featured_posts' entry found in blog-meta.yml" 
+        if !defined $featured_posts;
+
+    my @posts;
+    foreach my $path (@{ $featured_posts }) {
+        my $post;
+        eval { $post = Dancer2::Plugin::LiteBlog::Article->new(
+                base_path => $self->mount,
+                basedir => File::Spec->catfile( $self->root, $path)
+            )
+        };
+        if ($@) {
+            $self->error("Featured post has an invalid path '$path' : $@"); 
+            next;
         }
         
-        return \@posts;
-    },
-);
+        # At this point, we're sure the post is OK to be rendered.
+        $self->info("Featured post is valid: ".$post->title);
+        push @posts, $post;
+    }
+    return \@posts;
+}
 
 =head2 select_articles (%params)
 
@@ -114,6 +137,8 @@ Lookup the article repository (C<root>) for articles that match the criteria.
 
 Articles are always returned in descending chronological order (using their 
 published_date attibute).
+
+TODO : Should recursively find articles in all category as well as top-level pages.
 
 =head3 params
 
@@ -130,7 +155,7 @@ published_date attibute).
 sub select_articles {
     my ($self, %params) = @_;
 
-    my $limit = $params{limit} || 1;
+    my $limit = $params{limit} || 10;
     $limit = 20 if $limit > 20;
 
     # We'll look in the Blog's repository
@@ -154,12 +179,34 @@ sub select_articles {
     } readdir $dh;
     closedir $dh;
 
+    # Then parse each of these dirs (possible category) and look for articles
+    my @cat_articles;
+    foreach my $catdir (@dirs) {
+        # skip if it's a page
+        next if -e File::Spec->catfile($root, $catdir, 'meta.yml') || 
+            -e File::Spec->catfile($root, $catdir, 'contend.md');
+        
+        # it's a valid dir without page's files, assume it's a category dir.
+        opendir my $dh, File::Spec->catdir($root, $catdir) 
+            or croak "Unable to open dir : $!";
+        # capture all of these that contain meta.yml & content.md
+        my @match = grep { 
+            -e File::Spec->catfile($root, $catdir, $_, 'content.md') && 
+            -e File::Spec->catfile($root, $catdir, $_, 'meta.yml')
+        } readdir $dh;
+        closedir $dh;
+
+        foreach my $a (@match) {
+            push @cat_articles, File::Spec->catdir($catdir, $a);
+        }
+    }
+
     # Sort directories by creation date in descending order
     @dirs = sort {
         my $time_a = $self->_created_time(File::Spec->catdir($root, $a));
         my $time_b = $self->_created_time(File::Spec->catdir($root, $b));
         $time_b <=> $time_a;
-    } @dirs;
+    } (@dirs, @cat_articles);
 
     my @records;
     my $count = 0;
@@ -179,6 +226,9 @@ sub select_articles {
             $self->info("Not a valid article '$root/$dir' : $@, skipping");
             next;
         }
+        
+        # do not return pages
+        next if $article->is_page;
 
         push @records, $article;
         last if ++$count == $limit;
@@ -312,6 +362,8 @@ sub declare_routes {
             $plugin->dsl->redirect("$prefix/$cat/$slug/");
         },
     );
+
+    $self->_declare_rss_routes($plugin, $prefix);
 
     # /blog/:category/:permalink
     $self->info("declaring route ${prefix}/:cat/:slug/");
@@ -509,6 +561,78 @@ Examples:
         }
     );
 }
+
+=head3 GET C</blog/rss/>
+
+=cut
+
+sub _time_to_rfc822 {
+    setlocale(LC_TIME, "C"); # Set the locale to C (standard Unix locale)
+    strftime("%a, %d %b %Y %H:%M:%S %z", 
+        localtime($_[0]));
+}
+
+sub _declare_rss_routes {
+    my ($self, $plugin, $prefix) = @_;
+
+    my $site_title = $plugin->dsl->config->{liteblog}->{title};
+    my $site_url   = $plugin->dsl->config->{liteblog}->{base_url};
+    if (! defined $site_url) {
+        croak "You have to set 'base_url' in liteblog's config to use RSS";
+    }
+    $site_url =~ s/\/$//; # remove trailing '/'
+
+    my $site_desc = $plugin->dsl->config->{liteblog}->{description};
+
+    # Global RSS feed
+    $plugin->app->add_route(
+        method => 'get',
+        regexp => "${prefix}/rss/",
+        code => sub {
+    
+            my $cache_key = 'rss';
+            my $cache = $self->cache($cache_key);
+            if (defined $cache) {
+                $plugin->dsl->content_type( 'application/rss+xml' );
+                return $cache;
+            }
+
+            # Fetch the last N Article objects
+            my $articles = $self->select_articles(limit => 10);
+
+            # Create a new RSS feed
+            my $rss = XML::RSS->new(version => '2.0');
+            $rss->channel(
+                title          => $site_title,
+                link           => $site_url,
+                description    => $site_desc, 
+                language       => "en",
+                copyright      => "Copyright © $site_title",
+                pubDate        => _time_to_rfc822(time),
+            );
+
+            # Add items to the feed for each article
+            foreach my $article (@$articles) {
+                $rss->add_item(
+                    title       => $article->title,
+                    permaLink   => $site_url.$article->permalink,
+                    description => $article->excerpt,
+                    pubDate     => _time_to_rfc822($article->published_time), # Format the date as RFC 2822
+                );
+            }
+
+            # Set the content type
+            $plugin->dsl->content_type( 'application/rss+xml' );
+
+            # Return the RSS feed
+            return $self->cache($cache_key, $rss->as_string);
+        }, # end code sub
+    ); # end add_route
+}
+
+=head3 GET C</blog/category/rss/> 
+
+=cut
 
 # Private subs
 
