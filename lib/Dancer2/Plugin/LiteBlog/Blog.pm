@@ -134,7 +134,7 @@ TODO : Should recursively find articles in all category as well as top-level pag
 sub select_articles {
     my ($self, %params) = @_;
 
-    my $limit = $params{limit} || 1;
+    my $limit = $params{limit} || 10;
     $limit = 20 if $limit > 20;
 
     # We'll look in the Blog's repository
@@ -164,12 +164,34 @@ sub select_articles {
     } readdir $dh;
     closedir $dh;
 
+    # Then parse each of these dir (possible category) and do the same
+    my @cat_articles;
+    foreach my $catdir (@dirs) {
+        # skip if it's a page
+        next if -e File::Spec->catfile($root, $catdir, 'meta.yml') || 
+            -e File::Spec->catfile($root, $catdir, 'contend.md');
+        
+        # it's a valid dir without page's files, assume it's a category dir.
+        opendir my $dh, File::Spec->catdir($root, $catdir) 
+            or croak "Unable to open dir : $!";
+        # capture all of these that contain meta.yml & content.md
+        my @match = grep { 
+            -e File::Spec->catfile($root, $catdir, $_, 'content.md') && 
+            -e File::Spec->catfile($root, $catdir, $_, 'meta.yml')
+        } readdir $dh;
+        closedir $dh;
+
+        foreach my $a (@match) {
+            push @cat_articles, File::Spec->catdir($catdir, $a);
+        }
+    }
+
     # Sort directories by creation date in descending order
     @dirs = sort {
         my $time_a = $self->_created_time(File::Spec->catdir($root, $a));
         my $time_b = $self->_created_time(File::Spec->catdir($root, $b));
         $time_b <=> $time_a;
-    } @dirs;
+    } (@dirs, @cat_articles);
 
     my @records;
     my $count = 0;
@@ -189,6 +211,9 @@ sub select_articles {
             $self->info("Not a valid article '$root/$dir' : $@, skipping");
             next;
         }
+        
+        # do not return pages
+        next if $article->is_page;
 
         push @records, $article;
         last if ++$count == $limit;

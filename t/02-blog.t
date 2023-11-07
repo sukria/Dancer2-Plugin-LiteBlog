@@ -35,6 +35,7 @@ is $a->title, 'A super Tech Blog Post', "find_article works with '/'";
 
 subtest 'select articles' => sub {
     my $articles = $blog->select_articles();
+    grep { print "#   - ".$_->title."\n" } @$articles;
     is scalar(@$articles), 6, "6 articles found";
 
     my $nb_perl = 0;
@@ -52,7 +53,9 @@ subtest 'select articles' => sub {
     $articles = $blog->select_articles(limit => 3);
     is scalar(@$articles), 3, "select with a limit works";
 
-    my $articles = $blog->select_articles(
+    grep { print "#   - ".$_->title."\n" } @$articles;
+
+    $articles = $blog->select_articles(
         limit => 3,
         category => 'tech',
     );
