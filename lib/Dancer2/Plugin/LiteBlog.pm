@@ -26,11 +26,11 @@ Then, in your Dancer2 PSGI startup script:
 
 =head1 VERSION
 
-Version 0.04
+Version 0.05
 
 =cut
 
-our $VERSION = '0.04';
+our $VERSION = '0.05';
 
 use strict;
 use warnings;
@@ -116,6 +116,7 @@ sub BUILD {
 sub _init_default {
     my ($liteblog) = @_;
     $liteblog->{footer} //= $liteblog->{title};
+    $liteblog->{base_url} //= $ENV{HOST} || $ENV{HOSTNAME} || 'http://defineme.example.com';
     $liteblog->{base_url} =~ s/\/$//; # remove trailing '/'
     $liteblog->{show_render_time} //= 1;
 }
