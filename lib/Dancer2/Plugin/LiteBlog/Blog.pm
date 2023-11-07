@@ -76,9 +76,11 @@ sub has_rss { 1 }
 
 =head2 elements
 
-Read-only attribute that contains a list of featured posts from the blog meta
-information. Each post is represented as an instance of the
-L<Dancer2::Plugin::LiteBlog::Article> class.
+Read-only attribute that contains a list of featured posts to show on the home
+page widget section.  If a C<featured_post> entry is found in the C<blog-meta>
+file of the widget, use this. If not, returns the last 3 posts published.  Each
+post is represented as an instance of the L<Dancer2::Plugin::LiteBlog::Article>
+class.
 
 =cut
 
@@ -90,27 +92,44 @@ has elements => (
     default => sub {
         my ($self) = @_;
         
-        my @posts;
-        foreach my $path (@{ $self->meta->{featured_posts} }) {
-            my $post;
-            eval { $post = Dancer2::Plugin::LiteBlog::Article->new(
-                    base_path => $self->mount,
-                    basedir => File::Spec->catfile( $self->root, $path)
-                )
-            };
-            if ($@) {
-                $self->error("Invalid path '$path' : $@"); 
-                next;
-            }
-            
-            # At this point, we're sure the post is OK to be rendered.
-            $self->info("Post initialized : ".$post->title);
-            push @posts, $post;
+        # A featured_posts entry is defined in the blog config...
+        my $featured_posts = $self->meta->{'featured_posts'};
+        return $self->featured_posts() if defined $featured_posts;
+       
+        # Return the last 3 published posts
+        return $self->select_articles(limit => 3);
+   },
+);
+
+=head2 featured_posts()
+
+=cut
+
+sub featured_posts {
+    my ($self) = @_;
+    my $featured_posts = $self->meta->{'featured_posts'};
+    croak "No 'featured_posts' entry found in blog-meta.yml" 
+        if !defined $featured_posts;
+
+    my @posts;
+    foreach my $path (@{ $featured_posts }) {
+        my $post;
+        eval { $post = Dancer2::Plugin::LiteBlog::Article->new(
+                base_path => $self->mount,
+                basedir => File::Spec->catfile( $self->root, $path)
+            )
+        };
+        if ($@) {
+            $self->error("Featured post has an invalid path '$path' : $@"); 
+            next;
         }
         
-        return \@posts;
-    },
-);
+        # At this point, we're sure the post is OK to be rendered.
+        $self->info("Featured post is valid: ".$post->title);
+        push @posts, $post;
+    }
+    return \@posts;
+}
 
 =head2 select_articles (%params)
 
