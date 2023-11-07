@@ -136,6 +136,17 @@ this method to return a true value.
 sub has_routes { 0 }
 
 
+=head2 has_rss 
+
+Returns true if the widget is supposed to expose a RSS feed. 
+Defaults to false. If set to true in the child class, attribute 
+C<mount> must be defined as well to construct the feed URL, and a 
+C<mount/rss/> route must be declared.
+
+=cut
+
+sub has_rss { 0 }
+
 =head2 declare_routes($self, $plugin, $config)
 
 Any widget intending to declare its own routes should implement this method.

@@ -72,6 +72,8 @@ has mount => (
     },
 );
 
+sub has_rss { 1 }
+
 =head2 elements
 
 Read-only attribute that contains a list of featured posts from the blog meta
