@@ -116,6 +116,7 @@ sub BUILD {
 sub _init_default {
     my ($liteblog) = @_;
     $liteblog->{footer} //= $liteblog->{title};
+    $liteblog->{base_url} //= $ENV{HOST} || $ENV{HOSTNAME} || 'http://defineme.example.com';
     $liteblog->{base_url} =~ s/\/$//; # remove trailing '/'
     $liteblog->{show_render_time} //= 1;
 }
