@@ -70,6 +70,9 @@ subtest "RSS feed" => sub {
     like $res->content, qr{<pubDate>(Mon|Tue|Wed|Thu|Fri|Sat|Sun), \d\d \w{3} \d{4} \d\d:\d\d:\d\d .\d{4}</pubDate>},
         "RSS feed contians a valid RFC 822 Date";
 
+    $res = $test->request( GET '/rss/' );
+    is $res->code, 200, 'Second call to GET /rss/ returns a 200 (cached)';
+    is $res->content_type, 'application/rss+xml', 'Second call returns a valid content type (cache)';
     done_testing;
 };
 

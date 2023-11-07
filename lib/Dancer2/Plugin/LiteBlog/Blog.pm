@@ -590,6 +590,13 @@ sub _declare_rss_routes {
         regexp => "${prefix}/rss/",
         code => sub {
     
+            my $cache_key = 'rss';
+            my $cache = $self->cache($cache_key);
+            if (defined $cache) {
+                $plugin->dsl->content_type( 'application/rss+xml' );
+                return $cache;
+            }
+
             # Fetch the last N Article objects
             my $articles = $self->select_articles(limit => 10);
 
@@ -618,7 +625,7 @@ sub _declare_rss_routes {
             $plugin->dsl->content_type( 'application/rss+xml' );
 
             # Return the RSS feed
-            return $rss->as_string;
+            return $self->cache($cache_key, $rss->as_string);
         }, # end code sub
     ); # end add_route
 }
