@@ -27,7 +27,7 @@ use YAML::XS;
 use File::Spec;
 use File::Stat;
 use Path::Tiny;
-use POSIX qw(strftime);
+use POSIX qw(strftime LC_TIME setlocale);
 use Dancer2::Plugin::LiteBlog::Article;
 use XML::RSS;
 
@@ -151,12 +151,6 @@ sub select_articles {
     my $cache_key = join('|', 'select', $root, $self->mount, $limit);
     return $self->cache($cache_key) if defined $self->cache($cache_key);
 
-    # FIXME: this is only looking for top-level articles, if select_articles is
-    # called without category param, it will only return pages. 
-    # Should return all found articles.
-    # Hence, this routine should do the search on the top-level and 1 level
-    # below.
-    #
     # Get the list of all directories in the root
     opendir my $dh, $root or croak "Cannot open directory: $!";
     my @dirs = grep { 
@@ -164,7 +158,7 @@ sub select_articles {
     } readdir $dh;
     closedir $dh;
 
-    # Then parse each of these dir (possible category) and do the same
+    # Then parse each of these dirs (possible category) and look for articles
     my @cat_articles;
     foreach my $catdir (@dirs) {
         # skip if it's a page
@@ -552,6 +546,7 @@ Examples:
 =cut
 
 sub _time_to_rfc822 {
+    setlocale(LC_TIME, "C"); # Set the locale to C (standard Unix locale)
     strftime("%a, %d %b %Y %H:%M:%S %z", 
         localtime($_[0]));
 }
@@ -564,8 +559,11 @@ sub _declare_rss_routes {
     if (! defined $site_url) {
         croak "You have to set 'base_url' in liteblog's config to use RSS";
     }
+    $site_url =~ s/\/$//; # remove trailing '/'
+
     my $site_desc = $plugin->dsl->config->{liteblog}->{description};
 
+    # Global RSS feed
     $plugin->app->add_route(
         method => 'get',
         regexp => "${prefix}/rss/",
@@ -603,7 +601,6 @@ sub _declare_rss_routes {
         }, # end code sub
     ); # end add_route
 }
-
 
 =head3 GET C</blog/category/rss/> 
 
