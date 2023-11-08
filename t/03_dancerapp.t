@@ -21,6 +21,7 @@ use File::Spec;
         logo  => '/images/foo.jpg',
         favicon => '/favicon.ico',
         footer => 'Some Liteblog Site',
+        css => '/css/foo.css',
         
         navigation => [
             { label => 'Text Elem'},
@@ -130,5 +131,6 @@ like $res->content, qr{<h1 class="post-title">Tech Stories</h1>}, "Category page
 like $res->content, qr{fonts\.googleapis\.com/css2\?family=Lato:wght\@400;700.*&display=swap" rel="stylesheet"},
     "Google fonts source link looks good";
 
+like $res->content, qr{<link rel="stylesheet" href="/css/foo\.css">}, "custom CSS is loaded";
 
 done_testing;

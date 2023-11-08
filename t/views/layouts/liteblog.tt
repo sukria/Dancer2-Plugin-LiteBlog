@@ -28,19 +28,29 @@
     <link href="https://fonts.googleapis.com/css2?[% google_fonts %]" rel="stylesheet">
     [% END %]
 
+    <!-- CSS style sheets -->
+    <!-- Liteblog UI -->
     <link rel="stylesheet" href="/css/liteblog.css">
+    <!-- Widgets -->
     [% FOREACH w IN widgets %]
     <link rel="stylesheet" href="/css/liteblog/[% w.name %].css">
+    [% IF page_title %]
+    <!-- a page_title is defined, let's load the single-page css -->
+    <link rel="stylesheet" href="/css/liteblog/single-page.css">
+    [% END %]
+    [% IF css %]
+    <!-- Source user-defined CSS -->
+    <link rel="stylesheet" href="[% css %]">
+    [% END %]
+    
+    <!-- RSS Feeds -->
     [% IF w.instance.has_rss %]
     <link rel="alternate" type="application/rss+xml" 
         title="RSS Feed for [% title %]: [% w.title %]" 
         href="[% base_url %][% w.instance.mount %]/rss/" />
     [% END %]
     [% END %]
-    [% IF page_title %]
-    <!-- a page_title is defined, let's load the single-page css -->
-    <link rel="stylesheet" href="/css/liteblog/single-page.css">
-    [% END %]
+
 
     <script type="text/javascript">
     [% IF page_title %]
