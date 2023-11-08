@@ -25,7 +25,7 @@
     margin-bottom: 2rem;
 }
 
-a.cta-button {
+.cta-button {
     display: inline-block;
     background-color: red;
     color: #eee !important;
@@ -37,7 +37,7 @@ a.cta-button {
     transition: background-color 0.3s ease;
 }
 
-a.cta-button:hover {
+.cta-button:hover {
     background-color: darkred; /* Slightly darker red on hover for button */
     color: #fff !important;
 }
