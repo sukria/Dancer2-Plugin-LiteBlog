@@ -113,7 +113,7 @@
     <div id="hero-banner" class="hero-banner hidden-hero">
     [% END %]
       <div class="hero-banner-wrapper">
-        <div class="site-title">[% title %]</div>
+        <div class="site-title"><a href="/">[% title %]</a></div>
         [% IF navigation %]
         <nav>
           [% FOREACH nav IN navigation %]
