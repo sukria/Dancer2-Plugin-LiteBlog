@@ -41,6 +41,14 @@
     <!-- a page_title is defined, let's load the single-page css -->
     <link rel="stylesheet" href="/css/liteblog/single-page.css">
     [% END %]
+
+    <script type="text/javascript">
+    [% IF page_title %]
+    var showHeroSection = false;
+    [% ELSE %]
+    var showHeroSection = true;
+    [% END %]
+    </script>
 </head>
 <body>
 
@@ -149,9 +157,11 @@
 <script type="text/javascript">
 
 
-/* first, Hide heroBanner if landing page */
+/* first, Hide heroBanner if showHeroSection  */
 var heroBanner = document.getElementById('hero-banner');
-heroBanner.style.display = 'none';
+if (showHeroSection) {
+    heroBanner.style.display = 'none';
+}
 
 // This will hide the mobile-header on initial load
 document.addEventListener('DOMContentLoaded', (event) => {
@@ -159,35 +169,42 @@ document.addEventListener('DOMContentLoaded', (event) => {
     heroBanner.classList.add('hidden-hero')
 
     var mobileHeader = document.getElementById('mobile-header');
-    if (window.innerWidth <= 768) { 
+    if (window.innerWidth <= 768 && showHeroSection) { 
         mobileHeader.style.display = 'none';
+    }
+    else if (window.innerWidth <= 768) {
+        mobileHeader.style.display = 'flex';
+        heroBanner.style.display = 'none';
     }
 });
 
+// Now handle the showing/hiding logic of the header based on scrolling
 window.addEventListener('scroll', function () {
-    var heroSection = document.getElementById('hero');
-    var heroBanner = document.getElementById('hero-banner');
-    var mobileHeader = document.getElementById('mobile-header');
+    var heroSection = document.getElementById('hero'); // the big Hero header
+    var heroBanner = document.getElementById('hero-banner'); // the navigation bar
+    var mobileHeader = document.getElementById('mobile-header'); // the mobile compact bar
+
     mobileHeaderStyle = window.getComputedStyle(mobileHeader);
     var scrollY = window.scrollY || window.pageYOffset;
 
     // Show the mobile-header if on small screen (<768) and 
-    // after user scrolls past a certain point: either heroSection height, or 
-    // 100px if not present.
+    // after user scrolls past heroSection height, or 
+    // immediatly if not present.
     if (window.innerWidth <= 768) {
-        mobileTriggerPoint = 100;
-        if (heroSection) {
+        mobileTriggerPoint = 0;
+        if (heroSection && showHeroSection) {
             mobileTriggerPoint = heroSection.clientHeight;
         }
-        if (scrollY > mobileTriggerPoint) {
+        if (scrollY >= mobileTriggerPoint) {
             mobileHeader.style.display = 'flex';
         } else {
             mobileHeader.style.display = 'none';
         }
     }
 
-    /* Just do nothing if the mobile nav bar is displayed */ 
-    if (mobileHeaderStyle.display == 'flex') {
+    /* Just do nothing if the mobile nav bar is displayed or 
+     * if the heroSection is not enabled on this page */ 
+    if (mobileHeaderStyle.display == 'flex' || showHeroSection == false) {
         return false;
     }
 

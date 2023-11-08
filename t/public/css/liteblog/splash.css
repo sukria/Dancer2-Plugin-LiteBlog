@@ -1,0 +1,44 @@
+/* Full Width Background Styles */
+.splash-widget {
+    background-size: cover;
+    height: 80vh; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.background-content {
+    color: white; /* Ensures text is white */
+    max-width: 800px; /* Sets a max width for the content */
+    margin: 0 auto;
+}
+
+.main-title {
+    font-size: 3rem; /* Big size for the main title */
+    text-shadow: 2px 4px 3px rgba(0,0,0,0.3); /* Horizontal offset, vertical offset, blur radius, color */
+    margin-bottom: 0.5rem;
+}
+
+.subtitle {
+    font-size: 1.5rem; /* Smaller size for the subtitle */
+    margin-bottom: 2rem;
+}
+
+a.cta-button {
+    display: inline-block;
+    background-color: red;
+    color: #eee !important;
+    padding: 10px 20px;
+    text-transform: uppercase;
+    text-decoration: none; /* Removes underline from links */
+    font-weight: bold;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+a.cta-button:hover {
+    background-color: darkred; /* Slightly darker red on hover for button */
+    color: #fff !important;
+}
+
