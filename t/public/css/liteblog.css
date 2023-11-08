@@ -213,6 +213,13 @@ a:focus, button:focus, .btn:focus {
     height: 55px;
 }
 
+.hero-banner a {
+    color: #CCC;
+}
+.hero-banner a:hover {
+    color: #FFF;
+}
+
 .hero-banner-wrapper {
     display: flex;
     align-items: center;
@@ -388,3 +395,4 @@ section#main-page {
     font-size: 14px;
   }
 }
+
