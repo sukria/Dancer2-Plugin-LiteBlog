@@ -1,16 +1,18 @@
 Revision history for Dancer2-Plugin-LiteBlog
 
-NEXT
+0.06    2023-11-08
     
         [FEATURES]
         * Google Fonts are configurable via the settings: 'google_fonts'.
         * 'Splash' widget to display a big image on the home with a big title
           and a call-to-action button.
-        * Custom CSS can be defined in liteblog's config, will be loaded if so.
+        * Custom CSS can be defined in liteblog's config, will be loaded if so
+          ('css' entry).
         * Articles can now define a 'background' setting. If so, should be a
           valid (big) image that will change the render of the post to a
           full-screen background. The article will then be displayed on a
-          transparent white box. Useful for important pages. 
+          transparent white box. Useful for important pages that need to
+          standout. 
 
 0.05    2023-11-07
 
