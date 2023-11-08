@@ -13,6 +13,7 @@ my @files_to_embed = qw(
     public/css/liteblog.css
     public/css/liteblog/blog.css
     public/css/liteblog/activities.css
+    public/css/liteblog/splash.css
     public/css/liteblog/single-page.css
     views/layouts/liteblog.tt
     views/liteblog/index.tt
@@ -20,6 +21,7 @@ my @files_to_embed = qw(
     views/liteblog/widgets/blog.tt
     views/liteblog/widgets/activities.tt
     views/liteblog/widgets/blog-cards.tt
+    views/liteblog/widgets/splash.tt
     articles/blog-meta.yml
     articles/tech/first-article/content.md
     articles/tech/first-article/featured.jpg
