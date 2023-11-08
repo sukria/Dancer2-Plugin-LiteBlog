@@ -388,6 +388,7 @@ sub declare_routes {
                     page_title => $article->title,
                     content    => $article->content, 
                     page_image => $article->image,
+                    background_image => $article->background,
                     meta       => [
                         { 
                             label => $article->category, 
@@ -493,6 +494,7 @@ Examples:
                 {
                     page_title => $article->title,
                     page_image => $article->image,
+                    background_image => $article->background,
                     content    => $article->content, 
                     meta       => [
                         { 
