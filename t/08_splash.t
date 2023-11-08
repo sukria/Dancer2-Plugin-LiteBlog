@@ -14,6 +14,7 @@ is_deeply [ {
         baseline => 'foo',
         cta_link => '/clickhere',
         cta_label => 'Subscribe!',
+        image => undef,
         }
     ], $splash->elements, "elements is correctly formated";
 
