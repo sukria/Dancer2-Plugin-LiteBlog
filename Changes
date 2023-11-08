@@ -1,5 +1,10 @@
 Revision history for Dancer2-Plugin-LiteBlog
 
+NEXT
+    
+        [FEATURES]
+        * Google Fonts are configurable via the settings: 'google_fonts'.
+
 0.05    2023-11-07
 
         [FEATURES]
