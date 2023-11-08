@@ -494,6 +494,7 @@ Examples:
                 {
                     page_title => $article->title,
                     page_image => $article->image,
+                    background_image => $article->background,
                     content    => $article->content, 
                     meta       => [
                         { 
