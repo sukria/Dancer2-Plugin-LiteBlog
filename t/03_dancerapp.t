@@ -127,4 +127,8 @@ $res = $test->request(GET '/someblog/tech/');
 is $res->code, 200, "Valid category page";
 like $res->content, qr{<h1 class="post-title">Tech Stories</h1>}, "Category page is correctly rendered";
 
+like $res->content, qr{fonts\.googleapis\.com/css2\?family=Lato:wght\@400;700.*&display=swap" rel="stylesheet"},
+    "Google fonts source link looks good";
+
+
 done_testing;

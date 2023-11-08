@@ -97,6 +97,18 @@ sub BUILD {
                 $tokens->{$k} = _default_tokens()->{$k};
             }
 
+            # build Google fonts source if any defined in settings
+            if ($liteblog->{google_fonts}) {
+                my $gfonts = $liteblog->{google_fonts};
+                if (ref($gfonts) ne 'ARRAY') {
+                    $plugin->dsl->warning("google_fonts should be an array, ignoring");
+                }
+                else {
+                    my $gfont_str = join('&', map { "family=${_}:wght\@400;700" } @$gfonts) . '&display=swap';
+                    $tokens->{google_fonts} = $gfont_str;
+                }
+            }
+
             return $tokens;
         }
     ));
@@ -119,6 +131,7 @@ sub _init_default {
     $liteblog->{base_url} //= $ENV{HOST} || $ENV{HOSTNAME} || 'http://defineme.example.com';
     $liteblog->{base_url} =~ s/\/$//; # remove trailing '/'
     $liteblog->{show_render_time} //= 1;
+    $liteblog->{google_fonts} //= [qw(Lato Roboto Merriweather Open+Sans)];
 }
 
 sub _init_favicon_token {
