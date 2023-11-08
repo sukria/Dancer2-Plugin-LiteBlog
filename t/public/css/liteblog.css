@@ -9,10 +9,15 @@
     --header-link-color: #bbb;
     --link-color: #007BFF;
     --link-hover-color: #0056b3;
+
+    --liteblog-title-family: 'Roboto', 'Open Sans', 'Arial', sans-serif;
+    --liteblog-content-family: 'Merriweather', 'Georgia', source-serif-pro, 'Times', 'Times New Roman', serif;
+    --liteblog-ui-family: 'Lato', sans-serif;
+    --liteblog-dark-bg-title-color: #e3e3e3;
 }
 
 body {
-    font-family: 'Roboto', 'Arial', sans-serif;
+    font-family: var(--liteblog-content-family);
     background-color: var(--background-color);
 
     margin: 0;
@@ -24,6 +29,7 @@ body {
 
 h1, h2, h3, h4, h5, h6 {
     font-weight: 600; /* slightly bold but not too heavy */
+    font-family: var(--liteblog-title-family); 
 }
 h1 {
     font-size: 2.5rem;
@@ -207,6 +213,13 @@ a:focus, button:focus, .btn:focus {
     height: 55px;
 }
 
+.hero-banner a {
+    color: #CCC;
+}
+.hero-banner a:hover {
+    color: #FFF;
+}
+
 .hero-banner-wrapper {
     display: flex;
     align-items: center;
@@ -328,7 +341,7 @@ section#main-page {
   background-color: var(--header-bg-color);
   color: var(--header-text-color);
   text-align: center;
-  font-family: 'Lato', sans-serif; /* Already imported in your HTML */
+  font-family: var(--liteblog-ui-family);
   padding-top: 20px;
   padding-bottom: 20px;
 }
@@ -382,3 +395,4 @@ section#main-page {
     font-size: 14px;
   }
 }
+

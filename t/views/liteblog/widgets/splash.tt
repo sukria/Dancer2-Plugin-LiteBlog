@@ -1,0 +1,26 @@
+[% FOREACH splash IN widget.elements %]
+<section class="splash-widget" style="background: url('[% splash.image %]') no-repeat center center;">
+    <div class="background-content">
+        <h1 class="main-title">[% splash.title %]</h1>
+        <h2 class="subtitle">[% splash.baseline %]</h2>
+        <a href="[% splash.cta_link %]" class="cta-button">[% splash.cta_label %]</a>
+    </div>
+</section>
+[% END %]
+
+<script type="text/javascript">
+    showHeroSection = false;
+
+    var heroSection = document.getElementById('hero');
+    var heroBanner = document.getElementById('hero-banner');
+    
+    // hide the big hero section
+    heroSection.classList.remove('visible-hero');
+    heroSection.classList.add('hidden-hero');
+    heroSection.style.display = 'none';
+    
+    // show the hero navigation bar
+    heroBanner.style.display = 'flex';
+    heroBanner.classList.add('visible-hero')
+    heroBanner.classList.remove('hidden-hero')
+</script>
