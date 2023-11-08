@@ -245,6 +245,8 @@ ul.post-meta {
     background-position: center center;
     background-size: cover;
     background-color: rgba(0, 0, 0, 0.5);
+
+    padding-bottom: 4rem;
 }
 
 .post-header.no-featured-image.with-background-image {
@@ -266,6 +268,8 @@ ul.post-meta {
 
     background-color: rgba(255, 255, 255, 0.8); /* a semi transparent white */
     color: #444;
+
+    margin-bottom: 0;
 }
 
 /* Titles */
@@ -397,3 +401,4 @@ article blockquote {
         padding: 0 !important;
     }
 }
+
