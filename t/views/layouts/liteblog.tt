@@ -3,21 +3,44 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    [% IF page_title %]
     
+    [% IF page_title %]
     <title>[% page_title %] | [% title %]</title>
+    [% IF page_excerpt %]<meta name="description" content="[% page_excerpt %]">[% END %]
+    [% IF page_author %]<meta name="author" content="[% page_author %]">[% END %]
+    [% IF page_tags %]<meta name="keywords" content="[% page_tags %]">[% END %]
 
-    [% IF feature.highlight %] 
-    <!-- Highlight JS Lib -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.0/styles/default.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.0/highlight.min.js"></script>
-    [% END %]
+    <!-- Open Graph meta tags for Facebook and other social networks -->
+    <meta property="og:title" content="[% page_title %] | [% title %]">
+    [% IF page_excerpt %]<meta property="og:description" content="[% page_excerpt %]">[% END %]
+    [% IF page_image %]<meta property="og:image" content="[% base_url%][% page_image %]">[% END %]
+    <meta property="og:url" content="[% base_url %][% page_url %]">
+    <meta property="og:type" content="website">
+
+    <!-- Twitter Card meta tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="[% page_title %] | [% title %]">
+    [% IF page_excerpt %]<meta name="twitter:description" content="[% page_excerpt %]">[% END %]
+    [% IF page_image %]<meta name="twitter:image" content="[% base_url%][% page_image %]">[% END %] 
 
     [% ELSE %]
-    
+    <!-- The Home Page -->     
     <title>[% title %]</title>
-    
+    [% IF description %]<meta name="description" content="[% description %]">[% END %]
+    [% IF tags %]<meta name="keywords" content="[% tags %]">[% END %]
+
+    <!-- Open Graph meta tags for Facebook and other social networks -->
+    <meta property="og:title" content="[% title %]">
+    <meta property="og:description" content="[% description %]">
+    <meta property="og:image" content="[% base_url %][% logo %]"> <!-- URL to your website's thumbnail image -->
+    <meta property="og:url" content="[% base_url %]">
+    <meta property="og:type" content="website">
+
+    <!-- Twitter Card meta tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="[% title %]">
+    <meta name="twitter:description" content="[% description %]">
+    <meta name="twitter:image" content="[% base_url %][% logo %]"> <!-- URL to your website's thumbnail image -->
     [% END %]
 
     [% IF favicon %]
@@ -26,6 +49,12 @@
 
     [% IF google_fonts %]
     <link href="https://fonts.googleapis.com/css2?[% google_fonts %]" rel="stylesheet">
+    [% END %]
+
+    [% IF feature.highlight %] 
+    <!-- Highlight JS Lib -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.0/styles/default.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.0/highlight.min.js"></script>
     [% END %]
 
     <!-- CSS style sheets -->
@@ -50,7 +79,6 @@
         href="[% base_url %][% w.instance.mount %]/rss/" />
     [% END %]
     [% END %]
-
 
     <script type="text/javascript">
     [% IF page_title %]
