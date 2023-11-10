@@ -273,7 +273,7 @@ sub _normalize_path_to_absolute {
     else {
         return $base .
                '/'.$self->category .
-               '/'.$self->slug .
+               '/'.$self->slug . 
                '/'.$asset;
     }
 }
@@ -309,6 +309,22 @@ has background => (
     },
 );
 
+=head2 author
+
+The author of the article/page. To be displayed in the meta
+data of the HTML.
+
+=cut
+
+has author => (
+    is => 'ro',
+    lazy => 1,
+    default => sub {
+        my ($self) = @_;
+        return $self->meta->{'author'};
+    },
+);
+
 =head2 tags
 
 Array reference of tags associated with the article.
@@ -321,7 +337,7 @@ has tags => (
     lazy => 1,
     default => sub {
         my ($self) = @_;
-        return $self->meta->{'tags'};
+        return $self->meta->{'tags'} // [];
     },
 );
 
@@ -357,8 +373,10 @@ has permalink => (
         my $base = $self->base_path;
         $base = '' if !defined $base || $base eq '/';
 
-        return join('/', ($base, $self->slug)) if $self->is_page;
-        return join('/', ($base, $self->category, $self->slug ));
+        my $path;
+        $path = join('/', ($base, $self->slug)) if $self->is_page;
+        $path = join('/', ($base, $self->category, $self->slug ));
+        return $path . '/';
     },
 );
 
