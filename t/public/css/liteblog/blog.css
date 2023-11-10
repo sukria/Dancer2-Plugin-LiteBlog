@@ -51,8 +51,7 @@ div.container.category_page {
 }
 
 .blog-card p.post-excerpt {
-    font-style: italic;
-    font-size: 0.9em;
+    font-size: 1em;
     text-align: left;
 }
 
