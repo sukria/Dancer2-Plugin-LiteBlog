@@ -381,15 +381,20 @@ sub declare_routes {
                 return $plugin->render_client_error("Article not found : $cat/$slug");
             }
             # TODO hanlde invalid/missing $article->content as a 404
+            # TODO refactor this between page/article
 
             return $plugin->dsl->template(
                 'liteblog/single-page',
                 {
-                    page_title => $article->title,
-                    content    => $article->content, 
-                    page_image => $article->image,
-                    background_image => $article->background,
-                    meta       => [
+                    page_title   => $article->title,
+                    page_excerpt => $article->excerpt,
+                    page_image   => $article->image,
+                    page_tags    => join(', ', @{$article->tags}),
+                    page_author  => $article->author,
+                    page_url     => $article->permalink,
+                    content      => $article->content, 
+                    background_image => $article->background, # if set will use the full screen bg
+                    meta         => [
                         { 
                             label => $article->category, 
                             link => "$prefix/$cat" 
