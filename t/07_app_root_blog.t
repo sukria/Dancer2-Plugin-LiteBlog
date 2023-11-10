@@ -65,7 +65,7 @@ subtest "RSS feed" => sub {
     is $res->code, 200, 'GET /rss/ returns a 200';
     is $res->content_type, 'application/rss+xml', 'content type is valid xml/rss';
     like $res->content, qr{<channel>.*<title>Root Blog</title>}s, "RSS feed contains <title> element";
-    like $res->content, qr{<guid isPermaLink="true">http://localhost:4000/perl/article-perl-dup3</guid>}, 
+    like $res->content, qr{<guid isPermaLink="true">http://localhost:4000/perl/article-perl-dup3/</guid>}, 
         "RSS content contains an article with a valid permalink";
     like $res->content, qr{<pubDate>(Mon|Tue|Wed|Thu|Fri|Sat|Sun), \d\d \w{3} \d{4} \d\d:\d\d:\d\d .\d{4}</pubDate>},
         "RSS feed contians a valid RFC 822 Date";
