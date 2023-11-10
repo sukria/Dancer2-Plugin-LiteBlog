@@ -127,11 +127,16 @@ sub BUILD {
 
 sub _init_default {
     my ($liteblog) = @_;
-    $liteblog->{footer} //= $liteblog->{title};
-    $liteblog->{base_url} //= $ENV{HOST} || $ENV{HOSTNAME} || 'http://defineme.example.com';
+
+    $liteblog->{base_url} //= $ENV{HTTP_HOST} // 'http://set.base_url.in.config';
     $liteblog->{base_url} =~ s/\/$//; # remove trailing '/'
-    $liteblog->{show_render_time} //= 1;
+
+    $liteblog->{tags} ||= [];
+    $liteblog->{footer} //= $liteblog->{title};
+    $liteblog->{show_render_time} //= 0;
     $liteblog->{google_fonts} //= [qw(Lato Roboto Merriweather Open+Sans)];
+
+    return $liteblog;
 }
 
 sub _init_favicon_token {
@@ -195,7 +200,7 @@ sub liteblog_init {
 
     # init default tokens once for all
     my $tokens = {};
-    _init_default($liteblog);
+    $liteblog = _init_default($liteblog);
 
     # all config entry of Liteblog is exposed in the tokens
     foreach my $k (keys %$liteblog) {
@@ -204,6 +209,7 @@ sub liteblog_init {
         _init_footer_token($tokens, $k, $liteblog) and next;
         $tokens->{$k} = $liteblog->{$k};
     }
+    $tokens->{tags} = join(', ', @{ $liteblog->{tags} });
 
     # Populate the loaded widgets in the tokens 
     $tokens->{widgets} = $widgets;
