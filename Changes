@@ -1,6 +1,7 @@
 Revision history for Dancer2-Plugin-LiteBlog
 
-NEXT
+0.07     2023-11-10
+
         [FEATURES]
         * Add meta data to generated HTML for SEO, Facebook and Twitter cards.
 
