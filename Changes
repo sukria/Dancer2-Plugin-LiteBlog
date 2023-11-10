@@ -1,5 +1,13 @@
 Revision history for Dancer2-Plugin-LiteBlog
 
+0.07     2023-11-10
+
+        [FEATURES]
+        * Add meta data to generated HTML for SEO, Facebook and Twitter cards.
+
+        [FIXES]
+        * Setting 'base_url' is now properly initialized to HTTP_HOST.
+
 0.06    2023-11-08
     
         [FEATURES]

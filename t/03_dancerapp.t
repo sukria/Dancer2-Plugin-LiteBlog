@@ -6,13 +6,16 @@ use File::Spec;
  
 {
     package SampleApp;
-    use Dancer2;
+    BEGIN {
+        use Dancer2;
+        set logger => 'Null';
+        #set logger => 'Console::Colored';
+    }
+
     use Dancer2::Plugin::LiteBlog;
     set views => File::Spec->catfile( dirname(__FILE__), 'views');
     set appdir => File::Spec->catfile(dirname(__FILE__)),
-
     set log => 'info';
-    #set logger => 'Console::Colored';
     set logger => 'Null';
     set liteblog => {
         
@@ -117,8 +120,8 @@ subtest "Rendered Liteblog Errors" => sub {
 
 $res = $test->request(GET '/');
 like $res->content, 
-    qr{<a href="/someblog/tech/first-article"><img class="post-image" src="/someblog/tech/first-article/featured\.jpg" alt="A super Tech Blog Post"></a>}, 
-    "Image URL under article path has proper permalink";
+    qr{<a href="/someblog/tech/first-article/"><img class="post-image" src="/someblog/tech/first-article/featured\.jpg" alt="A super Tech Blog Post"></a>}, 
+    "Image URL under article path has proper permalink with trailing /";
 
 $res = $test->request(GET '/someblog/doesnotexit/');
 is $res->code, 404, "Unknown category/page returns a 404";

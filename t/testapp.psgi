@@ -20,6 +20,8 @@ use lib "$FindBin::Bin/../lib";
         logo => '/images/liteblog.jpg',
         favicon => '/images/liteblog.jpg',
         base_url => 'http://localhost:4000/',
+        description => 'Some general description of the testing app',
+        tags => ['foo', 'bar', 'baz'],
         show_render_time => 1,
         feature => {
             highlight => 1,
