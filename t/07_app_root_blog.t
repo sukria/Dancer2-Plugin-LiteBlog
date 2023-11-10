@@ -6,14 +6,17 @@ use File::Spec;
  
 {
     package SampleApp;
-    use Dancer2;
+    BEGIN {
+        use Dancer2;
+        #set logger => 'Console::Colored';
+        set logger => 'Null';
+    }
+
     use Dancer2::Plugin::LiteBlog;
     set views => File::Spec->catfile( dirname(__FILE__), 'views');
     set appdir => File::Spec->catfile(dirname(__FILE__)),
 
     set log => 'info';
-    #set logger => 'Console::Colored';
-    set logger => 'Null';
     
     set liteblog => {
         
