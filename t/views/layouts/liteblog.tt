@@ -8,7 +8,17 @@
     <title>[% page_title %] | [% title %]</title>
     [% IF page_excerpt %]<meta name="description" content="[% page_excerpt %]">[% END %]
     [% IF page_author %]<meta name="author" content="[% page_author %]">[% END %]
-    [% IF page_tags %]<meta name="keywords" content="[% page_tags %]">[% END %]
+    [% IF page_tags %]
+      [% IF tags %]
+      <meta name="keywords" content="[% tags %], [% page_tags %]">
+      [% ELSE %]
+      <meta name="keywords" content="[% page_tags %]">
+      [% END %]
+    [% ELSE %]
+      [% IF tags %]
+      <meta name="keywords" content="[% tags %]">
+      [% END %]
+    [% END %]
 
     <!-- Open Graph meta tags for Facebook and other social networks -->
     <meta property="og:title" content="[% page_title %] | [% title %]">
