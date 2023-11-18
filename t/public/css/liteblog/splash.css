@@ -1,6 +1,6 @@
 /* Full Width Background Styles */
 .splash-widget {
-    background-size: cover;
+    background-size: cover !important;
     height: 80vh; 
     display: flex;
     justify-content: center;
