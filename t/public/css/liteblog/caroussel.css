@@ -11,6 +11,7 @@
 /* Slide */
 .splash-caroussel-element {
     position: absolute; 
+    background-color: #444;
     top: 0;
     left: 0;
     flex: 0 0 100%;
@@ -35,16 +36,34 @@
     margin: 0 auto;
 }
 
+.caroussel-nobackground {
+}
+
+.caroussel-nobackground .background-content {
+    color: #eee;
+}
+
 .main-title {
     font-size: 3rem; /* Big size for the main title */
     text-shadow: 2px 4px 3px rgba(0,0,0,0.3); /* Horizontal offset, vertical offset, blur radius, color */
     margin-bottom: 0.5rem;
 }
 
+.main-title {
+}
+
 .subtitle {
     font-size: 1.5rem; /* Smaller size for the subtitle */
     margin-bottom: 2rem;
     padding: 1rem;
+}
+
+.youtube-player {
+    margin: 1em;
+}
+
+.cta {
+    margin-top: 1em;
 }
 
 .cta-button {
