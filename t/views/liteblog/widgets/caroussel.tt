@@ -6,7 +6,7 @@ var autoSlideInterval;
 
 function plusSlides(n, manual = false) {
     if (manual) {
-        clearInterval(autoSlideInterval); // Arrête le défilement automatique en mode manuel
+        clearInterval(autoSlideInterval); // User clicked, stop the auto mode.
     }
 
     prevSlideIndex = slideIndex;
@@ -21,21 +21,19 @@ function plusSlides(n, manual = false) {
 function applySlideTransition(directionStep) {
     let translateValue;
 
-    // Détermine la direction du glissement
     if (directionStep > 0) { // Next
         translateValue = '-100%';
     } else { // Prev
         translateValue = '100%';
     }
 
-    // Configure la transition pour les diapositives actuelle et précédente
+    // Slide effects
     slides[prevSlideIndex].style.transform = `translateX(${translateValue})`;
     slides[slideIndex].style.transform = `translateX(0)`;
     setTimeout(function() { 
         slides[prevSlideIndex].style.display = 'none';
         slides[slideIndex].style.display = 'flex';
     }, 300);
-    //slides[prevSlideIndex].style.display = 'none';
 }
 
 function autoCarousselRun() {
@@ -44,22 +42,39 @@ function autoCarousselRun() {
 
 document.addEventListener('DOMContentLoaded', (event) => {
     slides = document.getElementsByClassName("splash-widget");
-    // Masquer toutes les diapositives sauf la première
+    // Hide all slides except the first one
     for (var i = 1; i < slides.length; i++) {
         slides[i].style.display = (i === 0) ? "flex" : "none";
     }
-    slideIndex = 0; // Réinitialise l'index pour commencer à partir de la première diapositive
-    autoSlideInterval = setInterval(autoCarousselRun, 5000); // Démarre le défilement automatique
+    slideIndex = 0; // We start at slide 0
+    autoSlideInterval = setInterval(autoCarousselRun, 5000); // Start auto mode 
 });
 </script>
 
 <section class="splash-widget-carousel">
 [% FOREACH splash IN widget.elements %]
+[% IF splash.image %]
 <section class="splash-widget splash-caroussel-element" style="background: url('[% splash.image %]') no-repeat center center;">
+[% ELSE %]
+<section class="splash-widget splash-caroussel-element" style="color: #333;">
+[% END %]
     <div class="background-content">
         <h1 class="main-title">[% splash.title %]</h1>
+        [% IF splash.baseline %]
         <h2 class="subtitle">[% splash.baseline %]</h2>
-        <a href="[% splash.cta.link %]" class="cta-button">[% splash.cta.label %]</a>
+        [% END %]
+        [% IF splash.content %]
+        <div class="content">[% splash.content %]</div>
+        [% END %]
+        [% IF splash.youtube %]
+        <div><iframe id="ytplayer" type="text/html" 
+            width="640" height="360" 
+            src="http://www.youtube.com/embed/[% splash.youtube %]?autoplay=0&origin=[% base_url %]" 
+            frameborder="0"></iframe></div>
+        [% END %]
+        [% IF splash.cta %]
+        <div><a href="[% splash.cta.link %]" class="cta-button">[% splash.cta.label %]</a></div>
+        [% END %]
     </div>
 </section>
 [% END %]
@@ -69,6 +84,8 @@ document.addEventListener('DOMContentLoaded', (event) => {
 </section>
 
 <script type="text/javascript">
+    /* This Widget is not compatible with the Hero widget */
+    
     showHeroSection = false;
 
     var heroSection = document.getElementById('hero');
