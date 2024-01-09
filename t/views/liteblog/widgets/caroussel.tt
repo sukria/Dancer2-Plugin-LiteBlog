@@ -71,7 +71,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
         [% IF splash.youtube %]
         <div class="youtube-player"><iframe id="ytplayer" type="text/html" 
             width="640" height="360" 
-            src="http://www.youtube.com/embed/[% splash.youtube %]?autoplay=0&origin=[% base_url %]" 
+            src="https://www.youtube.com/embed/[% splash.youtube %]?autoplay=0&origin=[% base_url %]" 
             frameborder="0"></iframe></div>
         [% END %]
         [% IF splash.cta %]
