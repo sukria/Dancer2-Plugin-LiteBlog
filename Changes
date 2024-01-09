@@ -1,5 +1,8 @@
 Revision history for Dancer2-Plugin-LiteBlog
 
+NEXT
+        * Caroussel widget: same as the Splash but with slides.
+
 0.07     2023-11-10
 
         [FEATURES]
