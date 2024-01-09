@@ -30,10 +30,12 @@ function applySlideTransition(directionStep) {
     // Slide effects
     slides[prevSlideIndex].style.transform = `translateX(${translateValue})`;
     slides[slideIndex].style.transform = `translateX(0)`;
+
     setTimeout(function() { 
-        slides[prevSlideIndex].style.display = 'none';
         slides[slideIndex].style.display = 'flex';
-    }, 300);
+        slides[prevSlideIndex].style.display = 'none';
+    }, 500);
+
 }
 
 function autoCarousselRun() {

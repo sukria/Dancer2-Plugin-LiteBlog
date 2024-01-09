@@ -1,6 +1,7 @@
 /* Container of the caroussel */
 .splash-widget-carousel {
     display: flex;
+    background-color: #444;
     overflow: hidden;
     width: 100%;
     transition: transform 0.5s ease-in-out;
