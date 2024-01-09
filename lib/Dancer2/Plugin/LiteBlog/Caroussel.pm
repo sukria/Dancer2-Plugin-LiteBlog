@@ -35,6 +35,34 @@ It can be used either with a single entry, like so:
                   label: "Subscribe to my Newsletter" # label of the button
                   link: "/subscribe" # the URL of the button
 
+
+Supported params are listed below.
+
+=head2 title
+
+A big title on centered on the slide.
+
+=head2 image
+
+A background image supposed to fill all the screen.
+
+=head2 baseline
+
+A subtitle of the slide.
+
+=head2 content
+
+Any content in HTML you want to add.
+
+=head2 youtube
+
+If provided, the value is expected to be a Youtube video ID. A YouTube iframe player will 
+be rendered (witout autoplay).
+
+=head2 cta
+
+A hash with C<link> and C<label> values, to generate a call-to-action button.
+
 =cut
 
 use Moo;
