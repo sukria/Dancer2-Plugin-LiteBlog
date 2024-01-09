@@ -1,0 +1,86 @@
+<script type="text/javascript">
+var slideIndex = 0;
+var slides = document.getElementsByClassName("splash-widget");
+var prevSlideIndex = 0;
+var autoSlideInterval;
+
+function plusSlides(n, manual = false) {
+    if (manual) {
+        clearInterval(autoSlideInterval); // Arrête le défilement automatique en mode manuel
+    }
+
+    prevSlideIndex = slideIndex;
+    slideIndex += n;
+
+    if (slideIndex >= slides.length) { slideIndex = 0; }
+    if (slideIndex < 0) { slideIndex = slides.length - 1; }
+
+    applySlideTransition(n);
+}
+
+function applySlideTransition(directionStep) {
+    let translateValue;
+
+    // Détermine la direction du glissement
+    if (directionStep > 0) { // Next
+        translateValue = '-100%';
+    } else { // Prev
+        translateValue = '100%';
+    }
+
+    // Configure la transition pour les diapositives actuelle et précédente
+    slides[prevSlideIndex].style.transform = `translateX(${translateValue})`;
+    slides[slideIndex].style.transform = `translateX(0)`;
+    setTimeout(function() { 
+        slides[prevSlideIndex].style.display = 'none';
+        slides[slideIndex].style.display = 'flex';
+    }, 300);
+    //slides[prevSlideIndex].style.display = 'none';
+}
+
+function autoCarousselRun() {
+    plusSlides(1, false);
+}
+
+document.addEventListener('DOMContentLoaded', (event) => {
+    slides = document.getElementsByClassName("splash-widget");
+    // Masquer toutes les diapositives sauf la première
+    for (var i = 1; i < slides.length; i++) {
+        slides[i].style.display = (i === 0) ? "flex" : "none";
+    }
+    slideIndex = 0; // Réinitialise l'index pour commencer à partir de la première diapositive
+    autoSlideInterval = setInterval(autoCarousselRun, 5000); // Démarre le défilement automatique
+});
+</script>
+
+<section class="splash-widget-carousel">
+[% FOREACH splash IN widget.elements %]
+<section class="splash-widget splash-caroussel-element" style="background: url('[% splash.image %]') no-repeat center center;">
+    <div class="background-content">
+        <h1 class="main-title">[% splash.title %]</h1>
+        <h2 class="subtitle">[% splash.baseline %]</h2>
+        <a href="[% splash.cta.link %]" class="cta-button">[% splash.cta.label %]</a>
+    </div>
+</section>
+[% END %]
+
+    <a class="prev" onclick="plusSlides(-1, true)">&#10094;</a>
+    <a class="next" onclick="plusSlides(1, true)">&#10095;</a>
+</section>
+
+<script type="text/javascript">
+    showHeroSection = false;
+
+    var heroSection = document.getElementById('hero');
+    var heroBanner = document.getElementById('hero-banner');
+    
+    // hide the big hero section
+    heroSection.classList.remove('visible-hero');
+    heroSection.classList.add('hidden-hero');
+    heroSection.style.display = 'none';
+    
+    // show the hero navigation bar
+    heroBanner.style.display = 'flex';
+    heroBanner.classList.add('visible-hero')
+    heroBanner.classList.remove('hidden-hero')
+</script>
