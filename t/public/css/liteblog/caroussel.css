@@ -1,0 +1,110 @@
+/* Container of the caroussel */
+.splash-widget-carousel {
+    display: flex;
+    background-color: #444;
+    overflow: hidden;
+    width: 100%;
+    transition: transform 0.5s ease-in-out;
+    position: relative; 
+    min-height: 80vh;
+}
+
+/* Slide */
+.splash-caroussel-element {
+    position: absolute; 
+    background-color: #444;
+    top: 0;
+    left: 0;
+    flex: 0 0 100%;
+    height: 100%; /* all the height of the container */
+    width: 100%; 
+    transition: transform 0.5s ease-in-out; /* Slide effect */
+}
+
+/* Full Width Background Styles */
+.splash-widget {
+    background-size: cover;
+    height: 80vh; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.background-content {
+    color: white;
+    max-width: 800px; /* Sets a max width for the content */
+    margin: 0 auto;
+}
+
+.caroussel-nobackground {
+}
+
+.caroussel-nobackground .background-content {
+    color: #eee;
+}
+
+.main-title {
+    font-size: 3rem; /* Big size for the main title */
+    text-shadow: 2px 4px 3px rgba(0,0,0,0.3); /* Horizontal offset, vertical offset, blur radius, color */
+    margin-bottom: 0.5rem;
+}
+
+.main-title {
+}
+
+.subtitle {
+    font-size: 1.5rem; /* Smaller size for the subtitle */
+    margin-bottom: 2rem;
+    padding: 1rem;
+}
+
+.youtube-player {
+    margin: 1em;
+}
+
+.cta {
+    margin-top: 1em;
+}
+
+.cta-button {
+    display: inline-block;
+    background-color: red;
+    color: #eee !important;
+    padding: 10px 20px;
+    text-transform: uppercase;
+    text-decoration: none; /* Removes underline from links */
+    font-weight: bold;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.cta-button:hover {
+    background-color: darkred; /* Slightly darker red on hover for button */
+    color: #fff !important;
+}
+
+
+/* Boutons de navigation */
+.prev, .next {
+    cursor: pointer;
+    position: absolute;
+    top: 50%;
+    width: auto;
+    padding: 16px;
+    margin-top: -22px;
+    font-weight: bold;
+    font-size: 18px;
+    transition: 0.6s ease;
+    border-radius: 0 3px 3px 0;
+    user-select: none;
+}
+
+.next {
+    right: 0;
+    border-radius: 3px 0 0 3px;
+}
+
+.prev:hover, .next:hover {
+    background-color: rgba(0,0,0,0.8);
+}
