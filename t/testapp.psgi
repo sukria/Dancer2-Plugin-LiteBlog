@@ -34,16 +34,36 @@ use lib "$FindBin::Bin/../lib";
             { label => 'Contact', link => '/'},
         ],
         widgets => [
-            {
-                name => 'splash',
+                        {   name => 'caroussel',
                 params => {
-                    title => 'Splash Title',
-                    image => '/blog/tech/first-article/featured.jpg',
-                    baseline => 'A great and minimalist blog engine for Dancer2',
-                    cta => {
-                        label => 'Subscribe!',
-                        link => '/subscribe',
+                    slides => [
+                    {
+                        title => 'Splash Title',
+                        image => '/blog/tech/first-article/featured.jpg',
+                        baseline => 'A great and minimalist blog engine for Dancer2',
+                        cta => {
+                            label => 'Subscribe!',
+                            link => '/subscribe',
+                        }
+                    },
+                    { 
+                        title => "Some Content", 
+                        baseline => "This is a second slide with a content div",
+                        content => "Some content I write in HTML. <p>a paragraph</p>",
+                        cta => {
+                            label => 'Bouton 2',
+                            link => '/subscribe',
+                        }
+                    },
+                    { 
+                        title => "Video",
+                        youtube => "XZvN5W6C6No",
+                        cta => {
+                            label => 'Button3',
+                            link => '/subscribe',
+                        }
                     }
+                    ]
                 }
             },
             { 
