@@ -16,7 +16,7 @@ body, html {
     width: 100%;
     height: 100vh;
     top: 100%; /* Position initiale hors de la vue */
-    transition: top 0.5s ease; /* Transition en douceur */
+    transition: top 0.4s ease; /* Transition en douceur */
     display: flex;
     align-items: center;
     justify-content: center;
@@ -47,3 +47,11 @@ body, html {
     cursor: pointer;
 }
 
+@keyframes shake {
+    0%, 100% { transform: translateY(-5px); }
+    50% { transform: translateY(5px); }
+}
+
+.shake {
+    animation: shake 0.5s ease-in-out;
+}
