@@ -1,0 +1,54 @@
+body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    overflow: hidden; /* Empêche le défilement global */
+}
+
+.slideshow-container {
+    height: 100vh; /* Hauteur de la fenêtre de visualisation */
+    position: relative;
+    overflow: hidden;
+}
+
+.slideshow-element {
+    position: absolute;
+    top: 100%; /* Position initiale en bas, hors de la vue */
+    width: 100%;
+    height: 100vh; /* Hauteur de la fenêtre de visualisation */
+    transition: top 0.5s ease; /* Transition en douceur */
+    display: flex;
+    align-items: center; /* Alignement vertical */
+    justify-content: center; /* Alignement horizontal */
+    flex-direction: column;
+    text-align: center;
+}
+
+.slideshow-element.active {
+    top: 0; /* Slide actif au centre */
+}
+
+.slideshow-element.previous {
+    top: -100%; /* Slide sortant vers le haut */
+}
+
+.text-content {
+    font-size: 2em;
+    margin: 20px;
+}
+
+.cta-button {
+    padding: 10px 20px;
+    font-size: 1em;
+    cursor: pointer;
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(-5px); }
+    50% { transform: translateX(5px); }
+}
+
+.shake {
+    animation: shake 0.5s ease-in-out;
+}
+

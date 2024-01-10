@@ -1,0 +1,49 @@
+body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    overflow: hidden; /* Empêche le défilement global */
+}
+
+.slideshow-container {
+    height: 100vh;
+    position: relative;
+    overflow: hidden;
+}
+
+.slideshow-element {
+    position: absolute;
+    width: 100%;
+    height: 100vh;
+    top: 100%; /* Position initiale hors de la vue */
+    transition: top 0.5s ease; /* Transition en douceur */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    text-align: center;
+}
+
+.slideshow-element.active {
+    top: 0; /* Slide actif au centre */
+}
+
+.slideshow-element.below {
+    top: 100%;
+}
+
+.slideshow-element.above {
+    top: -100%;
+}
+
+.text-content {
+    font-size: 2em;
+    margin: 20px;
+}
+
+.cta-button {
+    padding: 10px 20px;
+    font-size: 1em;
+    cursor: pointer;
+}
+
