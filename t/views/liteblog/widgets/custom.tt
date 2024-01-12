@@ -1,0 +1,5 @@
+[% FOREACH e IN widget.elements %]
+<div class="widget-custom">
+[% e %]
+</div>
+[% END %]
