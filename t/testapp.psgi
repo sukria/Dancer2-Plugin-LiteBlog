@@ -34,7 +34,7 @@ use lib "$FindBin::Bin/../lib";
             { label => 'Contact', link => '/'},
         ],
         widgets => [
-                        {   name => 'caroussel',
+        {   name => 'caroussel',
                 params => {
                     slides => [
                     {
@@ -65,6 +65,13 @@ use lib "$FindBin::Bin/../lib";
                     }
                     ]
                 }
+            },
+            {
+                name => 'custom',
+                params => {
+                    root => 't/slideshow-poc',
+                    source => 'slidenatural.html',
+                },
             },
             { 
                 name => 'blog',
