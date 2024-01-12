@@ -79,7 +79,7 @@ sub has_rss { 1 }
 Read-only attribute that contains a list of featured posts to show on the home
 page widget section.  
 
-If <no_widget> is set, return nothing (no widget will be rendered on the home page).
+If C<no_widget> is set, return nothing (no widget will be rendered on the home page).
 
 If a C<featured_post> entry is found in the C<blog-meta>
 file of the widget, use this. If not, returns the last 3 posts published.  Each
