@@ -312,7 +312,7 @@ sub _load_widgets {
 
         $elements = $widget->elements;
 
-        if (scalar(@$elements)) {
+       # if (scalar(@$elements)) {
             push @widgets, { 
                 id => $id++,
                 name => $w->{name}, 
@@ -320,8 +320,10 @@ sub _load_widgets {
                 view => $w->{name}.'.tt',
                 instance => $widget,
                 elements => $elements,
+                has_elements => scalar(@$elements),
+                css => $widget->css,
             };
-        }
+        #}
     }
     return \@widgets;
 }
