@@ -1,5 +1,8 @@
 Revision history for Dancer2-Plugin-LiteBlog
 
+NEXT
+        * Custom widget: load any HTML you want and inject that where you want 
+          in the home 'widget' layout.
 0.08
         * Caroussel widget: same as the Splash but with slides.
 
